@@ -1,0 +1,93 @@
+<div id="exp">
+ <h1>Reasoning Study</h1>
+</div>
+
+<div id="fill">
+</div>
+
+<script type="text/javascript">
+
+var pages = ['modules/exp/stim0.html', 'modules/exp/stim1.html', 'modules/exp/stim2.html',
+            'modules/exp/stim3.html', 'modules/exp/stim4.html', 'modules/exp/stim5.html',
+            'modules/exp/stim6.html', 'modules/exp/stim7.html', 'modules/exp/stim8.html', 
+            'modules/exp/stim9.html', 'modules/exp/stim10.html', 'modules/exp/stim11.html',
+            'modules/exp/stim12.html', 'modules/exp/stim13.html', 'modules/exp/stim14.html'];
+var data = [];
+
+(function() {
+    experimentr.hideNext(); 
+    selectStim();
+})(); 
+ 
+function selectStim() {
+    var n = Math.floor(Math.random() * 15);
+    //var n = 14; 
+    if ( n === 0) {
+        //worseHover 
+        data.stim = "worseHover";
+        experimentr.addData(data);
+    } else if ( n === 1) {
+        //worseDrag 
+        data.stim = "worseDrag";
+        experimentr.addData(data); 
+    } else if ( n === 2) {
+        //worseCBnone
+        data.stim = "worseCBnone";
+        experimentr.addData(data);
+    } else if ( n === 3) {
+        //worseTooltip
+        data.stim = "worseTooltip";
+        experimentr.addData(data);
+    } else if ( n === 4) {
+        //middleHover
+        data.stim = "middleHover";
+        experimentr.addData(data);
+    } else if ( n === 5) {
+        //middleDrag
+        data.stim = "middleDrag";
+        experimentr.addData(data);
+    } else if ( n === 6) {
+        //middleCBnone
+        data.stim = "middleCBnone";
+        experimentr.addData(data);
+    } else if ( n === 7) {
+        //middleTooltip
+        data.stim = "middleTooltip";
+        experimentr.addData(data);
+    } else if ( n === 8) {
+        //betterHover
+        data.stim = "betterHover";
+        experimentr.addData(data);
+    } else if ( n === 9) {
+        //betterDrag
+        data.stim = "betterDrag";
+        experimentr.addData(data);
+    } else if ( n === 10) {
+        //betterCBnone
+        data.stim = "betterCBnone";
+        experimentr.addData(data);
+    } else if ( n === 11) {
+        //betterTooltip
+        data.stim = "betterTooltip";
+        experimentr.addData(data);
+    } else if ( n === 12) {
+        //worseCBall
+        data.stim = "worseCBall"
+        experimentr.addData(data)
+    } else if ( n === 13) {
+        //middleCBall
+        data.stim = "middleCBall"
+        experimentr.addData(data)
+    } else if ( n === 14) {
+        //betterCBall
+        data.stim = "betterCBall"
+        experimentr.addData(data)
+    }
+    console.log("n is ",n)
+    d3.html(pages[n], function(err, d) {
+              if(err) console.log(err);
+              d3.select('#fill').node().appendChild(d);
+    }); 
+}
+
+</script>

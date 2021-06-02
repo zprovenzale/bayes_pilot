@@ -1,0 +1,229 @@
+/*body {
+    text-align: center;
+    font-family: Arial;
+    margin-left: 20px;
+    font-size: 18px;
+}*/
+
+#intro {
+    border-bottom: 1px solid grey;
+    padding-bottom: 10px;
+}
+
+#controlTxt {
+    padding-bottom: 10px;
+    border-bottom: 1px solid lightgrey;
+    text-align: left;
+}
+
+.container {
+    padding: 10px;
+    float: left;
+    text-align: center;
+    padding-bottom: 5px;
+}
+
+.txtToDrag {
+  background: lightgrey;
+  border-radius: 10px;
+  border: 2px solid black;
+  padding: 5px; 
+  margin: 20px; 
+  cursor: move;
+}
+
+text:hover {
+  background: yellow;
+}
+
+.draggable {
+  cursor: move;
+}
+
+.shelf {
+  text-align: center;
+  border-bottom: 1px solid lightgrey;
+  padding: 10px;
+}
+
+.hoverable_label:hover {
+    filter: url("#solid");
+}
+
+.hoverable:hover {
+    background: yellow;
+}
+
+.hoverable {
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-color: blue;
+}
+
+.total_pop_background_text_highlighted {
+    background: yellow;
+}
+
+.have_disease_text_highlighted {
+    background: yellow;
+}
+
+.test_positive_text_highlighted {
+    background: yellow;
+}
+
+.do_not_have_disease_pos_text_highlighted {
+    background: yellow;
+}
+
+.have_disease_test_positive_text_highlighted {
+    background: yellow;
+}
+
+.do_not_have_disease_test_positive_text_highlighted {
+    background: yellow;
+}
+
+#answers {
+    padding: 10px;
+    border-top: 1px solid grey;
+}
+
+svg .box {
+    fill: white;
+    stroke: black;
+    stroke-width: 1px;
+}
+
+svg .total_pop_background {
+    fill: white;
+    stroke: black;
+    stroke-width: 1px;
+}
+
+svg .total_pop_background_highlighted {
+    fill: yellow;
+    fill-opacity: 0.4;
+    stroke: black;
+    stroke-width: 1px;
+}
+
+svg .do_not_have_disease_pos {
+    fill: #d3d3d3;
+    stroke: black;
+    stroke-width: 1px;
+}
+
+svg .do_not_have_disease_pos_highlighted {
+    fill: yellow;
+    fill-opacity: 0.4;
+    stroke: black;
+    stroke-width: 1px;
+}
+
+svg .do_not_have_disease_test_pos {
+    fill: lightgrey; 
+    width: 41%;
+    height: 23%;
+    stroke: black;
+    stroke-width: 2px;
+}
+
+svg .do_not_have_disease_test_pos_highlighted {
+    fill-opacity: 0.4;
+    fill: yellow; 
+    width: 41%;
+    height: 23%;
+    stroke: black;
+    stroke-width: 2px;
+}
+
+svg .do_not_have_disease_test_neg {
+    opacity: 0.0; 
+    fill: yellow;
+    stroke: black;
+    stroke-width: 1px;
+}
+
+svg .do_not_have_disease_test_neg_highlighted {
+    opacity: 0.4;
+    fill: yellow;
+    stroke: black;
+    stroke-width: 1px;
+}
+
+svg .do_not_have_disease_neg {
+    fill: white;
+    width: 25%;
+    height: 13%;
+    stroke-opacity: 0.0;
+}
+
+svg .test_positive {
+    fill-opacity: 0.0;
+    width: 41%;
+    height: 23%;
+    stroke: black;
+    stroke-width: 2px;
+}
+
+svg .test_positive_highlighted {
+    fill: yellow;
+    fill-opacity: 0.4;
+    width: 41%;
+    height: 23%;
+    stroke: black;
+    stroke-width: 2px;
+}
+
+svg .have_disease {
+    fill: #878787;
+    width: 25%;
+    height: 13%;
+    stroke-opacity: 0.0;
+}
+
+svg .have_disease_highlighted {
+    fill: yellow;
+    fill-opacity: 0.4;
+    width: 25%;
+    height: 13%;
+    stroke-opacity: 0.0;
+}
+
+svg .have_disease_test_pos {
+    fill: yellow;
+    fill-opacity: 0.0;
+    width: 16.5%;
+    height: 13%;
+    stroke-opacity: 0.0;
+}
+
+svg .have_disease_test_pos_highlighted {
+    fill: yellow;
+    fill-opacity: 0.8;
+    width: 16.5%;
+    height: 13%;
+    stroke-opacity: 0.0;
+}
+
+svg .have_disease_test_neg {
+    fill: yellow;
+    fill-opacity: 0.0;
+    width: 9%;
+    height: 13%;
+    stroke-opacity: 0.0;
+}
+
+svg .have_disease_test_neg_highlighted {
+    fill: yellow;
+    fill-opacity: 0.8;
+    width: 9%;
+    height: 13%;
+    stroke-opacity: 0.0;
+}
+
+svg .icon {
+    width: 5%;
+    height: 20%;
+}

@@ -1,0 +1,158 @@
+
+<div class="header w3-container">
+	<h3 class="count">Instructions:</h3> 
+
+	<img hspace="50">
+	
+	<button id="previous" class="w3-button w3-white w3-border w3-round-large">Previous</button>
+	<img hspace="5">
+	<button id="next" class="w3-button w3-white w3-border w3-round-large">Next</button>
+</div>
+
+
+<div id='text' class='w3-container' style='height: 100px'> </div>
+
+<div class="w3-panel w3-card w3-padding-large" id="image"></div>
+
+
+
+<script> 
+(function() {
+	var count = 0
+ 	 , 	num_steps = 5; //number of steps in the tutorial. 
+ 	 	
+   console.log("OPTION IS ",time_shuffled, estimate_shuffled)
+
+   if ((time_shuffled=="unlimited") && (estimate_shuffled=="gist")){
+    console.log("in first if")
+    var text_data = [
+      "<p>You will complete 26 lottery sheets like the example below. To view the probabilities for the lottery you will have to press the <b>show button</b> which will reveal a chart with the corresponding probabilities. <b>Note that the chart will be different</b> </p>",
+      "<p> Then you will give an estimate of your chance of winning based on the chart you saw.</p>",
+      "<p>When choosing your lottery decisions, you only need to select the option where you switch your decison. We will fill in the rest.</p>",
+      "<p><strong>Bonus:</strong> We will determine your bonus by randomly drawing one of the lottery sheets. Your bonus will depend on how you answer the question. (1 lottery point equals 1 cent.)</p>",
+      "<p><strong>Bonus:</strong> For example, let's say we draw the row highlighted in green. If you chose the guaranteed payment option, you will obtain 400 points ($4.00 bonus). If you chose to enter the lottery, you may get 1000 points ($10.00) or 0 points ($0.00) depending on the lottery.</p>",
+      "<p><strong> Simply clicking through the tasks, or providing obviously questionable information will forfeit your bonus.</strong></p>"
+     ]
+     var option='unlimited_gist'
+   }
+   if(time_shuffled!="unlimited" && estimate_shuffled=="gist"){
+    var text_data = [
+      "<p>You will complete 26 lottery sheets like the example below. To view the probabilities for the lottery you will have to press the <b>show button</b> which will reveal a chart with the corresponding probabilities <b> for a limited amount of time.</b></p>",
+      "<p>Pay attention to the visualization and keep in mind that <b> it will disappear after a few milliseconds</b>. <b>Note that your chart will be different.</b> </p>",
+      "<p> Then you will give an estimate of your chance of winning based on the chart you saw.</p>",
+      "<p>When choosing your lottery decisions, you only need to select the option where you switch your decison. We will fill in the rest.</p>",
+      "<p><strong>Bonus:</strong> We will determine your bonus by randomly drawing one of the lottery sheets. Your bonus will depend on how you answer the question. (1 lottery point equals 1 cent.)</p>",
+      "<p><strong>Bonus:</strong> For example, let's say we draw the row highlighted in green. If you chose the guaranteed payment option, you will obtain 400 points ($4.00 bonus). If you chose to enter the lottery, you may get 1000 points ($10.00) or 0 points ($0.00) depending on the lottery.</p>",
+      "<p><strong> Simply clicking through the tasks, or providing obviously questionable information will forfeit your bonus.</strong></p>",
+     ];
+     var option='limited_gist'
+
+   }
+   if(time_shuffled=="unlimited" && estimate_shuffled=="verbatim"){
+    var text_data = [
+      "<p>You will complete 26 lottery sheets like the example below. To view the probabilities for the lottery you will have to press the <b>show button</b> which will reveal a chart with the corresponding probabilities. <b>Note that the chart will be different</b> </p>",
+      "<p> Then you will give an estimate of your chance of winning based on the chart you saw.</p>",
+      "<p>When choosing your lottery decisions, you only need to select the option where you switch your decison. We will fill in the rest.</p>",
+      "<p><strong>Bonus:</strong> We will determine your bonus by randomly drawing one of the lottery sheets. Your bonus will depend on how you answer the question. (1 lottery point equals 1 cent.)</p>",
+      "<p><strong>Bonus:</strong> For example, let's say we draw the row highlighted in green. If you chose the guaranteed payment option, you will obtain 400 points ($4.00 bonus). If you chose to enter the lottery, you may get 1000 points ($10.00) or 0 points ($0.00) depending on the lottery.</p>",
+      "<p><strong> Simply clicking through the tasks, or providing obviously questionable information will forfeit your bonus.</strong></p>",
+     ]
+     var option='unlimited_verbatim'
+   }
+   if(time_shuffled!="unlimited" && estimate_shuffled=="verbatim"){
+    var text_data = [
+      "<p>You will complete 26 lottery sheets like the example below. To view the probabilities for the lottery you will have to press the <b>show button</b> which will reveal a chart with the corresponding probabilities <b> for a limited amount of time.</b></p>",
+      "<p>Pay attention to the visualization and keep in mind that <b> it will disappear after a few milliseconds</b>. <b>Note that your chart will be different.</b> </p>",
+      "<p> Then you will give an estimate of your chance of winning based on the chart you saw.</p>",
+      "<p>When choosing your lottery decisions, you only need to select the option where you switch your decison. We will fill in the rest.</p>",
+      "<p><strong>Bonus:</strong> We will determine your bonus by randomly drawing one of the lottery sheets. Your bonus will depend on how you answer the question. (1 lottery point equals 1 cent.)</p>",
+      "<p><strong>Bonus:</strong> For example, let's say we draw the row highlighted in green. If you chose the guaranteed payment option, you will obtain 400 points ($4.00 bonus). If you chose to enter the lottery, you may get 1000 points ($10.00) or 0 points ($0.00) depending on the lottery.</p>",
+      "<p><strong> Simply clicking through the tasks, or providing obviously questionable information will forfeit your bonus.</strong></p>",
+     ];
+     var option='limited_verbatim'
+
+   }
+   if(time_shuffled=="unlimited" && estimate_shuffled=="default"){
+    var text_data = [
+      "<p>You will complete 26 lottery sheets like the example below. To view the probabilities for the lottery you will have to press the <b>show button</b> which will reveal a chart with the corresponding probabilities. <b>Note that the chart will be different</b> </p>",
+      "<p>When choosing your lottery decisions, you only need to select the option where you switch your decison. We will fill in the rest.</p>",
+      "<p><strong>Bonus:</strong> We will determine your bonus by randomly drawing one of the lottery sheets. Your bonus will depend on how you answer the question. (1 lottery point equals 1 cent.)</p>",
+      "<p><strong>Bonus:</strong> For example, let's say we draw the row highlighted in green. If you chose the guaranteed payment option, you will obtain 400 points ($4.00 bonus). If you chose to enter the lottery, you may get 1000 points ($10.00) or 0 points ($0.00) depending on the lottery.</p>",
+      "<p><strong> Simply clicking through the tasks, or providing obviously questionable information will forfeit your bonus.</strong></p>",
+     ]
+     var option='unlimited_default'
+   }
+   if(time_shuffled!="unlimited" && estimate_shuffled=="default"){
+    var text_data = [
+      "<p>You will complete 26 lottery sheets like the example below. To view the probabilities for the lottery you will have to press the <b>show button</b> which will reveal a chart with the corresponding probabilities <b> for a limited amount of time.</b></p>",
+      "<p>Pay attention to the visualization and keep in mind that <b> it will disappear after a few milliseconds</b>. <b>Note that your chart will be different.</b> </p>",
+      "<p>When choosing your lottery decisions, you only need to select the option where you switch your decison. We will fill in the rest.</p>",
+      "<p><strong>Bonus:</strong> We will determine your bonus by randomly drawing one of the lottery sheets. Your bonus will depend on how you answer the question. (1 lottery point equals 1 cent.)</p>",
+      "<p><strong>Bonus:</strong> For example, let's say we draw the row highlighted in green. If you chose the guaranteed payment option, you will obtain 400 points ($4.00 bonus). If you chose to enter the lottery, you may get 1000 points ($10.00) or 0 points ($0.00) depending on the lottery.</p>",
+      "<p><strong> Simply clicking through the tasks, or providing obviously questionable information will forfeit your bonus.</strong></p>",
+     ];
+     var option='limited_default'
+
+   }
+
+  init();
+
+
+  function init(){
+  	experimentr.hideNext();
+  	update();
+
+
+  	d3.select('#next')
+  		.on('click', function(d){
+  		if(count < num_steps-1){
+  			count ++;
+  			update();
+  		}else{
+  			experimentr.next();
+  		}
+
+  		if(count==num_steps-1){
+  			d3.select('#next').html("Begin Lottery");
+  		}
+
+  	});
+
+  	d3.select('#previous')
+  		.on('click', function(d){
+  		if(count > 0){ 
+  			count --;
+  			update();
+  		}
+
+  		if(count < num_steps-1){
+  			d3.select('#next').html("Next");
+  		}
+  	});
+  }
+
+  function update(){
+    console.log("count is ",count)
+
+  	d3.select('#text').html(text_data[count]);
+    if (option=='unlimited_gist'){
+      d3.select('#image').html('<img src="modules/img/unlimited_gist/tutorial' + (count+1) + '.png" width="100%">');
+    }
+    if (option=='limited_gist'){
+      d3.select('#image').html('<img src="modules/img/limited_gist/tutorial' + (count+1) + '.png" width="100%">');
+    }
+    if (option=='unlimited_verbatim'){
+      d3.select('#image').html('<img src="modules/img/unlimited_verbatim/tutorial' + (count+1) + '.png" width="100%">');
+    }
+    if (option=='limited_verbatim'){
+      d3.select('#image').html('<img src="modules/img/limited_verbatim/tutorial' + (count+1) + '.png" width="100%">');
+    }
+    if (option=='unlimited_default'){
+      d3.select('#image').html('<img src="modules/img/unlimited_default/tutorial' + (count+1) + '.png" width="100%">');
+    }
+    if (option=='limited_default'){
+      d3.select('#image').html('<img src="modules/img/limited_default/tutorial' + (count+1) + '.png" width="100%">');
+    }
+  }
+}());
+</script>

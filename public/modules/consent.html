@@ -1,0 +1,86 @@
+<div id="consent">
+
+<h2>Risk and Visualization</h2>
+<p>
+We invite you to participate in a research study conducted by 
+investigators from Washington University in St. Louis.  The purpose of 
+the study is to evaluate how visual aids impact risk decision-making. </p>
+
+
+
+<h3>Instructions</h3>
+<ul>
+	<li>In this HIT, you will complete 26 lottery sheets.</li>
+	<li>For each sheet, imagine you are provided a list of payment choices, please tell us your preferences.</li>
+	<li>We will also collect your basic demographic information (age, gender, and education). </li>
+	<li> The avarage completion time is 30 minutes</li>
+	<li><strong>Payment</strong></li>
+	<ul>
+		<li>You will receive a base pay of $1.00 for your participation</li>
+		<li><strong>Additional Bonus:</strong> We will detemine your bonus by simulating each lottery sheet. Your bonus will depend on how you answer the questions. Your maximum bonus is $10.70</li>
+	</ul>
+</ul>
+
+
+<h3>Terms of Service</h3>
+<ul>
+	<li>Identifying information will <strong>never</strong> be used or shared. Your MTurk ID will be replaced with a random alphanumeric code.</li>
+	<li>Taking part in this research study is completely voluntary.  You may choose 
+not to take part at all.  If you decide to be in this study, you may stop 
+participating at any time. However, you may only get paid after finishing all the questions. Addditional, any data that was collected will remain as part of the study records and cannot be removed.</li>
+<li>For questions about the research study please contact: Alvitta Ottley, (alvitta@wustl.edu)</li>
+<li>If you have questions, concerns, or complaints about your rights as a research
+participant, please contact the Human Research Protection Office at 660 South
+Euclid Avenue, Campus Box 8089, St. Louis, MO  63110, 1-(800)-438-0445 or email 
+hrpo@wusm.wustl.edu.   General information about being a research participant 
+can be found on the Human Research Protection Office web site, <a href=http://hrpo.wustl.edu>http://hrpo.wustl.edu/</a>.  
+To offer input about your experiences as a research participant or to speak to 
+someone other than the research staff, call the Human Research Protection Office 
+at the number above.</li>
+</ul>
+
+
+
+<p>
+Thank you very much for your consideration of this research study.
+</p>
+
+<!-- <p>
+Please enter your Amazon Worker ID. <b>You may only complete this HIT once.</b> 
+Subsequent completions (e.g. reading the same story twice) will not be accepted:
+
+<br>
+<input type="text" id="workerId" name="workerId" size="30">
+<button id="checkId" type="button">Check ID</button>
+<br>
+
+<span id="invalidMessage">
+Our records show that you have taken part in this study before, so we cannot allow you 
+to take this HIT again at this time. Please contact us if you feel this is in error.
+</span>
+</p> -->
+
+<p style="float: right;">
+"I am between the ages of 18 and 65, and I have read and understood the statements above."
+<button id="consentYes" disabled="true" type="button">I Agree</button>
+</p>
+
+</div>
+
+<style>
+  #invalidMessage {
+    display: none;
+    color: red;
+  }
+  #experimentr {
+    margin: 4em auto 1em auto;
+    width: 720px;
+  }
+
+</style>
+
+<script src="modules/index.js"></script>
+<script type="text/javascript">
+	experimentr.hideNext();
+	d3.select('#consentYes').attr('disabled', null);
+</script>

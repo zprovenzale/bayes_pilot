@@ -1,0 +1,680 @@
+<div id="defs">
+</div>
+
+<h2 class="level_number" id ="level_number">Level 1</h2>
+
+<div class="second_task" id ="second_task"></div>
+
+<h2 class="nextLevel" id ="nextLevel"></h2>
+
+<button type="button" id="next-button2">Next</button>
+
+
+<script type="text/javascript">
+
+d3.select('#next-button2').style("display","none")
+d3.select('#next-button').style("display","none")
+
+//===Global variables====
+
+var speed=4000
+
+var setRight=new Set()
+var setMissed=new Set()
+var setWrong=new Set()
+
+var dateInitial=new Date()
+var timeInitial=dateInitial.getTime()
+
+var errorRates=[]
+
+var totalWordsSeen=0
+
+var numFruits=0
+
+var totalFruitCount=0;
+var totalWordCount=0
+
+var timeoutCali;
+var d_primes=[]
+
+var ans={}
+
+loadData("list_of_words1",speed)
+
+function loadData(listNumber, speed){
+    var words_data
+    var data_part2
+
+    d3.csv("modules/exp/data/"+listNumber+".csv",function(csv) {
+        data=csv
+        words_data=data.slice(0,18)
+        data_part2=data.slice(18,)
+        // totalWordCount+=data.length
+        // console.log(data)
+        // console.log("total word count is ",totalWordCount)
+        // //var filtered = Object.fromEntries(Object.entries(data).filter(([k,v]) => v=="1"));
+        // var filtered = data.filter(word => word.fruit == "1");
+        // console.log("filtered is ",filtered)
+        // totalFruitCount+=filtered.length
+        // console.log("total fruit count is ",totalFruitCount)
+        draw_secondary(data,words_data,data_part2,speed)
+
+    })
+}
+function nextLevel(speed){
+  // console.log("inside nextLevel")
+
+      // speed=0.75*speed
+  totalFruitCount=0
+  totalWordCount=0
+  totalWordsSeen=0
+
+  dateInitial=new Date()
+  timeInitial=dateInitial.getTime()
+
+  d3.select('#next-button2').style("display","block")
+  document.getElementById("nextLevel").innerHTML="You have passed this level! Click next to go to the next level"
+  d3.select('#nextLevel').style("display","block")
+  document.getElementById("next-button2").onclick=function(){
+    //remove page elements
+    document.getElementById("nextLevel").innerHTML=" "
+    var currLevel=String(document.getElementById("level_number").innerHTML)
+    var matches = currLevel.match(/(\d+)/); 
+    var nextLevel=parseInt(matches[0])+1
+    document.getElementById("level_number").innerHTML="Level "+nextLevel
+    d3.select(this).style("display","none")
+    d3.select("svg").remove() //remove svg
+    d3.select('#nextLevel').style("display","none")
+    //reset counts
+    hits=0
+    false_alarms=0
+    // document.getElementById("yellowScore").innerHTML="0 words missed"
+    //go to next level
+    //redraw with new speed
+    loadData("list_of_words"+nextLevel, speed)
+  }
+  // else {
+  //     //go to task and save speed
+  //     document.getElementById("nextLevel").innerHTML="Click on the next button to proceed to the main task"
+  //     d3.select('#nextLevel').style("display","block") 
+  //     d3.select('#next-button2').style("display","block")
+  //     document.getElementById("next-button2").onclick=function(){
+  //     ans.speed=speed
+  //     experimentr.addData(ans); 
+  //     experimentr.next(); 
+  //     }
+  // }
+}
+function checkPerformance(d_prime){
+          clearTimeout(timeoutCali)
+          if (d_prime >=0.93){ 
+            d_primes.push({speed:speed, d_prime:d_prime})
+            console.log("d_primes is ",d_primes)
+            speed=0.75*speed
+            nextLevel(speed)
+          }
+          else{
+            d_primes.push({speed:speed, d_prime:d_prime})
+          //   timeout= setTimeout(function(){
+          //       moveWords(totalWordsSeen,speed);
+          //   },speed)
+          // }
+            //speed=speed/0.75
+                      //go to task and save speed
+            document.getElementById("nextLevel").innerHTML="Click on the next button to proceed to the main task"
+            d3.select('#nextLevel').style("display","block") 
+            d3.select('#next-button2').style("display","block")
+            document.getElementById("next-button2").onclick=function(){
+              var dprime_easy=999
+              var dprime_hard=999
+              var speed_easy;
+              var speed_hard;
+              console.log("d primes is ",d_primes)
+              console.log("d primes[0] is ",d_primes[0])
+              for(var i = 0; i < d_primes.length; i++){
+                console.log("in for loop")
+                element=d_primes[i]
+                console.log("element d prime is ", parseFloat(element.d_prime))
+                console.log("element speed is ", element.speed)
+                if ( Math.abs( (0.8*3.878) - parseFloat(element.d_prime)) < Math.abs((0.8*3.878) - dprime_hard) ){
+                  speed_hard=element.speed
+                  dprime_hard=parseFloat(element.d_prime)
+                }
+                if (Math.abs((0.2*3.878) - parseFloat(element.d_prime)) < Math.abs((0.2*3.878) - dprime_easy)){
+                  speed_easy=element.speed
+                  dprime_easy=parseFloat(element.d_prime)
+                }              
+              } 
+              ans.speed_easy=speed_easy
+              ans.cali_dprime_easy=dprime_easy
+              ans.speed_hard=speed_hard
+              ans.cali_dprime_hard=dprime_hard
+              console.log("ANS is ",ans)
+              experimentr.addData(ans); 
+              experimentr.next(); 
+            }
+          }
+}
+
+function draw_secondary(data,words_data,data_part2,speed) {
+
+//=====timestamps for words=====
+    var timestamps=[]
+    var userSpeed=[]
+
+    var step=17;
+    var lineupCount=1;
+
+    var hits=0;
+    var false_alarms=0;
+    var d_prime=0;
+
+    let svgHeight = 400;
+    let svgWidth = 820;
+        
+    let svgContainer = d3.select("#second_task")
+                        .append("svg")
+                        .attr("width", svgWidth+600)
+                        .attr("height", svgHeight-120)
+                        .attr("id", "secondContainer");
+
+    var rect= svgContainer.append("rect")
+                .attr("x",0)
+                .attr("y",0)
+                .attr("height",190)
+                .attr("width",svgWidth+5)
+                .attr("fill","#FAFAFA")
+
+    var cyanScore= svgContainer.append("text")
+                        .attr("id","cyanScore")
+                        .attr("fill","#F5F5F5")
+                        .attr("x",svgWidth+40)
+                        .attr("y",50)
+                        .text("0 words right")
+                        .attr("fill","cyan")
+                        .style("font-size","14px")
+                        .attr("visibility","hidden")
+
+    var magentaScore= svgContainer.append("text")
+                        .attr("id","magentaScore")
+                        .attr("fill","#F5F5F5")
+                        .attr("x",svgWidth+40)
+                        .attr("y",90)
+                        .text("0 words wrong")
+                        .attr("fill","magenta")
+                        .style("font-size","14px")
+                        .attr("visibility","hidden")
+
+    var yellowScore= svgContainer.append("text")
+                        .attr("id","yellowScore")
+                        .attr("fill","#F5F5F5")
+                        .attr("x",svgWidth+40)
+                        .attr("y",130)
+                        .text("0 words missed")
+                        .style("font-size","14px")
+                        .attr("fill","yellow")
+                        .attr("visibility","hidden")
+
+    let svg = svgContainer.append("svg")
+    .attr("width", svgWidth)
+    .attr("height", svgHeight)
+    .attr("id", "second_svg");
+
+    var xCoord=840
+
+    var border=svg.selectAll(".word_border")
+                .data(words_data)
+                .enter()
+                .append("rect")
+                .attr("padding",0.5)
+                .attr('stroke', '#bebebe')
+                .attr('stroke-width', '1.2px')
+                .attr("class", "word_border")
+                .attr("fill","#F5F5F5")
+                .attr("opacity",0.75)
+                .attr("rx", 4)
+                .attr("ry", 4)
+
+    border.attr("x", function(d,i){
+            // return (i%7)*150-200
+            if (i%3==0){
+                xCoord-=150
+                return xCoord
+            }
+            else{
+                return xCoord
+            }
+        })
+        .attr("y", function(d,i){
+            return 20+(i%3)*50
+        })
+        .attr("id",function(d,i){
+            return "b"+i
+        })
+        .attr("width",function(d,i){
+            return (d.word.length*10)+15
+        })
+        .attr("height",40)
+        .on("mouseover",function(d){
+            d3.select(this).style("cursor", "pointer"); 
+        })
+        .on("click",function(d){
+            //record speed
+            if (d.fruit==1){
+                hits+=1
+               //change color of word
+               this.setAttribute("stroke","cyan")
+               //change border color
+               var thisId=this.getAttribute("id").substring(1)
+               document.getElementById(thisId).setAttribute("fill","cyan")
+               //add word to set
+               setRight.add(thisId)
+               //update score
+               var cyanScore=setRight.size
+               //var cyanScore = parseInt(d3.select("#cyanScore").text())+1
+               d3.select("#cyanScore").text(cyanScore + " words right")
+            }
+            else{
+                false_alarms+=1
+               //change color of word
+               this.setAttribute("stroke","magenta")
+               //change border color
+               var thisId=this.getAttribute("id").substring(1)
+               document.getElementById(thisId).setAttribute("fill","magenta")
+               //update score
+               //add word to set
+               setWrong.add(thisId)
+               //update score
+               var magentaScore=setWrong.size
+               //var magentaScore = parseInt(d3.select("#magentaScore").text())+1
+               d3.select("#magentaScore").text(magentaScore + " words right")                
+            }
+        })
+    var xCoord=850
+
+    var word=svg.selectAll(".words")
+                .data(words_data)
+                .enter()
+                .append("text")
+                .attr("class", "words")
+                .attr("padding",0.5)
+                .attr("fill","#6a6a6a")
+ // Update (set the dynamic properties of the elements)
+
+     word.attr("x", function(d,i){
+            // return (i%7)*150-200
+            if (i%3==0){
+                xCoord-=150
+                return xCoord
+            }
+            else{
+                return xCoord
+            }
+        })
+        .attr("y", function(d,i){
+            return 40+(i%3)*50
+        })
+        .attr("dy", ".35em")
+        .attr("id",function(d,i){
+            // return d
+            return i
+        })
+        .text(function(d) { 
+            return d.word;
+        })
+        .style("font-size","14px")
+        .on("mouseover",function(d){
+            d3.select(this).style("cursor", "pointer"); 
+        })
+        .on("click",function(d){
+            if (d.fruit==1){
+                hits+=1
+               //change color of word
+               this.setAttribute("fill","cyan")
+               //change border color
+               var thisId=this.getAttribute("id")
+               document.getElementById("b"+thisId).setAttribute("stroke","cyan")
+               //update score
+                //add word to set
+               setRight.add(thisId)
+               //update score
+               var cyanScore=setRight.size
+               //var cyanScore = parseInt(d3.select("#cyanScore").text())+1
+               d3.select("#cyanScore").text(cyanScore + " words right")
+            }
+            else{
+                false_alarms+=1
+                this.setAttribute("fill","magenta")
+                //change border color
+               var thisId=this.getAttribute("id")
+               document.getElementById("b"+thisId).setAttribute("stroke","magenta")
+                //update score
+                               //add word to set
+               setWrong.add(thisId)
+               //update score
+               var magentaScore=setWrong.size
+               //var magentaScore = parseInt(d3.select("#magentaScore").text())+1
+               d3.select("#magentaScore").text(magentaScore + " words wrong" )
+            }
+            this.disabled=true
+
+        })
+
+     word.exit().remove()
+
+     createLineUp(0,speed)
+
+
+     function createLineUp(totalWordsSeen,speed){
+
+         //increment lineupCount
+         increment=step+lineupCount;
+
+         var lineup=data_part2.slice(0,3)
+         data_part2=data_part2.slice(3,)
+         //loop back to start of list
+         if (lineup.length==0){
+          //====check performance======
+          checkPerformance(d_prime)
+            // data_part2=shuffle(words_data)
+            //  var lineup=data_part2.slice(0,3)
+            //  data_part2=data_part2.slice(3,)
+         }
+         else{
+            var xCoord=-60
+
+            // var borderSelect = 
+
+            var border=svg.selectAll("#word_border2")
+                        .data(lineup)
+                        .enter()
+                        .append("rect")
+                        .attr("padding",0.5)
+                        .attr('stroke', '#bebebe')
+                        .attr('stroke-width', '1.2px')
+                        .attr("class", "word_border")
+                        .attr("id", "word_border2")
+                        .attr("fill","#F5F5F5")
+                        .attr("opacity",0.75)
+                        .attr("rx", 4)
+                        .attr("ry", 4)
+
+            border.attr("x", function(d,i){
+                    // return (i%7)*150-200
+                    if (i%3==0){
+                        xCoord-=150
+                        return xCoord
+                    }
+                    else{
+                        return xCoord
+                    }
+                })
+                .attr("id",function(d,i){
+                    return "b"+parseInt(i+increment)
+                })
+                .attr("y", function(d,i){
+                    return 20+(i%3)*50
+                })
+                .attr("width",function(d,i){
+                    return (d.word.length*10)+15
+                })
+                .attr("height",40)
+                 .on("click",function(d){
+                    if (d.fruit==1){
+                       //change color of word
+                       this.setAttribute("stroke","cyan")
+                       //change border color
+                       var thisId=this.getAttribute("id").substring(1)
+                       document.getElementById(thisId).setAttribute("fill","cyan")
+                       //update score
+                               //add word to set
+                       setRight.add(thisId)
+                       //update score
+                       var cyanScore=setRight.size
+                        //var cyanScore = parseInt(d3.select("#cyanScore").text())+1
+                       d3.select("#cyanScore").text(cyanScore + " words right")
+                    }
+                    else{
+                        false_alarms+=1
+                       //change color of word
+                       this.setAttribute("stroke","magenta")
+                       //change border color
+                       var thisId=this.getAttribute("id").substring(1)
+                       document.getElementById(thisId).setAttribute("fill","magenta")
+                       //update score
+                       //add word to set
+                       setWrong.add(thisId)
+                       //update score
+                       var magentaScore=setWrong.size
+
+                       //var magentaScore = parseInt(d3.select("#magentaScore").text())+1
+                       d3.select("#magentaScore").text(magentaScore + " words right")                
+                    }
+                })           
+            // border.exit().remove()
+
+            var xCoord=-50
+
+            var word=svg.selectAll("#lineup")
+                        .data(lineup)
+                        .enter()
+                        .append("text")
+                        .attr("id", "lineup")
+                        .attr("class", "words")
+                        .attr("padding",0.5)
+                        .attr("fill","#6a6a6a")
+         // Update (set the dynamic properties of the elements)
+
+             word.attr("x", function(d,i){
+                    // return (i%7)*150-200
+                    if (i%3==0){
+                        xCoord-=150
+                        return xCoord
+                    }
+                    else{
+                        return xCoord
+                    }
+                })
+                .attr("y", function(d,i){
+                    return 40+(i%3)*50
+                })
+                .attr("dy", ".35em")
+                .attr("id",function(d,i){
+                   // return d
+                    return parseInt(i+increment)
+                })
+                .text(function(d) { 
+                    return d.word;
+                })
+                .style("font-size","14px")
+                .on("mouseover",function(d){
+                    d3.select(this).style("cursor", "pointer"); 
+                })
+                .on("click",function(d){
+                    if (d.fruit==1){
+                       this.setAttribute("fill","cyan")
+                          //change border color
+                       var thisId=this.getAttribute("id")
+                       document.getElementById("b"+thisId).setAttribute("stroke","cyan")
+                       //add element to set
+                       //update score
+                       //add word to set
+                       setRight.add(thisId)
+                       //update score
+                       var cyanScore=setRight.size
+                       //var cyanScore = parseInt(d3.select("#cyanScore").text())+1
+                       d3.select("#cyanScore").text(cyanScore + " words right")
+                    }
+                    else{
+                        this.setAttribute("fill","magenta")
+                                          //change border color
+                       var thisId=this.getAttribute("id")
+                       document.getElementById("b"+thisId).setAttribute("stroke","magenta")
+                        //update score
+                       //add word to set
+                       setWrong.add(thisId)
+                       //update score
+                       var magentaScore=setWrong.size
+                       //var magentaScore = parseInt(d3.select("#magentaScore").text())+1
+                       d3.select("#magentaScore").text(magentaScore + " words wrong")
+                    }
+                    this.disabled=true
+
+                })
+
+            word.exit().remove()
+
+            lineupCount+=3
+
+            var numberMissed=parseInt(d3.select("#yellowScore").text())
+
+             // timeout= window.setTimeout(function(){
+             //     moveWords(totalWordsSeen,speed);
+             // },speed)
+             timeoutCali=setTimeout(moveWords,speed,totalWordsSeen,speed)
+         }       
+    }
+   
+    function moveWords(totalWordsSeen,speed){
+        var numberMissed=parseInt(d3.select("#yellowScore").text())
+
+        //move containers
+        d3.selectAll(".words")
+          .transition()
+          .duration(0.75*speed)
+           .attr("x", function(d,i){
+            var currX= +this.getAttribute('x')
+            var wordColor=this.getAttribute('fill')
+            var isFruit=d.fruit
+            if ((currX>svgWidth)){
+                totalWordCount+=1
+            }
+            if ((currX>svgWidth)&& (isFruit==1)){
+                totalFruitCount+=1
+            }
+            if ((currX>svgWidth) && (isFruit==1) && (wordColor=="white")){
+                var yellowScore= parseInt(d3.select("#yellowScore").text())+1
+                d3.select("#yellowScore").text(yellowScore + " words missed")
+                this.remove()
+            }
+            if ((currX>svgWidth) && (wordColor=="cyan")){
+                hits+=1
+                this.remove()
+            }
+            if ((currX>svgWidth) && (wordColor=="magenta")){
+                false_alarms+=1
+                this.remove()
+            }
+            var thisId=d3.select(this).attr("id")
+            //add timestamp to list
+            var d= new Date()
+            var timestamp=d.getTime()
+            var key=eval(thisId)
+            if (key in timestamps){
+            }
+            else{
+                timestamps.push({[key]:timestamp})
+            }
+           // console.log("timestamps is ",timestamps)
+            return currX + 150
+        })  
+
+        //move borders
+        d3.selectAll(".word_border")
+          .transition()
+          .duration(0.75*speed)
+          .attr("x", function(d,i){
+                var currX= +this.getAttribute('x')
+                var wordColor=this.getAttribute('fill')
+                var isFruit=d.fruit
+                if ((currX>svgWidth) && (wordColor=="cyan")){
+                    hits+=1
+                    this.remove()
+                }
+                if ((currX>svgWidth) && (wordColor=="magenta")){
+                    false_alarms+=1
+                    this.remove()
+                }
+                    return currX + 150
+          })
+        //count total words passed
+        totalWordsSeen+=3
+        console.log("total fruit count is ",totalFruitCount)
+        console.log("total word count is ",totalWordCount)
+
+        //======COMPUTE SCORE=====
+        if (hits=="0"){
+            hits+=0.01
+        }
+        if (false_alarms=="0"){
+            false_alarms+=0.01
+        }
+        console.log("HITS: ",hits)
+        console.log("FALSE ALARMS: ",false_alarms)
+
+        d_prime= NormsInv(hits/totalFruitCount) - NormsInv(false_alarms/(totalWordCount-totalFruitCount))
+        console.log("hit rate is ",hits/totalFruitCount)
+        console.log("false alarm rate is ",false_alarms/(totalWordCount-totalFruitCount))
+        console.log("dprime is ",d_prime)
+        //create new lineup
+        createLineUp(totalWordsSeen,speed)
+     }
+     
+    function NormsInv(p) {
+        var a1 = -39.6968302866538, a2 = 220.946098424521, a3 = -275.928510446969;
+        var a4 = 138.357751867269, a5 = -30.6647980661472, a6 = 2.50662827745924;
+        var b1 = -54.4760987982241, b2 = 161.585836858041, b3 = -155.698979859887;
+        var b4 = 66.8013118877197, b5 = -13.2806815528857, c1 = -7.78489400243029E-03;
+        var c2 = -0.322396458041136, c3 = -2.40075827716184, c4 = -2.54973253934373;
+        var c5 = 4.37466414146497, c6 = 2.93816398269878, d1 = 7.78469570904146E-03;
+        var d2 = 0.32246712907004, d3 = 2.445134137143, d4 = 3.75440866190742;
+        var p_low = 0.02425, p_high = 1 - p_low;
+        var q, r;
+        var retVal;
+
+        if ((p < 0) || (p > 1))
+        {
+            //alert("NormsInv: Argument out of range.");
+            retVal = 0;
+        }
+        else if (p < p_low)
+        {
+            q = Math.sqrt(-2 * Math.log(p));
+            retVal = (((((c1 * q + c2) * q + c3) * q + c4) * q + c5) * q + c6) / ((((d1 * q + d2) * q + d3) * q + d4) * q + 1);
+        }
+        else if (p <= p_high)
+        {
+            q = p - 0.5;
+            r = q * q;
+            retVal = (((((a1 * r + a2) * r + a3) * r + a4) * r + a5) * r + a6) * q / (((((b1 * r + b2) * r + b3) * r + b4) * r + b5) * r + 1);
+        }
+        else
+        {
+            q = Math.sqrt(-2 * Math.log(1 - p));
+            retVal = -(((((c1 * q + c2) * q + c3) * q + c4) * q + c5) * q + c6) / ((((d1 * q + d2) * q + d3) * q + d4) * q + 1);
+        }
+        return retVal;
+    }
+}
+
+    function shuffle(array) {
+      var currentIndex = array.length, temporaryValue, randomIndex;
+
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+
+      return array;
+    }
+
+</script>  

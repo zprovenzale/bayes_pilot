@@ -1,0 +1,74 @@
+{ "survey":[
+{"index": 0, 
+"action":"Put off undergoing surgery until a later time"},
+
+{"index": 1,
+"action": "Ignore the mole and hope it will go away on its own"},
+
+{"index": 2,
+"action": "Wait to take action until things get worse"},
+
+{"index": 3, 
+"action": "Disregard surgery as an option"},
+
+{"index": 4, 
+"action": "Book a procedure to have the mole removed"},
+
+{"index": 5, 
+"action": "Read up on skin cancer"},
+
+{"index": 6,
+"action": "Look up different kinds of moles"},
+
+{"index": 7,
+"action": "Check your mole periodically for changes"},
+
+{"index": 8, 
+"action": "Re-evaluate life values, goals, and priorities"},
+
+{"index": 9, 
+"action": "Search for a homeopathic remedy"},
+
+{"index": 10, 
+"action": "Update your will"},
+
+{"index": 11, 
+"action": "Cry"},
+
+{"index": 12, 
+"action": "Create a plan for if tests come back positive"},
+
+{"index": 13, 
+"action": "To check you are paying attention, select the first button"},
+
+{"index": 14, 
+"action": "Pray and/or attend religious services"},
+
+{"index": 15, 
+"action": "Look up support groups or Internet message boards"},
+
+{"index": 16, 
+"action": "Get a second opinion"},
+
+{"index": 17, 
+"action": "Go through finances and health care policies to determine how surgery could be paid for"},
+
+{"index": 18, 
+"action": "Reduce commitments to others"},
+
+{"index": 19, 
+"action": "Avoid making future plans"},
+
+{"index": 20, 
+"action": "Go about life as usual and wait for the biopsy results"},
+
+{"index": 21, 
+"action": "Seek emotional support from your spouse, close family and friends"},
+
+{"index": 22, 
+"action": "Tell family and friends about the mole"},
+
+{"index": 23,
+"action": "Distract yourself to avoid thinking about the mole"}
+
+]}

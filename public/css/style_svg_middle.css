@@ -1,0 +1,83 @@
+/*body {
+    text-align: center;
+    font-family: Arial;
+    margin-left: 20px;
+    font-size: 14px;
+}*/
+
+#intro {
+    border-bottom: 1px solid grey;
+    padding-bottom: 10px;
+}
+
+#controlTxt {
+    padding-bottom: 10px;
+    border-bottom: 1px solid lightgrey;
+}
+
+.container {
+    padding: 10px;
+    float: left;
+    text-align: left;
+    padding-bottom: 5px;
+}
+
+.shelf {
+  text-align: center;
+  border-bottom: 1px solid lightgrey;
+  padding: 10px;
+}
+
+#answers {
+    padding: 10px;
+    border-top: 1px solid grey;
+    float: left;
+    text-align: left;
+    width: 100%;
+}
+
+text {
+    display: inline-block;
+    position: relative;
+}
+
+.have_disease_rect {
+    fill: rgb(175,141,195, 0.5);;
+    width: 35px;
+    height: 35px; 
+}
+
+#have_disease_cb_text {
+    background-color: rgb(175,141,195, 0.5);
+    color: black; 
+}
+
+.do_not_have_disease_rect {
+    fill: rgb(127,191,123, 0.25);
+    width: 35px;
+    height: 35px;
+}
+
+#do_not_have_disease_cb_text {
+    background-color:rgb(127,191,123, 0.25);
+    color: black;
+}
+
+.test_positive {
+    --primary-color: rgb(239,138,98); 
+}
+
+#test_positive_cb_text {
+    background-color: rgb(239,138,98);
+    color: white; 
+}
+
+.test_negative { 
+    --primary-color: rgb(103,169,207);
+}
+
+#test_negative_cb_text {
+    background-color: rgb(103,169,207);
+    color: white; 
+}
+

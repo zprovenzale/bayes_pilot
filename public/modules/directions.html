@@ -1,0 +1,40 @@
+<div id="directions">
+
+<h2>Reasoning Study</h2>
+
+<p>
+<strong>Instructions</strong><br>
+For this experiment you will be shown a visualization and a text description of a reasoning problem. At the bottom of the page will be a button labeled "I'm ready to see the question". Please take as much time as you want to understand the visualization and text. When you are ready to answer a few questions based on the information presented, please click the "I'm ready to see the question" button. <br><br>
+
+The visualization and text will remain on the page with the questions and a word selection task will appear.
+It consists of a scrolling list of words moving at a certain speed. Your task will be to select as many <b>fruits</b> as possible in the list of words while answering the questions. <b> Your priority should be to answer the questions correctly </b>. If you answer <b>both</b> questions correctly, you will be awarded a bonus of $0.5. If you miss more than 50% of the fruit words or misidentify more than 50% of the words, $0.25 will be deducted from your bonus. 
+
+</p>
+
+<img src="modules/secondary_demo.jpg" width="100%">
+
+<p style="clear:both;">
+After you have read the above instructions, click Start to begin the experiment. 
+<button id="start" type="button">Start</button>
+</p>
+</div>
+
+<style>
+        #images {
+                
+        }
+</style>
+
+<script>
+(function() {
+
+        init(); 
+
+        function init() {
+                experimentr.hideNext(); 
+
+                d3.select('#start').on('click', experimentr.next); 
+
+        }
+}())
+</script>

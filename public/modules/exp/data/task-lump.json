@@ -1,0 +1,66 @@
+[
+{
+"id": "0",
+"name": "L-R-NS",
+"intro": "Imagine that you make an appointment with your doctor about a suspicious lump on your back. After examining the lump, your doctor determines that, if the lump is cancerous, it is most likely a benign form of a tumor that grows slowly and is unlikely to cause health problems. The lump can be removed through surgery, and your doctor decides to biopsy the lump to determine if it is cancerous. <span id='chance'><span>. <br />",
+
+"question": "<strong>1. Based on the information given, how likely are you to have cancer (1 - very unlikely, 9 very likely)? <div id=\"question1\" style=\"display: inline\"></div> <br /><br />2. How severe would the outcome be if you were to have cancer (1 - not at all bad, 9 - very bad)? <div id=\"question2\" style=\"display: inline\"></div> <br /><br />3. How much control do you believe you have over the outcome (1 - little/none, 9 - full)? <div id=\"question3\" style=\"display: inline\"></div> <br /><br />4. Given the scenario, what actions would you most likely take?<div id=\"question4\" style=\"display: inline\"></div> <br /><br />" 
+},
+
+{
+"id": "1",
+"name": "L-R-S",
+"intro": "Imagine that you make an appointment with your doctor about a suspicious lump on your back. After examining the lump, your doctor determines that, if the lump is cancerous, it is most likely a malignant form of a tumor that grows quickly and is likely to cause health problems. The lump can be removed through surgery, and your doctor decides to biopsy the lump to determine if it is cancerous. <span id='chance'><span>. <br /><br />",
+ 
+"question": "<strong>1. Based on the information given, how likely are you to have cancer (1 - very unlikely, 9 very likely)? <div id=\"question1\" style=\"display: inline\"></div> <br /><br />2. How severe would the outcome be if you were to have cancer (1 - not at all bad, 9 - very bad)? <div id=\"question2\" style=\"display: inline\"></div> <br /><br />3. How much control do you believe you have over the outcome (1 - little/none, 9 - full)? <div id=\"question3\" style=\"display: inline\"></div> <br /><br />4. Given the scenario, what actions would you most likely take?<div id=\"question4\" style=\"display: inline\"></div> <br /><br />"   
+},
+
+{
+"id": "2",
+"name": "L-NR-NS",
+"intro": "Imagine that you make an appointment with your doctor about a suspicious growth on your back. After the examination, your doctor determines that, if the growth will develop, it is most likely a benign form of a skin disease that grows slowly and is unlikely to cause major health problems. The growth cannot be removed through surgery, and your doctor decides to biopsy the lump to determine if it is cancerous. <span id='chance'><span>. <br /><br />",
+
+"question": "<strong>1. Based on the information given, how likely are you to have cancer (1 - very unlikely, 9 very likely)? <div id=\"question1\" style=\"display: inline\"></div> <br /><br />2. How severe would the outcome be if you were to have cancer (1 - not at all bad, 9 - very bad)? <div id=\"question2\" style=\"display: inline\"></div> <br /><br />3. How much control do you believe you have over the outcome (1 - little/none, 9 - full)? <div id=\"question3\" style=\"display: inline\"></div> <br /><br />4. Given the scenario, what actions would you most likely take?<div id=\"question4\" style=\"display: inline\"></div> <br /><br />"   
+},
+
+{
+"id": "3",
+"name": "L-NR-S",
+"intro": "Imagine that you make an appointment with your doctor about a suspicious lump on your back. After examining the lump, your doctor determines that, if the lump is cancerous, it is most likely a malignant form of a tumor that grows quickly and is unlikely to cause health problems. The lump cannot be removed through surgery, and your doctor decides to biopsy the lump to determine if it is cancerous. <span id='chance'><span>. <br /><br />",
+
+"question": "<strong>1. Based on the information given, how likely are you to have cancer (1 - very unlikely, 9 very likely)? <div id=\"question1\" style=\"display: inline\"></div> <br /><br />2. How severe would the outcome be if you were to have cancer (1 - not at all bad, 9 - very bad)? <div id=\"question2\" style=\"display: inline\"></div> <br /><br />3. How much control do you believe you have over the outcome (1 - little/none, 9 - full)? <div id=\"question3\" style=\"display: inline\"></div> <br /><br />4. Given the scenario, what actions would you most likely take?<div id=\"question4\" style=\"display: inline\"></div> <br /><br />"   
+},
+
+{
+"id": "4",
+"name": "H-R-NS",
+"intro": "Imagine that you make an appointment with your doctor about a suspicious lump on your back. After examining the lump, your doctor determines that, if the lump is cancerous, it is most likely a benign form of a tumor that grows slowly and is unlikely to cause health problems. The lump can be removed through surgery, and your doctor decides to biopsy the lump to determine if it is cancerous. <span id='chance'><span>. <br /><br />",
+
+"question": "<strong>1. Based on the information given, how likely are you to have cancer (1 - very unlikely, 9 very likely)? <div id=\"question1\" style=\"display: inline\"></div> <br /><br />2. How severe would the outcome be if you were to have cancer (1 - not at all bad, 9 - very bad)? <div id=\"question2\" style=\"display: inline\"></div> <br /><br />3. How much control do you believe you have over the outcome (1 - little/none, 9 - full)? <div id=\"question3\" style=\"display: inline\"></div> <br /><br />4. Given the scenario, what actions would you most likely take?<div id=\"question4\" style=\"display: inline\"></div> <br /><br />"   
+},
+
+{
+"id": "5",
+"name": "H-R-S",
+"intro": "Imagine that you make an appointment with your doctor about a suspicious lump on your back. After examining the lump, your doctor determines that, if the lump is cancerous, it is most likely a malignant form of a tumor that grows quickly and is unlikely to cause health problems. The lump can be removed through surgery, and your doctor decides to biopsy the lump to determine if it is cancerous. <span id='chance'><span>. <br /><br />",
+
+"question": "<strong>1. Based on the information given, how likely are you to have cancer (1 - very unlikely, 9 very likely)? <div id=\"question1\" style=\"display: inline\"></div> <br /><br />2. How severe would the outcome be if you were to have cancer (1 - not at all bad, 9 - very bad)? <div id=\"question2\" style=\"display: inline\"></div> <br /><br />3. How much control do you believe you have over the outcome (1 - little/none, 9 - full)? <div id=\"question3\" style=\"display: inline\"></div> <br /><br />4. Given the scenario, what actions would you most likely take?<div id=\"question4\" style=\"display: inline\"></div> <br /><br />" 
+},
+
+{
+"id": "6",
+"name": "H-NR-NS",
+"intro": "Imagine that you make an appointment with your doctor about a suspicious lump on your back. After examining the lump, your doctor determines that, if the lump is cancerous, it is most likely a benign form of a tumor that grows slowly and is unlikely to cause health problems. The lump cannot be removed through surgery, and your doctor decides to biopsy the lump to determine if it is cancerous. <span id='chance'><span>. <br /><br />",
+
+"question": "<strong>1. Based on the information given, how likely are you to have cancer (1 - very unlikely, 9 very likely)? <div id=\"question1\" style=\"display: inline\"></div> <br /><br />2. How severe would the outcome be if you were to have cancer (1 - not at all bad, 9 - very bad)? <div id=\"question2\" style=\"display: inline\"></div> <br /><br />3. How much control do you believe you have over the outcome (1 - little/none, 9 - full)? <div id=\"question3\" style=\"display: inline\"></div> <br /><br />4. Given the scenario, what actions would you most likely take?<div id=\"question4\" style=\"display: inline\"></div> <br /><br />"   
+},
+
+{
+"id": "7",
+"name": "H-NR-S",
+"intro": "Imagine that you make an appointment with your doctor about a suspicious lump on your back. After examining the lump, your doctor determines that, if the lump is cancerous, it is most likely a malignant form of a tumor that grows quickly and is unlikely to cause health problems. The lump cannot be removed through surgery, and your doctor decides to biopsy the lump to determine if it is cancerous. <span id='chance'><span>. <br /><br />",
+
+"question": "<strong>1. Based on the information given, how likely are you to have cancer (1 - very unlikely, 9 very likely)? <div id=\"question1\" style=\"display: inline\"></div> <br /><br />2. How severe would the outcome be if you were to have cancer (1 - not at all bad, 9 - very bad)? <div id=\"question2\" style=\"display: inline\"></div> <br /><br />3. How much control do you believe you have over the outcome (1 - little/none, 9 - full)? <div id=\"question3\" style=\"display: inline\"></div> <br /><br />4. Given the scenario, what actions would you most likely take?<div id=\"question4\" style=\"display: inline\"></div> <br /><br />"   
+}
+
+]

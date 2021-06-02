@@ -1,0 +1,608 @@
+<div id="defs">
+</div>
+
+<h2 class="level_number" id ="level_number">Level 1</h2>
+
+<div class="second_task" id ="second_task"></div>
+
+<h2 class="nextLevel" id ="nextLevel"></h2>
+
+<button type="button" id="next-button2">Next</button>
+
+
+<script type="text/javascript">
+
+d3.select('#next-button2').style("display","none")
+d3.select('#next-button').style("display","none")
+
+//===Global variables====
+
+var speed=4000
+
+var setRight=new Set()
+var setMissed=new Set()
+var setWrong=new Set()
+
+var dateInitial=new Date()
+var timeInitial=dateInitial.getTime()
+
+var errorRates=[]
+
+var totalWords=0
+
+var numFruits=0
+
+var ans={}
+
+loadData(speed)
+
+function loadData(speed){
+    console.log("inside load data")
+    var words_data
+    var data_part2
+
+
+    d3.csv("modules/exp/data/list_of_words.csv",function(csv) {
+        data=shuffle(csv)
+        words_data=data.slice(0,18)
+        data_part2=data.slice(18,)
+        draw_secondary(data,words_data,data_part2,speed)
+
+    })
+}
+
+function draw_secondary(data,words_data,data_part2,speed) {
+  console.log("inside draw secondary")
+
+//=====timestamps for words=====
+    var timestamps=[]
+    var userSpeed=[]
+
+    var step=17;
+    var lineupCount=1;
+
+
+    let svgHeight = 400;
+    let svgWidth = 820;
+        
+    let svgContainer = d3.select("#second_task")
+                        .append("svg")
+                        .attr("width", svgWidth+600)
+                        .attr("height", svgHeight)
+                        .attr("id", "secondContainer");
+
+    var rect= svgContainer.append("rect")
+                .attr("x",0)
+                .attr("y",0)
+                .attr("height",190)
+                .attr("width",svgWidth+200)
+                .attr("fill","black")
+    var cyanScore= svgContainer.append("text")
+                        .attr("id","cyanScore")
+                        .attr("fill","black")
+                        .attr("x",svgWidth+40)
+                        .attr("y",50)
+                        .text("0 words right")
+                        .attr("fill","cyan")
+                        .style("font-size","18px")
+
+    var magentaScore= svgContainer.append("text")
+                        .attr("id","magentaScore")
+                        .attr("fill","black")
+                        .attr("x",svgWidth+40)
+                        .attr("y",90)
+                        .text("0 words wrong")
+                        .attr("fill","magenta")
+                        .style("font-size","18px")
+
+    var yellowScore= svgContainer.append("text")
+                        .attr("id","yellowScore")
+                        .attr("fill","black")
+                        .attr("x",svgWidth+40)
+                        .attr("y",130)
+                        .text("0 words missed")
+                        .style("font-size","18px")
+                        .attr("fill","yellow")
+
+    let svg = svgContainer.append("svg")
+    .attr("width", svgWidth)
+    .attr("height", svgHeight)
+    .attr("id", "second_svg");
+
+    var xCoord=840
+
+    var border=svg.selectAll(".word_border")
+                .data(words_data)
+                .enter()
+                .append("rect")
+                .attr("padding",0.5)
+                .attr('stroke', 'white')
+                .attr('stroke-width', '1.2px')
+                .attr("class", "word_border")
+                .attr("fill","black")
+                .attr("opacity",0.75)
+                .attr("rx", 4)
+                .attr("ry", 4)
+
+    border.attr("x", function(d,i){
+            // return (i%7)*150-200
+            if (i%3==0){
+                xCoord-=150
+                return xCoord
+            }
+            else{
+                return xCoord
+            }
+        })
+        .attr("y", function(d,i){
+            return 20+(i%3)*50
+        })
+        .attr("id",function(d,i){
+            return "b"+i
+        })
+        .attr("width",function(d,i){
+            return (d.word.length*10)+15
+        })
+        .attr("height",40)
+        .on("mouseover",function(d){
+            d3.select(this).style("cursor", "pointer"); 
+        })
+        .on("click",function(d){
+            //record speed
+            if (d.fruit==1){
+               //change color of word
+               this.setAttribute("stroke","cyan")
+               //change border color
+               var thisId=this.getAttribute("id").substring(1)
+               document.getElementById(thisId).setAttribute("fill","cyan")
+               //add word to set
+               setRight.add(thisId)
+               //update score
+               var cyanScore=setRight.size
+               //var cyanScore = parseInt(d3.select("#cyanScore").text())+1
+               d3.select("#cyanScore").text(cyanScore + " words right")
+            }
+            else{
+               //change color of word
+               this.setAttribute("stroke","magenta")
+               //change border color
+               var thisId=this.getAttribute("id").substring(1)
+               document.getElementById(thisId).setAttribute("fill","magenta")
+               //update score
+               //add word to set
+               setWrong.add(thisId)
+               //update score
+               var magentaScore=setWrong.size
+               //var magentaScore = parseInt(d3.select("#magentaScore").text())+1
+               d3.select("#magentaScore").text(magentaScore + " words right")                
+            }
+        })
+    var xCoord=850
+
+    var word=svg.selectAll(".words")
+                .data(words_data)
+                .enter()
+                .append("text")
+                .attr("class", "words")
+                .attr("padding",0.5)
+                .attr("fill","white")
+ // Update (set the dynamic properties of the elements)
+
+     word.attr("x", function(d,i){
+            // return (i%7)*150-200
+            if (i%3==0){
+                xCoord-=150
+                return xCoord
+            }
+            else{
+                return xCoord
+            }
+        })
+        .attr("y", function(d,i){
+            return 40+(i%3)*50
+        })
+        .attr("dy", ".35em")
+        .attr("id",function(d,i){
+            // return d
+            return i
+        })
+        .text(function(d) { 
+            return d.word;
+        })
+        .style("font-size","18px")
+        .on("mouseover",function(d){
+            d3.select(this).style("cursor", "pointer"); 
+        })
+        .on("click",function(d){
+            if (d.fruit==1){
+               //change color of word
+               this.setAttribute("fill","cyan")
+               //change border color
+               var thisId=this.getAttribute("id")
+               document.getElementById("b"+thisId).setAttribute("stroke","cyan")
+               //update score
+                //add word to set
+               setRight.add(thisId)
+               //update score
+               var cyanScore=setRight.size
+               //var cyanScore = parseInt(d3.select("#cyanScore").text())+1
+               d3.select("#cyanScore").text(cyanScore + " words right")
+            }
+            else{
+                this.setAttribute("fill","magenta")
+                //change border color
+               var thisId=this.getAttribute("id")
+               document.getElementById("b"+thisId).setAttribute("stroke","magenta")
+                //update score
+                               //add word to set
+               setWrong.add(thisId)
+               //update score
+               var magentaScore=setWrong.size
+               //var magentaScore = parseInt(d3.select("#magentaScore").text())+1
+               d3.select("#magentaScore").text(magentaScore + " words wrong" )
+            }
+            this.disabled=true
+
+        })
+
+     word.exit().remove()
+
+     createLineUp(0,speed)
+
+
+     // function levelTransition(totalWords,speed){
+     //    console.log("IN LEVEL transition")
+     //    var level=document.getElementById('level_number').innerHTML
+     //    var level_number=parseInt(level.slice(-1)) //last chart
+     //    //level_number=parseInt(d3.select('#level_number').text())
+     //    console.log("level number is ",level_number)
+
+     //    //delay
+     //    setTimeout(function(){ 
+     //      //change level number
+     //      document.getElementById('level_number').innerHTML="Level "+(level_number+1)
+     //      //reset count
+     //      totalWords=0
+     //      setWrong=new Set()
+     //      setRight=new Set()  
+     //      d3.select("#yellowScore").text(0 + " words missed") 
+     //      //call moveWords
+     //      moveWords(totalWords,speed)
+
+     //    }, 10000);
+     // }
+
+     // function levelTransition(totalWords,speed){
+     //     console.log("IN LEVEL transition")
+
+     // }
+
+     function createLineUp(totalWords,speed){
+        console.log("inside create lineup. Speed is ",speed)
+
+        console.log("speed lineUp is ",speed)
+      //=====DRAW LINEUP====
+         //increment lineupCount
+         increment=step+lineupCount;
+
+         var lineup=data_part2.slice(0,3)
+         data_part2=data_part2.slice(3,)
+         //loop back to start of list
+         if (lineup.length==0){
+            data_part2=shuffle(words_data)
+             var lineup=data_part2.slice(0,3)
+             data_part2=data_part2.slice(3,)
+         }
+
+        var xCoord=-60
+
+        // var borderSelect = 
+
+        var border=svg.selectAll("#word_border2")
+                    .data(lineup)
+                    .enter()
+                    .append("rect")
+                    .attr("padding",0.5)
+                    .attr('stroke', 'white')
+                    .attr('stroke-width', '1.2px')
+                    .attr("class", "word_border")
+                    .attr("id", "word_border2")
+                    .attr("fill","black")
+                    .attr("opacity",0.75)
+                    .attr("rx", 4)
+                    .attr("ry", 4)
+
+        border.attr("x", function(d,i){
+                // return (i%7)*150-200
+                if (i%3==0){
+                    xCoord-=150
+                    return xCoord
+                }
+                else{
+                    return xCoord
+                }
+            })
+            .attr("id",function(d,i){
+                return "b"+parseInt(i+increment)
+            })
+            .attr("y", function(d,i){
+                return 20+(i%3)*50
+            })
+            .attr("width",function(d,i){
+                return (d.word.length*10)+15
+            })
+            .attr("height",40)
+             .on("click",function(d){
+                if (d.fruit==1){
+                   //change color of word
+                   this.setAttribute("stroke","cyan")
+                   //change border color
+                   var thisId=this.getAttribute("id").substring(1)
+                   document.getElementById(thisId).setAttribute("fill","cyan")
+                   //update score
+                           //add word to set
+                   setRight.add(thisId)
+                   //update score
+                   var cyanScore=setRight.size
+                    //var cyanScore = parseInt(d3.select("#cyanScore").text())+1
+                   d3.select("#cyanScore").text(cyanScore + " words right")
+                }
+                else{
+                   //change color of word
+                   this.setAttribute("stroke","magenta")
+                   //change border color
+                   var thisId=this.getAttribute("id").substring(1)
+                   document.getElementById(thisId).setAttribute("fill","magenta")
+                   //update score
+                   //add word to set
+                   setWrong.add(thisId)
+                   //update score
+                   var magentaScore=setWrong.size
+
+                   //var magentaScore = parseInt(d3.select("#magentaScore").text())+1
+                   d3.select("#magentaScore").text(magentaScore + " words right")                
+                }
+            })           
+        // border.exit().remove()
+
+        var xCoord=-50
+
+        var word=svg.selectAll("#lineup")
+                    .data(lineup)
+                    .enter()
+                    .append("text")
+                    .attr("id", "lineup")
+                    .attr("class", "words")
+                    .attr("padding",0.5)
+                    .attr("fill","white")
+     // Update (set the dynamic properties of the elements)
+
+         word.attr("x", function(d,i){
+                // return (i%7)*150-200
+                if (i%3==0){
+                    xCoord-=150
+                    return xCoord
+                }
+                else{
+                    return xCoord
+                }
+            })
+            .attr("y", function(d,i){
+                return 40+(i%3)*50
+            })
+            .attr("dy", ".35em")
+            .attr("id",function(d,i){
+               // return d
+                return parseInt(i+increment)
+            })
+            .text(function(d) { 
+                return d.word;
+            })
+            .style("font-size","18px")
+            .on("mouseover",function(d){
+                d3.select(this).style("cursor", "pointer"); 
+            })
+            .on("click",function(d){
+                if (d.fruit==1){
+                   this.setAttribute("fill","cyan")
+                      //change border color
+                   var thisId=this.getAttribute("id")
+                   document.getElementById("b"+thisId).setAttribute("stroke","cyan")
+                   //add element to set
+                   //update score
+                   //add word to set
+                   setRight.add(thisId)
+                   //update score
+                   var cyanScore=setRight.size
+                   //var cyanScore = parseInt(d3.select("#cyanScore").text())+1
+                   d3.select("#cyanScore").text(cyanScore + " words right")
+                }
+                else{
+                    this.setAttribute("fill","magenta")
+                                      //change border color
+                   var thisId=this.getAttribute("id")
+                   document.getElementById("b"+thisId).setAttribute("stroke","magenta")
+                    //update score
+                   //add word to set
+                   setWrong.add(thisId)
+                   //update score
+                   var magentaScore=setWrong.size
+                   //var magentaScore = parseInt(d3.select("#magentaScore").text())+1
+                   d3.select("#magentaScore").text(magentaScore + " words wrong")
+                }
+                this.disabled=true
+
+            })
+
+        word.exit().remove()
+
+        lineupCount+=3
+
+        var numberMissed=parseInt(d3.select("#yellowScore").text())
+
+        console.log("numberMissed is ",numberMissed)
+        console.log("setRight is ",setRight)
+
+        //if ((numberMissed+setRight.size) > 0.25*totalWords){
+        if (numberMissed+setRight.size>3){
+            //level transition
+            //levelTransition(totalWords,speed)
+            nextLevel(speed)
+        }
+        else{
+          timeout= setTimeout(function(){
+              moveWords(totalWords,speed);
+          },speed)
+        }
+     }
+   
+     function moveWords(totalWords,speed){
+        console.log("inside moveWords")
+        var numberMissed=parseInt(d3.select("#yellowScore").text())
+
+        //check fruitWord count
+        if (numberMissed+setRight.size>3){
+            nextLevel(speed)
+        }
+      console.log("speed moveWords is ",speed)
+
+        //move containers
+        d3.selectAll(".words")
+          .transition()
+          .duration(0.6*speed)
+           .attr("x", function(d,i){
+            var currX= +this.getAttribute('x')
+            var wordColor=this.getAttribute('fill')
+            var isFruit=d.fruit
+            if ((currX>svgWidth) && (isFruit==1) && (wordColor=="white")){
+                console.log(">>>word missed")
+                var yellowScore= parseInt(d3.select("#yellowScore").text())+1
+                console.log("yellow score is ",yellowScore)
+                d3.select("#yellowScore").text(yellowScore + " words missed")
+                this.remove()
+            }
+            var thisId=d3.select(this).attr("id")
+            //add timestamp to list
+            var d= new Date()
+            var timestamp=d.getTime()
+            var key=eval(thisId)
+            if (key in timestamps){
+            }
+            else{
+                timestamps.push({[key]:timestamp})
+            }
+           // console.log("timestamps is ",timestamps)
+            return currX + 150
+        })  
+        // console.log("====select all is====",d3.selectAll(".words"))
+     
+        // setTimeout(function(){
+        //       d3.selectAll(".words")._groups[0]
+        // },0.6*speed)
+
+        //move borders
+        d3.selectAll(".word_border")
+          .transition()
+          .duration(0.6*speed)
+          .attr("x", function(d,i){
+                var currX= +this.getAttribute('x')
+                var wordColor=this.getAttribute('fill')
+                var isFruit=d.fruit
+                if ((currX>svgWidth) && (isFruit==1) && (wordColor=="white")){
+                    //var thisId=this.getAttribute("id")
+                   //setMissed.add(thisId)
+                   //update score
+                   //var yellowScore=setMissed.size
+                   console.log(">>>word missed")
+                    console.log("yellow score is ",yellowScore)
+
+                    var yellowScore= parseInt(d3.select("#yellowScore").text())+1
+                    d3.select("#yellowScore").text(yellowScore+ " words missed")
+                    this.remove()
+                }
+                return currX + 150
+          })
+        //count total words passed
+        totalWords+=3
+        console.log("total words is ",totalWords)
+        //create new lineup
+        createLineUp(totalWords,speed)
+
+
+     }
+     function nextLevel(speed){
+        console.log("inside nextLevel")
+        var numberMissed=parseInt(d3.select("#yellowScore").text())
+
+        //compute error rate
+         var errorRate=(numberMissed+setWrong.size)/(setRight.size+setWrong.size+numberMissed)
+
+        errorRates.push({[speed]:errorRate})
+
+        //if error rate is more than 25%
+        if (errorRate >= 0.25){
+            console.log("ERROR RATE IS ",errorRate)
+            console.log("SPEED IS ",speed)
+            //go to main task
+             document.getElementById("nextLevel").innerHTML="Click on the next button to proceed to the main task"
+            d3.select('#nextLevel').style("display","block") 
+            d3.select('#next-button2').style("display","block")
+            document.getElementById("next-button2").onclick=function(){
+            ans.speed=speed
+            experimentr.addData(ans); 
+            experimentr.next(); 
+          }         
+        }
+        else{
+            //new speed
+            speed=0.75*speed
+            totalWords=0
+
+            dateInitial=new Date()
+            timeInitial=dateInitial.getTime()
+
+            d3.select('#next-button2').style("display","block")
+            document.getElementById("nextLevel").innerHTML="You have passed this level! Click next to go to the next"
+            d3.select('#nextLevel').style("display","block")
+            document.getElementById("next-button2").onclick=function(){
+              //remove page elements
+              document.getElementById("nextLevel").innerHTML=" "
+              var currLevel=String(document.getElementById("level_number").innerHTML)
+              var matches = currLevel.match(/(\d+)/); 
+              var nextLevel=parseInt(matches[0])+1
+              document.getElementById("level_number").innerHTML="Level "+nextLevel
+              d3.select(this).style("display","none")
+              d3.select("svg").remove() //remove svg
+              d3.select('#nextLevel').style("display","none")
+              //reset counts
+               setWrong=new Set()
+               setRight=new Set()
+              // document.getElementById("yellowScore").innerHTML="0 words missed"
+              //go to next level
+              //redraw with new speed
+              loadData(speed)
+            }
+        }
+     }
+}
+
+    function shuffle(array) {
+      var currentIndex = array.length, temporaryValue, randomIndex;
+
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+
+      return array;
+    }
+
+</script>  

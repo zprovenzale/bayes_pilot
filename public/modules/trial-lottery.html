@@ -1,0 +1,126 @@
+<style>
+
+ #experimentr {
+    margin: 4em auto 1em auto;
+    width: 720px;
+  }
+
+td{
+	white-space : nowrap;
+}
+</style>
+
+
+<div class="header w3-container">
+	<h3 class="count">Example:</h3> 
+
+	<img hspace="50">
+	
+	<button id="previous" class="w3-button w3-white w3-border w3-round-large">Previous</button>
+	<img hspace="5">
+	<button id="next" class="w3-button w3-white w3-border w3-round-large">Next</button>
+
+
+	<div class="w3-container">
+		<p>Here are the probabilities for a hypothetical lottery:<br>
+			<strong>50%</strong> chance to win <strong>$1000</strong> <br>
+			<strong>50%</strong> chance to win <strong>$0</strong>
+		</p>
+
+		<p>
+			<strong>Which do you prefer?</strong> <br>
+
+			<div class="w3-panel w3-card w3-padding-large" id="survey">
+				<table class="w3-table" id="surveyTable"> </table>
+			</div>
+
+		</p>
+	</div>
+
+</div>
+
+
+<script> 
+(function() {
+	var survey = []
+		, questions = []
+		, data = {}
+		, curr_choice = 0
+		, payments = [1000, 750, 500, 250, 50, 0];
+	
+	init();
+	data.trialselections = d3.range(payments.length).map(d => '');
+	experimentr.hideNext();
+	d3.select('#previous').style('opacity', '0');
+	d3.select('#next').attr('disabled', true).on("click", experimentr.next);
+	experimentr.startTimer('trial');
+  
+	/*******Functions*******/
+	
+	function init(){
+		displayChoices();
+		d3.selectAll("input").on("change", function(){
+			
+
+      		
+      		var row = +this.id.substring(0, this.id.length - 1)
+			var col = this.id.substring(this.id.length - 1) 
+
+			data.trialselections[row] = col;
+
+			for (var i = 0; i < payments.length; i++){
+				if(data.trialselections[i] == ''){
+					curr_choice = i;
+					d3.select('#choice' + i ).style('display', '');//FIX!!
+					break;
+				}
+			}
+
+
+
+
+      		validate(); } 
+      	);
+  	
+  	}
+  
+  	function displayChoices(){
+  		
+
+		d3.select("#surveyTable")
+			.selectAll("tr").data(payments)
+			.enter().append("tr")
+			.html(function(d, i){ 
+				var display = '';
+
+				if (i > 0)
+					display = "style='display:none'";
+
+				return "<div id='choice" + i + "' " + display + " ><input  type='radio' id='"+ i + "a' name='"+ i + "' class='lotterychoice'> Enter the lottery, </input> "
+				 + " or <input  type='radio' id='"+ i + "b' name='"+ i + "' class='lotterychoice'> Get $"
+				 + d + " for sure </input></div>";
+				 
+		});	
+	}
+
+	function validate(){
+		var done = true;
+
+		for (var i = 0; i < payments.length; i++){
+			if(data.trialselections[i] == ''){
+				done = false;
+				break;
+			}
+		}
+		
+		
+		if (done){ 
+			experimentr.endTimer('trial');
+		    experimentr.addData(data);
+			d3.select('#next').attr('disabled', null);
+		}
+	}
+
+}());
+
+</script>

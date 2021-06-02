@@ -1,0 +1,838 @@
+<div id="defs">
+</div>
+<!-- INTRO 2 -->
+<div class="cab">
+    <div id="intro_cab" align="left">
+    At home pregnancy tests detect the presence of hCG hormone in urine, which indicates pregnancy. However, home pregnancy tests are not perfect. Here is some information about the current research on home pregnancy tests and efforts to increase their accuracy.
+    </div>
+    <br>
+    <div class="shelf">
+      <span id="have_disease_cb_text" style="margin:5px">Pregnant</span>
+      <span id="do_not_have_disease_cb_text" style="margin:5px">Not pregnant</span>
+      <span id="test_positive_cb_text" style="margin:5px">Test positive</span>
+      <span id="test_negative_cb_text" style="margin:5px">Test negative</span>
+    </div>
+</div>
+
+<br>
+
+
+<div class="container" id="simple-example">
+</div>
+
+
+<div id="answers"><input type="submit" value="I'm ready to see the question." onClick=showQ()></div>
+
+<!-- <div id="nextBtn"><input type="submit" value="Next"></div>
+ -->
+
+<div class="second_task" id ="second_task"></div>
+
+<script type="text/javascript">
+
+
+
+var data_num_have_disease_test_positive = [1, 4, 6, 9, 11, 18, 30, 32, 35, 37, 39, 49, 64, 66, 71, 73, 79, 87, 92, 97]; //blue cars correctly identified as blue
+var data_num_have_disease_test_negative = [31,91];         //green cars incorrectly identified as blue: 17
+var data_num_do_not_have_disease_test_positive = [25, 55]; //blue cars: 15
+
+//=========
+
+var margin = {top:0, bottom:0, left:0, right:0}; 
+var icon_scale = '0.05';  //this makes icons 13.44 X 35.84
+
+var width = 700; 
+var height = 250;  
+
+var icon_width = 20; 
+
+var timestamps=[]
+
+
+function draw_start() {
+    var layout = d3_iconarray.layout().width(icon_width); 
+    var data = d3.range(1, 101, 1); 
+    var grid = layout(data);
+
+    var arrayScale = d3_iconarray.scale()
+                                .domain([0, layout.maxDimension(data.length)])
+                                .range([0, width])
+                                .gapSize(0);
+
+    var full_svg = d3.select('#test')
+                    .append('svg')
+                        .attr('width', width)
+                        .attr('height', height)
+                        .attr('id', 'full_svg')
+                    .append('g')
+                     .attr('id', 'big_g');
+
+    full_svg.selectAll('g')
+            .data(grid)
+                .enter()
+            .append('rect')
+                .attr('transform', function(d) {
+                    return 'translate(' + (arrayScale(d.position.x)) + ',' + (arrayScale(d.position.y)) + ')'; 
+                })
+                .attr('width', 35)
+                .attr('height', 40)
+                .attr('class', function(d) {
+                    if (data_num_have_disease_test_positive.includes(d.data)) {
+                        return 'have_disease_rect test_positive_rect have_disease_test_positive_rect';
+                    } else if (data_num_have_disease_test_negative.includes(d.data)) {
+                        return 'have_disease_rect test_negative_rect have_disease_test_negative_rect';
+                    } else if (data_num_do_not_have_disease_test_positive.includes(d.data)) {
+                        return 'do_not_have_disease_rect test_positive_rect do_not_have_disease_test_positive_rect'; 
+                    } else {
+                        return 'do_not_have_disease_rect test_negative_rect do_not_have_disease_test_negative_rect'; 
+                    }
+                }); 
+
+    full_svg.selectAll('g')
+            .data(grid)
+                .enter()
+            .append('g')
+                .attr('transform', function(d) {
+                    return 'translate(' + (arrayScale(d.position.x) + 11) + ',' + (arrayScale(d.position.y) + 4) + ')'; 
+                })
+            .call(function(parent) {
+                parent.append('use')
+                    .attr('class', function(d) {
+                        if (data_num_have_disease_test_positive.includes(d.data)) {
+                            return 'have_disease test_positive have_disease_test_positive';
+                        } else if (data_num_have_disease_test_negative.includes(d.data)) {
+                            return 'have_disease test_negative have_disease_test_negative';
+                        } else if (data_num_do_not_have_disease_test_positive.includes(d.data)) {
+                            return 'do_not_have_disease test_positive do_not_have_disease_test_positive'; 
+                        } else {
+                            return 'do_not_have_disease test_negative do_not_have_disease_test_negative'; 
+                        }
+                    })
+                    .attr('xlink:href','#icon')
+                    .attr('transform','scale(' + icon_scale + ')');
+            });
+
+    d3.select(self.frameElement).style("height", height + "px");
+
+    full_svg.selectAll('g#big_g')
+            .data(grid)
+                .enter()
+            .append('ellipse')
+                .attr('rx', 12)
+                .attr('ry', 16)
+                .attr('cx', 16)
+                .attr('cy', 17)
+                .attr('transform', function(d) {
+                    
+                    return 'translate(' + (arrayScale(d.position.x)) + ',' + (arrayScale(d.position.y)) + ')'; 
+                })
+                .attr('class', function(d) {
+                    if (data_num_have_disease_test_positive.includes(d.data)) {
+                        return 'have_disease_cir test_positive_cir have_disease_test_positive_cir';
+                    } else if (data_num_have_disease_test_negative.includes(d.data)) {
+                        return 'have_disease_cir test_negative_cir have_disease_test_negative_cir';
+                    } else if (data_num_do_not_have_disease_test_positive.includes(d.data)) {
+                        return 'do_not_have_disease_cir test_positive_cir do_not_have_disease_test_positive_cir'; 
+                    } else {
+                        return 'do_not_have_disease_cir test_negative_cir do_not_have_disease_test_negative_cir'; 
+                    }
+                }); 
+
+}
+
+
+function draw_have_disease(background_y_n, peeps_y_n) {
+    if (background_y_n === 'no') {
+        d3.selectAll('.have_disease_rect')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.have_disease_rect')
+            .attr('opacity', 1);
+    }
+    if (peeps_y_n === 'no') {
+        d3.selectAll('.have_disease_rect')
+            .attr('opacity', 0);
+        d3.selectAll('.have_disease')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.have_disease_rect')
+            .attr('opacity', 1);
+        d3.selectAll('.have_disease')
+            .attr('opacity', 1);
+    }
+}
+
+function draw_do_not_have_disease(background_y_n, peeps_y_n) {
+    if (background_y_n === 'no') {
+        d3.selectAll('.do_not_have_disease_rect')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.do_not_have_disease_rect')
+            .attr('opacity', 1);
+    }
+    if (peeps_y_n === 'no') {
+        d3.selectAll('.do_not_have_disease_rect')
+            .attr('opacity', 0);
+        d3.selectAll('.do_not_have_disease')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.do_not_have_disease_rect')
+            .attr('opacity', 1);
+        d3.selectAll('.do_not_have_disease')
+            .attr('opacity', 1);
+    }
+}
+
+function draw_test_positive(background_y_n, peeps_y_n) {
+    if (background_y_n === 'no') {
+        d3.selectAll('.test_positive_rect')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.test_positive_rect')
+            .attr('opacity', 1);
+    }
+    if (peeps_y_n === 'no') {
+        d3.selectAll('.test_positive_rect')
+            .attr('opacity', 0);
+        d3.selectAll('.test_positive')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.test_positive_rect')
+            .attr('opacity', 1);
+        d3.selectAll('.test_positive')
+            .attr('opacity', 1);
+    }
+}
+
+function draw_test_negative(background_y_n, peeps_y_n) {
+    if (background_y_n === 'no') {
+        d3.selectAll('.test_negative_rect')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.test_negative_rect')
+            .attr('opacity', 1);
+    }
+    if (peeps_y_n === 'no') {
+        d3.selectAll('.test_negative_rect')
+            .attr('opacity', 0);
+        d3.selectAll('.test_negative')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.test_negative_rect')
+            .attr('opacity', 1);
+        d3.selectAll('.test_negative')
+            .attr('opacity', 1);
+    }
+}
+
+var moves = [];
+
+function checks() {
+ 
+    d3.selectAll('svg').remove();
+    d3.select('#simple-example')
+        .append('svg')
+            .attr('id', 'test')
+            .attr('width', width)
+            .attr('height', height)
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+    //append svg defs 
+    d3.select('#defs')
+        .append('svg')
+            .attr('height', 0)
+        .append('defs')
+        .append("path")
+            .attr('id', 'icon')
+            .attr('d', 'M96 0c35.346 0 64 28.654 64 64s-28.654 64-64 64-64-28.654-64-64S60.654 0 96 0m48 144h-11.36c-22.711 10.443-49.59 10.894-73.28 0H48c-26.51 0-48 21.49-48 48v136c0 13.255 10.745 24 24 24h16v136c0 13.255 10.745 24 24 24h64c13.255 0 24-10.745 24-24V352h16c13.255 0 24-10.745 24-24V192c0-26.51-21.49-48-48-48z')
+            .attr('style', 'fill: var(--primary-color)');
+ 
+    draw_start();
+}
+
+(function() {
+  checks(); 
+})(); 
+ 
+var ans = {};
+
+function validate() {
+        var a1 = document.getElementById("ans1");
+        var a2 = document.getElementById("ans2");  
+        if (a1.value == "" || a2.value == "") {
+                alert("Please fill in both blanks then submit your answer.");
+        } else {
+                ans.ans1 = a1.value;
+                ans.ans2 = a2.value;
+                ans.views = moves; 
+                //record speeds for fruit words
+                var speeds = Object.keys(timestamps).map(function(key){
+                    return timestamps[key][1];
+                });
+                console.log("speeds is ",speeds)
+
+                ans.speeds=speeds
+                //record errorRate
+                var numberMissed=parseInt(d3.select("#yellowScore").text())
+                var numberWrong=parseInt(d3.select("#magentaScore").text())
+                var numberRight=parseInt(d3.select("#cyanScore").text())
+                var errorRate=(numberMissed+numberWrong)/(numberRight+numberWrong+numberMissed)
+                console.log("errorRate is ",errorRate)
+
+                ans.errorRate=errorRate
+
+                experimentr.endTimer('exp');
+                experimentr.addData(ans); 
+
+                experimentr.next(); 
+
+
+        } 
+ }
+
+function showQ() {
+
+        experimentr.startTimer('exp'); 
+        document.getElementById('answers').innerHTML = '<p>(a) How many people will test positive? <input type="number" id="ans1"><br>(b) Of those who test positive, how many will actually have the disease? <input type="number" id="ans2">.</p><input type="submit" value="Submit" onClick=validate()>';    
+        loadData()   
+}
+
+function highlight(s) {
+
+    var state = {'highlighting':s};
+    moves.push(state); 
+    
+    if (s === 'total_pop') {
+        d3.selectAll('.have_disease_cir').classed('highlighted_icon', true);
+        d3.selectAll('.do_not_have_disease_cir').classed('highlighted_icon', true);
+    } else if (s === 'have_disease') { 
+        d3.selectAll('.have_disease_cir').classed('highlighted_icon', true); 
+    } else if (s === 'have_disease_test_pos') {
+        d3.selectAll('.have_disease_test_positive_cir').classed('highlighted_icon', true); 
+    } else if (s === 'have_disease_test_neg') {
+        d3.selectAll('.have_disease_test_negative_cir').classed('highlighted_icon', true);
+    } else if (s === 'do_not_have_disease') {
+        d3.selectAll('.do_not_have_disease_cir').classed('highlighted_icon', true);
+    } else if (s === 'do_not_have_disease_test_pos') { 
+        d3.selectAll('.do_not_have_disease_test_positive_cir').classed('highlighted_icon', true);
+    } else if (s === 'do_not_have_disease_test_neg') { 
+        d3.selectAll('.do_not_have_disease_test_negative_cir').classed('highlighted_icon', true);
+    }
+}
+
+function unhighlight(s) { 
+    
+    if (s === 'total_pop') { 
+        d3.selectAll('.have_disease_cir').classed('highlighted_icon', false);
+        d3.selectAll('.do_not_have_disease_cir').classed('highlighted_icon', false);
+    } else if (s === 'have_disease') {  
+        d3.selectAll('.have_disease_cir').classed('highlighted_icon', false); 
+    } else if (s === 'have_disease_test_pos') {  
+        d3.selectAll('.have_disease_test_positive_cir').classed('highlighted_icon', false); 
+    } else if (s === 'have_disease_test_neg') { 
+        d3.selectAll('.have_disease_test_negative_cir').classed('highlighted_icon', false);
+    } else if (s === 'do_not_have_disease') {  
+        d3.selectAll('.do_not_have_disease_cir').classed('highlighted_icon', false);
+    } else if (s === 'do_not_have_disease_test_pos') { 
+        d3.selectAll('.do_not_have_disease_test_positive_cir').classed('highlighted_icon', false);
+    } else if (s === 'do_not_have_disease_test_neg') {   
+        d3.selectAll('.do_not_have_disease_test_negative_cir').classed('highlighted_icon', false);
+    }
+}
+
+//loadData()
+
+function loadData(){
+    var words_data
+    var data_part2
+
+    d3.csv("modules/exp/data/list_of_words.csv",function(csv) {
+        data=shuffle(csv)
+        words_data=data.slice(0,18)
+        data_part2=data.slice(18,)
+        console.log(words_data)
+        draw_secondary(words_data,data_part2)
+
+    })
+}
+
+function draw_secondary(words_data,data_part2) {
+    var step=17;
+    var lineupCount=1;
+
+    console.log("in draw secondary")
+    console.log(words_data)
+
+    let svgHeight = 400;
+    let svgWidth = 820;
+        
+    let svgContainer = d3.select("#second_task")
+                        .append("svg")
+                        .attr("width", svgWidth+600)
+                        .attr("height", svgHeight)
+                        .attr("id", "secondContainer");
+
+    var rect= svgContainer.append("rect")
+                .attr("x",0)
+                .attr("y",0)
+                .attr("height",190)
+                .attr("width",svgWidth+200)
+                .attr("fill","black")
+
+    // var cyanRect= svgContainer.append("rect")
+    //             .attr("x",svgWidth)
+    //             .attr("y",30)
+    //             .attr("height",30)
+    //             .attr("width",80)
+    //             .attr("fill","cyan")
+
+    var cyanScore= svgContainer.append("text")
+                        .attr("id","cyanScore")
+                        .attr("fill","black")
+                        .attr("x",svgWidth+40)
+                        .attr("y",50)
+                        .text("0 words right")
+                        .attr("fill","cyan")
+                        .style("font-size","18px")
+
+
+    // var magentaRect= svgContainer.append("rect")
+    //             .attr("x",svgWidth)
+    //             .attr("y",70)
+    //             .attr("height",30)
+    //             .attr("width",80)
+    //             .attr("fill","magenta")
+
+    var magentaScore= svgContainer.append("text")
+                        .attr("id","magentaScore")
+                        .attr("fill","black")
+                        .attr("x",svgWidth+40)
+                        .attr("y",90)
+                        .text("0 words wrong")
+                        .attr("fill","magenta")
+                        .style("font-size","18px")
+
+    // var yellowRect= svgContainer.append("rect")
+    //             .attr("x",svgWidth)
+    //             .attr("y",110)
+    //             .attr("height",30)
+    //             .attr("width",80)
+    //             .attr("fill","yellow")
+
+    var yellowScore= svgContainer.append("text")
+                        .attr("id","yellowScore")
+                        .attr("fill","black")
+                        .attr("x",svgWidth+40)
+                        .attr("y",130)
+                        .text("0 words missed")
+                        .style("font-size","18px")
+                        .attr("fill","yellow")
+
+    let svg = svgContainer.append("svg")
+    .attr("width", svgWidth)
+    .attr("height", svgHeight)
+    .attr("id", "second_svg");
+
+    var xCoord=840
+
+    var border=svg.selectAll(".word_border")
+                .data(words_data)
+                .enter()
+                .append("rect")
+                .attr("padding",0.5)
+                .attr('stroke', 'white')
+                .attr('stroke-width', '1.2px')
+                .attr("class", "word_border")
+                .attr("fill","black")
+                .attr("opacity",0.75)
+                .attr("rx", 4)
+                .attr("ry", 4)
+
+    border.attr("x", function(d,i){
+            // return (i%7)*150-200
+            if (i%3==0){
+                xCoord-=150
+                return xCoord
+            }
+            else{
+                return xCoord
+            }
+        })
+        .attr("y", function(d,i){
+            return 20+(i%3)*50
+        })
+        .attr("id",function(d,i){
+            return "b"+i
+        })
+        .attr("width",function(d,i){
+            return (d.word.length*10)+15
+        })
+        .attr("height",40)
+        .on("mouseover",function(d){
+            d3.select(this).style("cursor", "pointer"); 
+        })
+        .on("click",function(d){
+            console.log("clicked")
+            if (d.fruit==1){
+               //change color of word
+               console.log("in fruits")
+               this.setAttribute("stroke","cyan")
+               //change border color
+               var thisId=this.getAttribute("id").substring(1)
+               console.log("thisId is "+thisId)
+               document.getElementById(thisId).setAttribute("fill","cyan")
+               //update score
+               var cyanScore = parseInt(d3.select("#cyanScore").text())+1
+               d3.select("#cyanScore").text(cyanScore + " words right")
+
+               //record speed
+               recordSpeed(thisId)
+            }
+            else{
+               //change color of word
+               console.log("in fruits")
+               this.setAttribute("stroke","magenta")
+               //change border color
+               var thisId=this.getAttribute("id").substring(1)
+               console.log("thisId is "+thisId)
+               document.getElementById(thisId).setAttribute("fill","magenta")
+               //update score
+               var magentaScore = parseInt(d3.select("#magentaScore").text())+1
+               d3.select("#magentaScore").text(magentaScore + " words right")                
+            }
+        })
+    var xCoord=850
+
+    var word=svg.selectAll(".words")
+                .data(words_data)
+                .enter()
+                .append("text")
+                .attr("class", "words")
+                .attr("padding",0.5)
+                .attr("fill","white")
+ // Update (set the dynamic properties of the elements)
+
+     word.attr("x", function(d,i){
+            // return (i%7)*150-200
+            if (i%3==0){
+                xCoord-=150
+                return xCoord
+            }
+            else{
+                return xCoord
+            }
+        })
+        .attr("y", function(d,i){
+            return 40+(i%3)*50
+        })
+        .attr("dy", ".35em")
+        .attr("id",function(d,i){
+            //log time created
+            if (d.fruit==1){
+                var d= new Date()
+                var timestamp=d.getTime()
+                var timeArr=[]
+                timeArr.push(timestamp)
+                timestamps[i]=timeArr
+                console.log(timestamps)
+            }
+            console.log("index is "+i)
+            return i
+        })
+        .text(function(d) { 
+            return d.word;
+        })
+        .style("font-size","18px")
+        .on("mouseover",function(d){
+            d3.select(this).style("cursor", "pointer"); 
+        })
+        .on("click",function(d){
+            console.log("clicked")
+            if (d.fruit==1){
+               //change color of word
+               console.log("in fruits")
+               this.setAttribute("fill","cyan")
+               //change border color
+               var thisId=this.getAttribute("id")
+               console.log("thisId is "+thisId)
+               document.getElementById("b"+thisId).setAttribute("stroke","cyan")
+               //update score
+               var cyanScore = parseInt(d3.select("#cyanScore").text())+1
+               d3.select("#cyanScore").text(cyanScore + " words right")
+
+               //record speed
+               recordSpeed(thisId)
+
+            }
+            else{
+                this.setAttribute("fill","magenta")
+                //change border color
+               var thisId=this.getAttribute("id")
+               console.log("thisId is "+thisId)
+               document.getElementById("b"+thisId).setAttribute("stroke","magenta")
+                //update score
+               var magentaScore = parseInt(d3.select("#magentaScore").text())+1
+               d3.select("#magentaScore").text(magentaScore + " words wrong" )
+            }
+            this.disabled=true
+
+        })
+
+     word.exit().remove()
+
+    var speed=3000
+
+    //var speed = experimentr.data().speed
+    console.log("experimentr curr speed is ",speed)
+
+    createLineUp()
+
+
+    function recordSpeed(thisId){
+       //add time clicked to dictionary
+        var d= new Date()
+        var newTime=d.getTime()
+
+        var oldTime=timestamps[thisId][0]
+        var timeInterval=newTime-oldTime
+        var timeArr=[]
+        timeArr.push(oldTime)
+        timeArr.push(timeInterval)
+        timestamps[thisId]=timeArr
+        console.log(timestamps)
+    }
+
+     function createLineUp(){
+
+      //=====DRAW LINEUP====
+         //increment lineupCount
+         increment=step+lineupCount;
+
+         var lineup=data_part2.slice(0,3)
+         data_part2=data_part2.slice(3,)
+         //loop back to start of list
+         if (lineup.length==0){
+            data_part2=shuffle(words_data)
+             var lineup=data_part2.slice(0,3)
+             data_part2=data_part2.slice(3,)
+         }
+        console.log("lineup is ",lineup)
+
+        var xCoord=-60
+
+        // var borderSelect = 
+
+        var border=svg.selectAll("#word_border2")
+                    .data(lineup)
+                    .enter()
+                    .append("rect")
+                    .attr("padding",0.5)
+                    .attr('stroke', 'white')
+                    .attr('stroke-width', '1.2px')
+                    .attr("class", "word_border")
+                    .attr("id", "word_border2")
+                    .attr("fill","black")
+                    .attr("opacity",0.75)
+                    .attr("rx", 4)
+                    .attr("ry", 4)
+
+        border.attr("x", function(d,i){
+                // return (i%7)*150-200
+                if (i%3==0){
+                    xCoord-=150
+                    return xCoord
+                }
+                else{
+                    return xCoord
+                }
+            })
+            .attr("id",function(d,i){
+                console.log("index is "+"b"+parseInt(i+increment))
+                return "b"+parseInt(i+increment)
+            })
+            .attr("y", function(d,i){
+                return 20+(i%3)*50
+            })
+            .attr("width",function(d,i){
+                console.log("border length is ",d.word.length*10)
+                return (d.word.length*10)+15
+            })
+            .attr("height",40)
+             .on("click",function(d){
+                console.log("clicked")
+                if (d.fruit==1){
+                   //change color of word
+                   console.log("in fruits")
+                   this.setAttribute("stroke","cyan")
+                   //change border color
+                   var thisId=this.getAttribute("id").substring(1)
+                   console.log("thisId is "+thisId)
+                   document.getElementById(thisId).setAttribute("fill","cyan")
+                   //update score
+                   var cyanScore = parseInt(d3.select("#cyanScore").text())+1
+                   d3.select("#cyanScore").text(cyanScore + " words right")
+
+                   //record speed
+                   recordSpeed(thisId)
+                }
+                else{
+                   //change color of word
+                   console.log("in fruits")
+                   this.setAttribute("stroke","magenta")
+                   //change border color
+                   var thisId=this.getAttribute("id").substring(1)
+                   console.log("thisId is "+thisId)
+                   document.getElementById(thisId).setAttribute("fill","magenta")
+                   //update score
+                   var magentaScore = parseInt(d3.select("#magentaScore").text())+1
+                   d3.select("#magentaScore").text(magentaScore + " words right")                
+                }
+            })           
+        // border.exit().remove()
+
+        var xCoord=-50
+
+        var word=svg.selectAll("#lineup")
+                    .data(lineup)
+                    .enter()
+                    .append("text")
+                    .attr("id", "lineup")
+                    .attr("class", "words")
+                    .attr("padding",0.5)
+                    .attr("fill","white")
+     // Update (set the dynamic properties of the elements)
+
+         word.attr("x", function(d,i){
+                // return (i%7)*150-200
+                if (i%3==0){
+                    xCoord-=150
+                    return xCoord
+                }
+                else{
+                    return xCoord
+                }
+            })
+            .attr("y", function(d,i){
+                return 40+(i%3)*50
+            })
+            .attr("dy", ".35em")
+            .attr("id",function(d,i){
+                var id= parseInt(i+increment)
+
+                //log time created
+                if (d.fruit==1){
+                    var d= new Date()
+                    var timestamp=d.getTime()
+                    var timeArr=[]
+                    timeArr.push(timestamp)
+                    timestamps[id]=timeArr
+                    console.log(timestamps)
+                }
+                console.log("index is "+id)
+                return id
+            })
+            .text(function(d) { 
+                return d.word;
+            })
+            .style("font-size","18px")
+            .on("mouseover",function(d){
+                d3.select(this).style("cursor", "pointer"); 
+            })
+            .on("click",function(d){
+                console.log("clicked")
+                if (d.fruit==1){
+                   console.log("in fruits")
+                   this.setAttribute("fill","cyan")
+                      //change border color
+                   var thisId=this.getAttribute("id")
+                   console.log("===>thisId is "+"b"+thisId)
+                   document.getElementById("b"+thisId).setAttribute("stroke","cyan")
+                   //update score
+                   var cyanScore = parseInt(d3.select("#cyanScore").text())+1
+                   d3.select("#cyanScore").text(cyanScore + " words right")
+
+                   //record speed
+                   recordSpeed(thisId)
+                }
+                else{
+                    this.setAttribute("fill","magenta")
+                                      //change border color
+                   var thisId=this.getAttribute("id")
+                   console.log("thisId is "+thisId)
+                   document.getElementById("b"+thisId).setAttribute("stroke","magenta")
+                    //update score
+                   var magentaScore = parseInt(d3.select("#magentaScore").text())+1
+                   d3.select("#magentaScore").text(magentaScore + " words wrong")
+                }
+                this.disabled=true
+
+            })
+
+         word.exit().remove()
+
+        lineupCount+=3
+
+        console.log("createLineUp speed is ",speed)
+
+
+        setTimeout(moveWords, speed)
+     }
+   
+     function moveWords(){
+        console.log("moveWords speed is ",speed)
+        //move containers
+        d3.selectAll(".words")
+          .transition()
+          .duration(0.6*speed)
+          .attr("x", function(d,i){
+                var currX= +this.getAttribute('x')
+                var wordColor=this.getAttribute('fill')
+                var isFruit=d.fruit
+                if ((currX>svgWidth) && (isFruit==1) && (wordColor=="white")){
+                    var yellowScore= parseInt(d3.select("#yellowScore").text())+1
+                    d3.select("#yellowScore").text(yellowScore + " words missed")
+                    this.remove()
+                }
+                return currX + 150
+          })
+        //move borders
+        d3.selectAll(".word_border")
+          .transition()
+          .duration(0.6*speed)
+          .attr("x", function(d,i){
+                var currX= +this.getAttribute('x')
+                var wordColor=this.getAttribute('fill')
+                var isFruit=d.fruit
+                if ((currX>svgWidth) && (isFruit==1) && (wordColor=="white")){
+                    var yellowScore= parseInt(d3.select("#yellowScore").text())+1
+                    d3.select("#yellowScore").text(yellowScore+ " words missed")
+                    this.remove()
+                }
+                return currX + 150
+          })
+
+        //create new lineup
+        createLineUp()
+     }
+}
+
+    function shuffle(array) {
+      var currentIndex = array.length, temporaryValue, randomIndex;
+
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+
+      return array;
+    }
+
+</script>  

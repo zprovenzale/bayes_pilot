@@ -1,0 +1,82 @@
+<div id="exp">
+ <h1>Reasoning Study</h1>
+</div>
+
+<div id="fill">
+</div>
+
+<script type="text/javascript">
+
+
+var pages_vis = ['modules/exp/diseaseX_vis_grouped.html', 'modules/exp/diseaseX_vis_aligned.html', 'modules/exp/diseaseX_vis_random.html',
+'modules/exp/pregnancy_vis_grouped.html','modules/exp/pregnancy_vis_aligned.html','modules/exp/pregnancy_vis_random.html'];
+
+
+var pages_textvis = ['modules/exp/diseaseX_textvis_grouped.html', 'modules/exp/diseaseX_textvis_aligned.html', 'modules/exp/diseaseX_textvis_random.html',
+'modules/exp/pregnancy_textvis_grouped.html','modules/exp/pregnancy_textvis_aligned.html','modules/exp/pregnancy_textvis_random.html'];
+
+
+var data = {};
+
+(function() {
+    experimentr.hideNext(); 
+    selectStim();
+})(); 
+ 
+function selectStim() {
+
+    //select textvis or vis
+   // condition=shuffle(["textvis","vis"])[0]
+    condition="vis"
+    data.viscondition=condition
+
+    //var n = Math.floor(Math.random() * 3);
+    var n=2
+
+    console.log("condition is ",condition)
+    console.log("stim is ",n)
+
+
+    if (condition=="textvis"){
+      d3.html(pages_textvis[n], function(err, d) {
+                console.log("IN PILOT")
+                console.log("stim number ",n)
+                if(err) console.log(err);
+                d3.select('#fill').node().appendChild(d);
+                data.stim=pages_textvis[n]
+
+      }); 
+    }
+    if (condition=="vis"){
+      d3.html(pages_vis[n], function(err, d) {
+                console.log("IN PILOT")
+                console.log("stim number ",n)
+                if(err) console.log(err);
+                d3.select('#fill').node().appendChild(d);
+                data.stim=pages_vis[n]
+
+      }); 
+    }
+    experimentr.addData(data)
+}
+
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+</script>            

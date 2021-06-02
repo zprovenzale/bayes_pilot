@@ -1,0 +1,308 @@
+Listening on port 8001
+events.js:174
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: Redis connection to 127.0.0.1:6381 failed - connect ECONNREFUSED 127.0.0.1:6381
+    at RedisClient.on_error (/Users/user/Desktop/dual_task_paradigm/dual_experimentr/node_modules/redis/index.js:189:24)
+    at Socket.<anonymous> (/Users/user/Desktop/dual_task_paradigm/dual_experimentr/node_modules/redis/index.js:95:14)
+    at Socket.emit (events.js:198:13)
+    at emitErrorNT (internal/streams/destroy.js:91:8)
+    at emitErrorAndCloseNT (internal/streams/destroy.js:59:3)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+Emitted 'error' event at:
+    at RedisClient.on_error (/Users/user/Desktop/dual_task_paradigm/dual_experimentr/node_modules/redis/index.js:189:10)
+    at Socket.<anonymous> (/Users/user/Desktop/dual_task_paradigm/dual_experimentr/node_modules/redis/index.js:95:14)
+    [... lines matching original stack trace ...]
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+Listening on port 8001
+events.js:174
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: Redis connection to 127.0.0.1:6381 failed - connect ECONNREFUSED 127.0.0.1:6381
+    at RedisClient.on_error (/Users/user/Desktop/dual_task_paradigm/dual_experimentr/node_modules/redis/index.js:189:24)
+    at Socket.<anonymous> (/Users/user/Desktop/dual_task_paradigm/dual_experimentr/node_modules/redis/index.js:95:14)
+    at Socket.emit (events.js:198:13)
+    at emitErrorNT (internal/streams/destroy.js:91:8)
+    at emitErrorAndCloseNT (internal/streams/destroy.js:59:3)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+Emitted 'error' event at:
+    at RedisClient.on_error (/Users/user/Desktop/dual_task_paradigm/dual_experimentr/node_modules/redis/index.js:189:10)
+    at Socket.<anonymous> (/Users/user/Desktop/dual_task_paradigm/dual_experimentr/node_modules/redis/index.js:95:14)
+    [... lines matching original stack trace ...]
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+Listening on port 8001
+events.js:174
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: Redis connection to 127.0.0.1:6381 failed - connect ECONNREFUSED 127.0.0.1:6381
+    at RedisClient.on_error (/Users/user/Desktop/dual_task_paradigm/dual_experimentr/node_modules/redis/index.js:189:24)
+    at Socket.<anonymous> (/Users/user/Desktop/dual_task_paradigm/dual_experimentr/node_modules/redis/index.js:95:14)
+    at Socket.emit (events.js:198:13)
+    at emitErrorNT (internal/streams/destroy.js:91:8)
+    at emitErrorAndCloseNT (internal/streams/destroy.js:59:3)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+Emitted 'error' event at:
+    at RedisClient.on_error (/Users/user/Desktop/dual_task_paradigm/dual_experimentr/node_modules/redis/index.js:189:10)
+    at Socket.<anonymous> (/Users/user/Desktop/dual_task_paradigm/dual_experimentr/node_modules/redis/index.js:95:14)
+    [... lines matching original stack trace ...]
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+90825:C 22 Jan 2021 18:53:42.509 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+90825:C 22 Jan 2021 18:53:42.510 # Redis version=5.0.5, bits=64, commit=92043eed, modified=0, pid=90825, just started
+90825:C 22 Jan 2021 18:53:42.510 # Configuration loaded
+90825:M 22 Jan 2021 18:53:42.511 * Increased maximum number of open files to 10032 (it was originally set to 256).
+90825:M 22 Jan 2021 18:53:42.512 * Running mode=standalone, port=6381.
+90825:M 22 Jan 2021 18:53:42.512 # Server initialized
+90825:M 22 Jan 2021 18:53:42.534 * DB loaded from append only file: 0.022 seconds
+90825:M 22 Jan 2021 18:53:42.534 * Ready to accept connections
+90825:signal-handler (1611370432) Received SIGINT scheduling shutdown...
+90825:M 22 Jan 2021 18:53:52.559 # User requested shutdown...
+90825:M 22 Jan 2021 18:53:52.559 * Calling fsync() on the AOF file.
+90825:M 22 Jan 2021 18:53:52.559 # Redis is now ready to exit, bye bye...
+90830:C 22 Jan 2021 18:54:50.831 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+90830:C 22 Jan 2021 18:54:50.831 # Redis version=5.0.5, bits=64, commit=92043eed, modified=0, pid=90830, just started
+90830:C 22 Jan 2021 18:54:50.831 # Configuration loaded
+90830:M 22 Jan 2021 18:54:50.832 * Increased maximum number of open files to 10032 (it was originally set to 256).
+90830:M 22 Jan 2021 18:54:50.833 * Running mode=standalone, port=6381.
+90830:M 22 Jan 2021 18:54:50.833 # Server initialized
+90830:M 22 Jan 2021 18:54:50.854 * DB loaded from append only file: 0.021 seconds
+90830:M 22 Jan 2021 18:54:50.854 * Ready to accept connections
+Listening on port 8001
+Connected to redis.
+Listening on port 8001
+Connected to redis.
+events.js:174
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::8001
+    at Server.setupListenHandle [as _listen2] (net.js:1279:14)
+    at listenInCluster (net.js:1327:12)
+    at Server.listen (net.js:1414:7)
+    at Object.<anonymous> (/Users/user/Desktop/dual_task_paradigm/dual_task_paradigm/app.js:48:24)
+    at Module._compile (internal/modules/cjs/loader.js:776:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)
+    at Module.load (internal/modules/cjs/loader.js:653:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:585:3)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:829:12)
+Emitted 'error' event at:
+    at emitErrorNT (net.js:1306:8)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:832:11)
+    at startup (internal/bootstrap/node.js:283:19)
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:622:3)
+51162:C 27 Jan 2021 13:49:52.374 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+51162:C 27 Jan 2021 13:49:52.375 # Redis version=5.0.5, bits=64, commit=92043eed, modified=0, pid=51162, just started
+51162:C 27 Jan 2021 13:49:52.375 # Configuration loaded
+51162:M 27 Jan 2021 13:49:52.377 * Increased maximum number of open files to 10032 (it was originally set to 256).
+51162:M 27 Jan 2021 13:49:52.377 # Could not create server TCP listening socket *:6381: bind: Address already in use
+events.js:174
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::8001
+    at Server.setupListenHandle [as _listen2] (net.js:1279:14)
+    at listenInCluster (net.js:1327:12)
+    at Server.listen (net.js:1414:7)
+    at Object.<anonymous> (/Users/user/Desktop/dual_task_paradigm/dual_task_paradigm/app.js:48:24)
+    at Module._compile (internal/modules/cjs/loader.js:776:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)
+    at Module.load (internal/modules/cjs/loader.js:653:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:585:3)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:829:12)
+Emitted 'error' event at:
+    at emitErrorNT (net.js:1306:8)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:832:11)
+    at startup (internal/bootstrap/node.js:283:19)
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:622:3)
+51191:C 27 Jan 2021 13:53:39.483 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+51191:C 27 Jan 2021 13:53:39.483 # Redis version=5.0.5, bits=64, commit=92043eed, modified=0, pid=51191, just started
+51191:C 27 Jan 2021 13:53:39.483 # Configuration loaded
+51191:M 27 Jan 2021 13:53:39.484 * Increased maximum number of open files to 10032 (it was originally set to 256).
+51191:M 27 Jan 2021 13:53:39.485 # Could not create server TCP listening socket *:6381: bind: Address already in use
+Listening on port 8000
+Connected to redis.
+nohup: redis.conf: No such file or directory
+Listening on port 8000
+events.js:174
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: Redis connection to 127.0.0.1:6381 failed - connect ECONNREFUSED 127.0.0.1:6381
+    at RedisClient.on_error (/Users/user/Desktop/dual_task_paradigm/dual_task_paradigm/node_modules/redis/index.js:189:24)
+    at Socket.<anonymous> (/Users/user/Desktop/dual_task_paradigm/dual_task_paradigm/node_modules/redis/index.js:95:14)
+    at Socket.emit (events.js:198:13)
+    at emitErrorNT (internal/streams/destroy.js:91:8)
+    at emitErrorAndCloseNT (internal/streams/destroy.js:59:3)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+Emitted 'error' event at:
+    at RedisClient.on_error (/Users/user/Desktop/dual_task_paradigm/dual_task_paradigm/node_modules/redis/index.js:189:10)
+    at Socket.<anonymous> (/Users/user/Desktop/dual_task_paradigm/dual_task_paradigm/node_modules/redis/index.js:95:14)
+    [... lines matching original stack trace ...]
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+Listening on port 8000
+events.js:174
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: Redis connection to 127.0.0.1:6381 failed - connect ECONNREFUSED 127.0.0.1:6381
+    at RedisClient.on_error (/Users/user/Desktop/dual_task_paradigm/dual_task_paradigm/node_modules/redis/index.js:189:24)
+    at Socket.<anonymous> (/Users/user/Desktop/dual_task_paradigm/dual_task_paradigm/node_modules/redis/index.js:95:14)
+    at Socket.emit (events.js:198:13)
+    at emitErrorNT (internal/streams/destroy.js:91:8)
+    at emitErrorAndCloseNT (internal/streams/destroy.js:59:3)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+Emitted 'error' event at:
+    at RedisClient.on_error (/Users/user/Desktop/dual_task_paradigm/dual_task_paradigm/node_modules/redis/index.js:189:10)
+    at Socket.<anonymous> (/Users/user/Desktop/dual_task_paradigm/dual_task_paradigm/node_modules/redis/index.js:95:14)
+    [... lines matching original stack trace ...]
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+70803:C 25 Apr 2021 23:46:49.503 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+70803:C 25 Apr 2021 23:46:49.504 # Redis version=5.0.5, bits=64, commit=92043eed, modified=0, pid=70803, just started
+70803:C 25 Apr 2021 23:46:49.504 # Configuration loaded
+70803:M 25 Apr 2021 23:46:49.505 * Increased maximum number of open files to 10032 (it was originally set to 256).
+70803:M 25 Apr 2021 23:46:49.508 * Running mode=standalone, port=6381.
+70803:M 25 Apr 2021 23:46:49.508 # Server initialized
+70803:M 25 Apr 2021 23:46:49.529 * DB loaded from append only file: 0.022 seconds
+70803:M 25 Apr 2021 23:46:49.530 * Ready to accept connections
+Listening on port 8000
+Connected to redis.
+19345:C 26 Apr 2021 19:51:33.026 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+19345:C 26 Apr 2021 19:51:33.027 # Redis version=5.0.5, bits=64, commit=92043eed, modified=0, pid=19345, just started
+19345:C 26 Apr 2021 19:51:33.027 # Configuration loaded
+19345:M 26 Apr 2021 19:51:33.028 * Increased maximum number of open files to 10032 (it was originally set to 256).
+19345:M 26 Apr 2021 19:51:33.029 # Could not create server TCP listening socket *:6381: bind: Address already in use
+events.js:174
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (net.js:1279:14)
+    at listenInCluster (net.js:1327:12)
+    at Server.listen (net.js:1414:7)
+    at Object.<anonymous> (/Users/user/Desktop/dual_task_paradigm/dual_pilot/app.js:48:24)
+    at Module._compile (internal/modules/cjs/loader.js:776:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)
+    at Module.load (internal/modules/cjs/loader.js:653:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:585:3)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:829:12)
+Emitted 'error' event at:
+    at emitErrorNT (net.js:1306:8)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:832:11)
+    at startup (internal/bootstrap/node.js:283:19)
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:622:3)
+21168:C 26 Apr 2021 19:54:29.234 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+21168:C 26 Apr 2021 19:54:29.234 # Redis version=5.0.5, bits=64, commit=92043eed, modified=0, pid=21168, just started
+21168:C 26 Apr 2021 19:54:29.234 # Configuration loaded
+21168:M 26 Apr 2021 19:54:29.235 * Increased maximum number of open files to 10032 (it was originally set to 256).
+21168:M 26 Apr 2021 19:54:29.236 # Could not create server TCP listening socket *:6381: bind: Address already in use
+Listening on port 8200
+Connected to redis.
+82567:C 03 May 2021 15:59:19.439 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+82567:C 03 May 2021 15:59:19.440 # Redis version=5.0.5, bits=64, commit=92043eed, modified=0, pid=82567, just started
+82567:C 03 May 2021 15:59:19.440 # Configuration loaded
+82567:M 03 May 2021 15:59:19.441 * Increased maximum number of open files to 10032 (it was originally set to 256).
+82567:M 03 May 2021 15:59:19.442 # Could not create server TCP listening socket *:6381: bind: Address already in use
+events.js:174
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::8200
+    at Server.setupListenHandle [as _listen2] (net.js:1279:14)
+    at listenInCluster (net.js:1327:12)
+    at Server.listen (net.js:1414:7)
+    at Object.<anonymous> (/Users/user/Desktop/dual_task_paradigm/dual_pilot/app.js:48:24)
+    at Module._compile (internal/modules/cjs/loader.js:776:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)
+    at Module.load (internal/modules/cjs/loader.js:653:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:585:3)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:829:12)
+Emitted 'error' event at:
+    at emitErrorNT (net.js:1306:8)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:832:11)
+    at startup (internal/bootstrap/node.js:283:19)
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:622:3)
+events.js:174
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::8200
+    at Server.setupListenHandle [as _listen2] (net.js:1279:14)
+    at listenInCluster (net.js:1327:12)
+    at Server.listen (net.js:1414:7)
+    at Object.<anonymous> (/Users/user/Desktop/dual_task_paradigm/dual_pilot/app.js:48:24)
+    at Module._compile (internal/modules/cjs/loader.js:776:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)
+    at Module.load (internal/modules/cjs/loader.js:653:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:585:3)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:829:12)
+Emitted 'error' event at:
+    at emitErrorNT (net.js:1306:8)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:832:11)
+    at startup (internal/bootstrap/node.js:283:19)
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:622:3)
+Could not connect to Redis at 127.0.0.1:6379: Connection refused
+Could not connect to Redis at 127.0.0.1:6379: Connection refused
+Could not connect to Redis at 127.0.0.1:6379: Connection refused
+21445:C 05 May 2021 16:48:41.923 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+21445:C 05 May 2021 16:48:41.924 # Redis version=5.0.5, bits=64, commit=92043eed, modified=0, pid=21445, just started
+21445:C 05 May 2021 16:48:41.924 # Configuration loaded
+21445:M 05 May 2021 16:48:41.926 * Increased maximum number of open files to 10032 (it was originally set to 256).
+21445:M 05 May 2021 16:48:41.930 * Running mode=standalone, port=6381.
+21445:M 05 May 2021 16:48:41.930 # Server initialized
+21445:M 05 May 2021 16:48:41.956 * DB loaded from append only file: 0.025 seconds
+21445:M 05 May 2021 16:48:41.956 * Ready to accept connections
+Listening on port 8200
+Connected to redis.
+24204:C 05 May 2021 16:53:14.793 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+24204:C 05 May 2021 16:53:14.793 # Redis version=5.0.5, bits=64, commit=92043eed, modified=0, pid=24204, just started
+24204:C 05 May 2021 16:53:14.793 # Configuration loaded
+24204:M 05 May 2021 16:53:14.794 * Increased maximum number of open files to 10032 (it was originally set to 256).
+24204:M 05 May 2021 16:53:14.795 # Could not create server TCP listening socket *:6381: bind: Address already in use
+events.js:174
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::8200
+    at Server.setupListenHandle [as _listen2] (net.js:1279:14)
+    at listenInCluster (net.js:1327:12)
+    at Server.listen (net.js:1414:7)
+    at Object.<anonymous> (/Users/user/Desktop/dual_task_paradigm/dual_pilot/app.js:48:24)
+    at Module._compile (internal/modules/cjs/loader.js:776:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)
+    at Module.load (internal/modules/cjs/loader.js:653:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:585:3)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:829:12)
+Emitted 'error' event at:
+    at emitErrorNT (net.js:1306:8)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:832:11)
+    at startup (internal/bootstrap/node.js:283:19)
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:622:3)
+74206:C 12 May 2021 11:59:14.878 # Fatal error, can't open config file 'redis-conf'
+Listening on port 8200
+Connected to redis.
+95367:C 25 May 2021 10:35:58.008 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+95367:C 25 May 2021 10:35:58.009 # Redis version=5.0.5, bits=64, commit=92043eed, modified=0, pid=95367, just started
+95367:C 25 May 2021 10:35:58.009 # Configuration loaded
+95367:M 25 May 2021 10:35:58.010 * Increased maximum number of open files to 10032 (it was originally set to 256).
+95367:M 25 May 2021 10:35:58.010 # Could not create server TCP listening socket *:6381: bind: Address already in use
+95471:C 25 May 2021 10:36:04.892 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+95471:C 25 May 2021 10:36:04.892 # Redis version=5.0.5, bits=64, commit=92043eed, modified=0, pid=95471, just started
+95471:C 25 May 2021 10:36:04.892 # Configuration loaded
+95471:M 25 May 2021 10:36:04.893 * Increased maximum number of open files to 10032 (it was originally set to 256).
+95471:M 25 May 2021 10:36:04.893 # Could not create server TCP listening socket *:6381: bind: Address already in use
+Listening on port 8200
+Connected to redis.

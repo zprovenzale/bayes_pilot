@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<!--     <link rel="stylesheet" href="style.css"/>
+ -->    
+<!--     <script src="d3.min.v6.js"></script>
+ -->  </head>
+
+
+  <body>
+
+	<div class="header w3-container">
+		<p class="count"></p> <br/>
+
+		<img hspace="30">
+		
+		<button id="clear" class="w3-button w3-white w3-border w3-round-large">Clear Selections</button>
+		<button id="next-sheet" class="w3-button w3-white w3-border w3-round-large">Next Sheet</button>
+	</div>
+
+	<div class="first_task" id ="first_task" style="flex-direction:column;display:flex;align-items: center;justify-content: center;">
+		<div id="mammography">
+			<br>
+			<br>
+		    <br>
+		    <br>
+		    <text id="mam_intro">
+		    	<br>
+		    	<br>
+		    	There is a total of 100 people in the population. Out of the 100 people in the population, 6 people actually have the disease. Out of these 6 people, 4 will receive a positive test result and 2 will receive a negative test result. On the other hand, 94 people do not have the disease (i.e. they are perfectly healthy). Out of these 94 people, 16 will receive a positive test result and 78 will receive a negative test result.
+		    	<br>		    	
+		    </text>
+			<div id="vis_image" ><img src="modules/vis_only.png" width="500" align="center"></div>
+		    <text id="text_condition" x="0" y="100" style="font-size:18px">
+		    	<br>
+		    	<br>
+		    	There is a total of 100 people in the population. Out of the 100 people in the population, 6 people actually have the disease. Out of these 6 people, 4 will receive a positive test result and 2 will receive a negative test result. On the other hand, 94 people do not have the disease (i.e. they are perfectly healthy). Out of these 94 people, 16 will receive a positive test result and 78 will receive a negative test result.
+		    	<br>
+		    </text>
+		    <div align="left">
+		    	<br>
+			     <label for="questiona" style="font-size:18px">(a) How many people will test positive?</label>
+			    <input type="text" id="questiona" name="questiona"><br><br>
+
+			</div>
+			<div align="left"> 
+				<label for="questionb" style="font-size:18px">(b) Of those who test positive, how many will actually have the disease?</label>
+			    <input type="text" id="questionb" name="questionb"><br><br>
+
+			    	<br>
+			    	<br>
+			    	<br>
+		    </div>
+		</div>
+
+		<div id="diseaseX">
+		 	<br>
+			<br>
+		    <br>
+		    <br>
+		    <text id="x_intro">
+		    	<br>
+		    	<br>
+				There is a newly discovered disease, Disease X, which is
+				transmitted by a bacterial infection found in the population.
+				There is a test to detect whether or not a person has
+				the disease, but it is not perfect. Here is some information
+				about the current research on Disease X and efforts to test
+				for the infection that causes it.
+		    	<br>		    	
+		    </text>	
+		    
+
+
+		</div>
+
+	</div>
+		
+
+	<div class="second_task" id ="second_task"></div>
+
+   <script>
+
+    window['draw_primary']()
+
+    window['draw_secondary']()
+
+
+
+
+   </script>
+	
+  </body>
+</html>

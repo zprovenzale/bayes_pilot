@@ -1,0 +1,135 @@
+<h2>Reasoning Study</h2>
+
+<p>
+Please fill out the following task load survey. "The task" refers to the previous page where you were asked to use a visualization and text to answer several questions. 
+</p>
+
+<hr style="height:5px;border:none;color:#333;background-color:#333; align:"LEFT";" />
+
+<h3>Mental Demand</h3>
+<p>How mentally demanding was the task?</p>
+
+Very Low<input type="range" name ="mental_demand" min="0" max="20" value="0" step="1" />Very High
+
+
+<h3>Physical Demand</h3>
+<p>How physically demanding was the task?</p>
+
+Very Low<input type="range" name ="physical_demand" min="0" max="20" value="0" step="1" />Very High
+
+
+<h3>Temporal Demand</h3>
+<p>How hurried or rushed was the pace of the task?</p>
+
+Very Low<input type="range" name ="temporal_demand" min="0" max="20" value="0" step="1" />Very High
+
+
+<h3>Performance</h3>
+<p>How successful were you in accomplishing what you were asked to do?</p>
+
+Failure<input type="range" name ="performance" min="0" max="20" value="0" step="1" />Perfect
+
+
+<h3>Effort</h3>
+<p>How hard did you have to work to accomplish your level of performance?</p>
+
+Very Low<input type="range" name ="effort" min="0" max="20" value="0" step="1" />Very High
+
+
+<h3>Frustration</h3>
+<p>How insecure, discouraged, irritated, stressed, and annoyed were you?</p>
+
+Very Low<input type="range" name ="frustration" min="0" max="20" value="0" step="1" />Very High
+
+
+<hr style="height:5px;border:none;color:#333;background-color:#333; align:"LEFT";" />
+
+
+
+<script type="text/javascript">
+
+
+(function() {
+  var data = {};
+
+  experimentr.startTimer('nasatlx');
+
+  var flag = 0; 
+  data.mental_demand = 0;
+  data.physical_demand = 0;
+  data.temporal_demand = 0;
+  data.performance = 0; 
+  data.effort = 0; 
+  data.frustration = 0;  
+
+  function cb () {
+         
+        experimentr.endTimer('nasatlx'); 
+        experimentr.addData(data); 
+       
+  }; 
+  
+  experimentr.onNext(cb); 
+
+  d3.selectAll('input')
+  .filter(function(d) { return this.name === 'mental_demand' ? this : null; })
+  .on('change', function() { flag = 1; 
+                data.mental_demand = this.value; validate(); });
+
+  d3.selectAll('input')
+  .filter(function(d) { return this.name === 'physical_demand' ? this : null; })
+  .on('change', function() { flag = 1; 
+                data.physical_demand = this.value; validate(); });
+
+  d3.selectAll('input')
+  .filter(function(d) { return this.name === 'temporal_demand' ? this : null; })
+  .on('change', function() { flag = 1; 
+                data.temporal_demand = this.value; validate(); });
+
+  d3.selectAll('input')
+  .filter(function(d) { return this.name === 'performance' ? this : null; })
+  .on('change', function() { flag = 1; 
+                data.performance = this.value; validate(); });
+
+  d3.selectAll('input')
+  .filter(function(d) { return this.name === 'effort' ? this : null; })
+  .on('change', function() { flag = 1; 
+                data.effort = this.value; validate(); });
+
+  d3.selectAll('input')
+  .filter(function(d) { return this.name === 'frustration' ? this : null; })
+  .on('change', function() { flag = 1; 
+                data.frustration = this.value; validate(); });
+
+  function validate() {
+     if (flag) {
+        experimentr.release();
+    }
+  }
+
+  function grade(data) {
+    score = 0;
+    for (answer in data) {
+
+      //Odd numbered questions grading
+      if (answer == 'mental_demand' || answer == 'physical_demand' || 
+          answer == 'temporal_demand' || answer == 'performance' || 
+          answer == 'effort' || answer == 'frustration') {
+
+            score += data[answer];
+
+      }
+
+      //If this procedure has been run already we don't want the "grade"
+      //member variable to be misused accidentally.
+      else {
+        continue;
+      }
+
+    }
+  
+    data.nasatlx_score = score;
+
+  }
+}());
+</script>

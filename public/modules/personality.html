@@ -1,0 +1,134 @@
+<style>
+
+ #experimentr {
+    margin: 4em auto 1em auto;
+    width: 720px;
+  }
+
+td{
+	white-space : nowrap;
+}
+#survey
+{
+	margin-top: 10px;
+	margin: 0 auto;
+	font-size: 15px;
+	position: relative;
+}
+</style>
+
+
+
+<h2>Personality Inventory</h2>
+
+<p> 
+Use the rating scale below to describe how accurately each statement describes <i><b>you</b></i>. Describe yourself as you generally are now, not as you wish to be in the future. This is not a test of your ability, and there are no right or wrong answers. Work quickly, giving your first reaction in each case, and make sure that you respond to every statement. </b> <br /> <br />
+</p>
+
+<div id="survey">
+<table id="surveyTable"> </table>
+</div>
+
+
+<script> 
+(function() {
+	var survey = []
+		, questions = []
+		, data = {};
+	
+	
+	init();
+	experimentr.startTimer('personality');
+  //experimentr.release();
+  
+	/*******Functions*******/
+	
+	function init(){			
+  	d3.json('modules/data/personality.json', function(err, d) {
+      survey = d.survey;
+      survey.forEach(function(d){
+      	questions.push(_.values(_.pick(d, 'question')));
+      }) 
+      display();
+      
+      d3.selectAll("input").on("change", function(){
+      	data[this.name] = this.value; validate(); } );
+  	});
+  	
+  }
+  
+  function display(){
+		d3.select("#surveyTable")
+			.selectAll("tr").data(d3.range(0, 38))
+			.enter().append("tr")
+			.attr("bgcolor", function(d){return rowColor(d)})
+			.html(function(d){ 
+			return  "<td>" + (d+1) + ". " + questions[d] + 
+			" </td> <td> Inaccurate " + 
+			" <input type = 'radio' name ='pers" + d + "' value='1'>1 " + 
+			" <input type = 'radio' name ='pers" + d + "' value='2'>2 " +
+			" <input type = 'radio' name ='pers" + d + "' value='3'>3 " +
+			" <input type = 'radio' name ='pers" + d + "' value='4'>4 " +
+			" <input type = 'radio' name ='pers" + d + "' value='5'>5 " +
+			" Accurate </td> <br /> <br /> " ;
+			});
+	}
+
+	function rowColor(n){
+		if(n%2 == 0) return "#F0F0F0";
+		return "FFFFFF";
+	}
+	
+	function validate(){
+
+		var done = true;
+		
+		for (var i = 0 ; i < questions.length; i++){
+			if( ! data["pers"+i] ) { 
+				done = false;
+				break;
+			}
+		}
+		
+		if (done){ 
+			experimentr.endTimer('personality');
+			grade();
+			//console.log(data);
+			experimentr.addData(data);
+			experimentr.addPayment(1);
+			experimentr.release();
+		}
+	}
+	
+	function grade(){ // Extraversion(e), Neuroticism(n), Conscientiousness(c), Agreeableness(a), Openness(o)
+
+		data["pers-e"] = data["pers-n"] = data["pers-c"] = data["pers-a"] = data["pers-o"] = 0;
+		data["pers-attPassed"] = true;
+
+		_.each(survey, function(d){
+		
+			if (d.item == "att"){
+				data["pers-attPassed"] = parseInt( data["pers" + 27] ) == 1 ||
+				 parseInt( data["pers" + 9] ) == 3 ||
+				 parseInt( data["pers" + 21] ) == 5 ?
+					data["pers-attPassed"] && true : data["pers-attPassed"] && false;
+			}else{
+				data["pers-" + d.item] += 
+					d.reverse == "true" ? reverse( parseInt( data["pers" + d.index] ) ): 
+					parseInt( data["pers" + d.index] );
+			}
+		});
+		
+		function reverse(n){
+			switch(n){
+				case 1: return 5;
+				case 2: return 4;
+				case 3: return 3;
+				case 4: return 2;
+				case 5: return 1;
+			}
+		}
+	}
+}());
+
+</script>

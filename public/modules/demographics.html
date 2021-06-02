@@ -1,0 +1,84 @@
+<div id="demographics">
+<!-- Demographics style stolen from labinthewild.org experiments -->
+
+<h3> Please Tell Us About Yourself </h3>
+
+<p>
+Age:
+<select id="age" name="age"></select> <!-- options set via d3 -->
+</p>
+
+<p>
+Gender:
+<select id="gender" name="gender">
+  <option value="female">Female</option> 
+  <option value="male">Male</option>
+  <option value="noresponse">Unspecified</option>
+</select>
+</p>
+
+<p>
+Education:
+<select id="education" name="education">
+  <option value="prehigh">Pre-high school</option> 
+  <option value="highschool">High school</option> 
+  <option value="college">College</option> 
+  <option value="graduate">Graduate school</option> 
+  <option value="professional">Professional school</option> 
+  <option value="phd">Ph.D</option> 
+  <option value="postdoc">Post-doctoral</option> 
+  <option value="noresponse">Unspecified</option>
+</select>
+</p>
+
+
+</div>
+
+<style>
+</style>
+
+<script> 
+(function() {
+  var data = {};
+  experimentr.startTimer('demographics');
+  experimentr.release();
+  
+  d3.select('#next-button')
+		.on('click', function(){
+			experimentr.endTimer('demographics');
+			experimentr.addData(data);
+			experimentr.next(); });
+
+  // set age options
+  d3.select('#age').selectAll('option')
+    .data( d3.range(18,66) )
+    .enter().append('option')
+    .attr('value', function(d) { return d; })
+    .text(function(d) { return d;});
+
+  // start at blank
+  document.getElementById("gender").selectedIndex = -1;
+  document.getElementById("age").selectedIndex = -1;
+  document.getElementById("education").selectedIndex = -1;
+  // document.getElementById("trained").selectedIndex = -1;
+
+  d3.selectAll('select')
+    .filter(function(d) { return this.name === 'gender' ? this : null; })
+    .on('change', function() { data.gender = this.options[this.selectedIndex].text; validate();});
+  d3.selectAll('select')
+    .filter(function(d) { return this.name === 'age' ? this : null; })
+    .on('change', function() { data.age = this.options[this.selectedIndex].text; validate();});
+  d3.selectAll('select')
+    .filter(function(d) { return this.name === 'education' ? this : null; })
+    .on('change', function() { data.education = this.options[this.selectedIndex].text; validate();});
+
+
+  function validate() {
+    if(data.age && data.gender && data.education) {
+      experimentr.endTimer('demographics');
+      experimentr.addData(data);
+      experimentr.release();
+    }
+  } 
+}());
+</script>

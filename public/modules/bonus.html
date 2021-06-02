@@ -1,0 +1,45 @@
+<div class="w3-container">
+<!-- Demographics style stolen from labinthewild.org experiments -->
+
+<h3> Bonus </h3>
+<div id="table" class="w3-table"> </div>
+
+
+</div>
+
+
+
+<script> 
+(function() {
+  var data = {};
+  experimentr.startTimer('bonus');
+  experimentr.release();
+  
+  d3.select('#next-button')
+		.on('click', function(){
+			experimentr.endTimer('bonus');
+			experimentr.addData(data);
+			experimentr.next(); });
+
+  
+  var table = d3.select('#table')
+      .append('table')
+      
+  var tr = table.append('tr');
+  tr.append('th').html();
+  tr.append('th').html('Winnings');
+
+  experimentr.getBonuses().forEach(function(d, i){
+    
+    tr = table.append('div');
+
+    tr.html('Sheet ' + (i+1) + ' &nbsp&nbsp&nbsp&nbsp     <b>$' + (d/100).toFixed(2) + '</b>');
+  });
+
+  tr = table.append('div');
+  tr.html('<h3>$' + experimentr.getBonus() + '</h3>');
+  
+  
+
+}());
+</script>

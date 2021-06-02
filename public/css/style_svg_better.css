@@ -1,0 +1,274 @@
+/*body {
+    text-align: center;
+    font-family: Arial;
+    margin-left: 20px;
+    font-size: 14px;
+}*/
+
+#intro {
+    border-bottom: 1px solid grey;
+    padding-bottom: 10px;
+}
+
+#controlTxt {
+    padding-bottom: 10px;
+    border-bottom: 1px solid lightgrey;
+}
+
+#click_here {
+    /*height: 45px;*/
+    width: 55px; 
+    float: left;
+    position: relative;
+    fill: red; 
+    padding: 0; 
+}
+
+#checks_dir {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+#instruction_txt {
+  padding-bottom: 10px;
+  /*text-align: left;*/
+  float: left;
+}
+
+.container {
+    padding: 15px;
+    float: center;
+    padding-bottom: 5px; 
+}
+
+.shelf {
+  text-align: center;
+  border-bottom: 1px solid lightgrey;
+  padding: 10px;
+}
+
+.sub_shelf {
+  text-align: center;
+  /*border-bottom: 1px solid lightgrey;*/
+  padding: 10px;
+}
+
+.drag_div {
+  height: 70px;
+}
+
+.ex_legend {
+  text-align: center;
+  border-bottom: 1px solid lightgrey;
+  border-top: 1px solid lightgrey;
+  padding: 10px;
+}
+
+.ex_legend_2 {
+  text-align: left;
+  border-bottom: 1px solid lightgrey;
+  border-top: 1px solid lightgrey;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+#answers {
+    padding: 10px;
+    border-top: 1px solid grey;
+}
+
+text {
+    display: inline-block;
+    position: relative;
+}
+
+#full_svg {
+    padding: 0;
+}
+
+#full_svg2 {
+    padding: 0;
+}
+
+.have_disease_rect {
+    fill: rgb(255,255,191, 1);
+    width: 35px;
+    height: 35px; 
+}
+
+#have_disease_cb_text {
+    background-color: rgb(255,255,191, 1);
+    color: black; 
+}
+
+.do_not_have_disease_rect {
+    fill: rgb(145,191,219, 0.5);
+    width: 35px;
+    height: 35px;
+}
+
+#do_not_have_disease_cb_text {
+    background-color: rgb(145,191,219, 0.5);
+    color: black;
+}
+
+.test_positive {
+    --primary-color: rgb(252,141,89); 
+}
+
+#test_positive_cb_text {
+    background-color: rgb(252,141,89);
+    color: white; 
+}
+
+.test_negative { 
+    --primary-color: rgb(105,105,105);
+}
+
+#test_negative_cb_text {
+    background-color: rgb(105,105,105);
+    color: white; 
+}
+
+.hoverable:hover {
+    background: yellow;
+}
+
+.hoverable {
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-color: blue;
+}
+
+.have_disease_cir {
+  /*fill: red;*/
+  fill: white;
+  fill-opacity: 0;
+  stroke: black;
+  stroke-width: 2px;
+  stroke-opacity: 0;
+}
+
+.do_not_have_disease_cir {
+  /*fill: red;*/
+  fill: white;
+  fill-opacity: 0;
+  stroke: black;
+  stroke-width: 2px;
+  stroke-opacity: 0;
+}
+
+.test_positive_cir {
+  /*fill: red;*/
+  fill: white;
+  fill-opacity: 0;
+  stroke: black;
+  stroke-width: 2px;
+  stroke-opacity: 0;
+}
+
+.test_negative_cir {
+  /*fill: red;*/
+  fill: white;
+  fill-opacity: 0;
+  stroke: black;
+  stroke-width: 2px;
+  stroke-opacity: 0;
+}
+
+#tooltip {
+    background-color: white;
+    border: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    width: 20%;
+    z-index: 10;
+}
+
+.emphasize {
+   color: red; 
+}
+
+.bld {
+   font-weight: bold;
+   float:left;
+   text-align: left; 
+}
+
+.txtToDrag { 
+  margin-bottom:20px;
+  cursor: move;
+}
+
+.draggable {
+  cursor: move;
+}
+
+.draggable_icon {
+  padding-left: 5px;
+  padding-right: 10px; 
+}
+
+#have_disease_cb_text_d {
+    background-color: rgb(255,255,191, 1);
+    color: black; 
+}
+
+#do_not_have_disease_cb_text_d {
+    background-color: rgb(145,191,219, 0.5);
+    color: black;
+}
+
+#test_positive_cb_text_d {
+    background-color: rgb(240,240,240);
+    color: black; 
+}
+
+#test_negative_cb_text_d {
+    background-color: rgb(240,240,240);
+    color: black; 
+}
+
+.have_disease_cb_text_d_i {
+    --primary-color: rgb(230,230,230); 
+}
+
+.do_not_have_disease_cb_text_d_i {
+    --primary-color: rgb(230,230,230);
+}
+
+.test_positive_cb_text_d_i {
+    --primary-color: rgb(252,141,89); 
+}
+
+.test_negative_cb_text_d_i {
+    --primary-color: rgb(105,105,105); 
+}
+
+.have_disease_ghost {
+    --primary-color: rgb(230,230,230); 
+}
+
+.do_not_have_disease_ghost {
+    --primary-color: rgb(230,230,230);
+}
+
+.test_positive_ghost {
+    --primary-color: rgb(230,230,230); 
+}
+
+.test_negative_ghost {
+    --primary-color: rgb(230,230,230); 
+}
+
+.highlighted_icon {
+  stroke-opacity: 0.2; 
+}
+
+/*.highlighted_rect {
+  stroke: red;
+  stroke-width: 2px;
+  fill: red;
+}*/

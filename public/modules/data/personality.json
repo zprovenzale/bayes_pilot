@@ -1,0 +1,193 @@
+{ "survey":[
+
+{"index": 0,
+"question" : "I am sensitive to the needs of others.",
+"item" : "a", 
+"reverse" : "false"}, 
+
+{"index": 1,
+"question" : "I get angry easily.",
+"item" : "etc", 
+"reverse" : "false"},
+
+{"index": 2,
+"question" : "I usually like to spend my free time with people.",
+"item" : "e", 
+"reverse" : "false"},
+
+{"index": 3,
+"question" : "I dislike myself.",
+"item" : "n", 
+"reverse" : "false"},
+
+{"index": 4,
+"question" : "I love dangerous situations.",
+"item" : "etc", 
+"reverse" : "false"},
+
+{"index": 5,
+"question" : "I am a worrier.",
+"item" : "n", 
+"reverse" : "false"},
+
+{"index": 6,
+"question" : "I tell a lot of lies.",
+"item" : "etc", 
+"reverse" : "false"}, 
+
+{"index": 7,
+"question" : "I find it difficult to get down to work.",
+"item" : "c", 
+"reverse" : "true"},
+
+{"index": 8,
+"question" : "I am quick to understand new things.",
+"item" : "o", 
+"reverse" : "false"},
+
+{"index": 9,
+"question" : "I am paying attention. Click choice number three.",
+"item" : "att", 
+"reverse" : "false"},
+
+{"index": 10,
+"question" : "I am able to come up with new and different ideas",
+"item" : "o", 
+"reverse" : "false"},
+
+{"index": 11,
+"question" : "I act without thinking.",
+"item" : "etc", 
+"reverse" : "false"},
+
+{"index": 12,
+"question" : "I dislike being the center of attention.",
+"item" : "e", 
+"reverse" : "true"},
+
+{"index": 13,
+"question" : "I keep things tidy.",
+"item" : "c", 
+"reverse" : "false"}, 
+
+{"index": 14,
+"question" : "I respect authority.",
+"item" : "etc", 
+"reverse" : "false"},
+
+{"index": 15,
+"question" : "I have a natural talent for influencing people.",
+"item" : "etc", 
+"reverse" : "false"},
+
+{"index": 16,
+"question" : "I trust what people say.",
+"item" : "etc", 
+"reverse" : "false"},
+
+{"index": 17,
+"question" : "I laugh a lot.",
+"item" : "e", 
+"reverse" : "false"},
+
+{"index": 18,
+"question" : "I am open about my feelings.",
+"item" : "etc", 
+"reverse" : "false"}, 
+
+{"index": 19,
+"question" : "I do not like art.",
+"item" : "etc", 
+"reverse" : "false"},
+
+{"index": 20,
+"question" : "I love to reflect on things.",
+"item" : "etc", 
+"reverse" : "false"},
+
+{"index": 21,
+"question" : "I am able to select option five. Pick option five.",
+"item" : "att", 
+"reverse" : "false"},
+
+{"index": 22,
+"question" : "I continue until everything is perfect.",
+"item" : "etc", 
+"reverse" : "false"},
+
+{"index": 23,
+"question" : "I am able to control my cravings.",
+"item" : "etc", 
+"reverse" : "false"},
+
+{"index": 24,
+"question" : "I am just an ordinary person.",
+"item" : "etc", 
+"reverse" : "false"},
+
+{"index": 25,
+"question" : "I dislike changes.",
+"item" : "etc", 
+"reverse" : "true"},
+
+{"index": 26,
+"question" : "I like to take it easy.",
+"item" : "etc", 
+"reverse" : "false"},
+
+{"index": 27,
+"question" : "I am good at reading survey instructions. Select choice one.",
+"item" : "att", 
+"reverse" : "false"},
+
+{"index": 28,
+"question" : "I get overwhelmed by emotions.",
+"item" : "n", 
+"reverse" : "false"},
+
+{"index": 29,
+"question" : "I believe in one true religion.",
+"item" : "etc", 
+"reverse" : "false"},
+
+{"index": 30,
+"question" : "I start tasks right away.",
+"item" : "c", 
+"reverse" : "false"},
+
+{"index": 31,
+"question" : "I am an original thinker.",
+"item" : "o", 
+"reverse" : "false"},
+
+{"index": 32,
+"question" : "I am concerned about others.",
+"item" : "a", 
+"reverse" : "false"},
+
+{"index": 33,
+"question" : "I avoid company.",
+"item" : "e", 
+"reverse" : "true"},
+
+{"index": 34,
+"question" : "I worry about things.",
+"item" : "n", 
+"reverse" : "false"},
+
+{"index": 35,
+"question" : "I work hard.",
+"item" : "c", 
+"reverse" : "false"},
+
+{"index": 36,
+"question" : "I sympathize with others' feelings.",
+"item" : "a", 
+"reverse" : "false"},
+
+{"index": 37,
+"question" : "I am full of ideas.",
+"item" : "o", 
+"reverse" : "false"}
+
+]}

@@ -1,0 +1,579 @@
+<div class="header w3-container">
+	<p class="count"></p> <br/>
+
+	<img hspace="30">
+	
+	<button id="clear" class="w3-button w3-white w3-border w3-round-large">Clear Selections</button>
+	<button id="next-sheet" class="w3-button w3-white w3-border w3-round-large">Next Sheet</button>
+</div>
+
+<div class="w3-container" id ="task">
+	<h3>Lottery: </h3>
+	<div id="lottery"> 
+	
+	</div> 
+
+	<div id="estimate-container">
+		<p class="estimate_question" id="estimate_question" style="padding:20px"></p>
+	</div>
+
+	<div class="w3-panel w3-card w3-padding-large" id="survey">
+		<strong id="lotteryPrompt"> Which do you prefer? </strong>
+		<table class="w3-table" id="surveyTable"> </table>
+	</div>
+</div>
+
+
+<script> 
+
+(function() {
+
+  var data = {} // holds data for all lottery
+  	, _data = {} // temporarily holds data for the current lottery??
+	, numTasks = 26// number of questions presented to the user
+    , currTask = 0 
+    , session = 0 //used to count lottery sessions (if needed)
+    , lotteries = [] //holds the randomized order of tasks
+	, conditions = [] //holds randomized order of vis
+	, demo = false;
+
+  init();
+
+  function init() {
+  	experimentr.hideNext();
+    experimentr.startTimer('taskTotal');
+    experimentr.startTimer('sheet' + currTask);
+    
+    // conditions = ['circle'];
+    // estimates=['gist']
+    // times=[500,1000,2000]
+    //     lotteries = [
+    // 	{'p' : .05, 'x1' : 20, 'x2' : 0 },
+    // 	{'p' : .05, 'x1' : 40, 'x2' : 10},
+    // 	{'p' : .05, 'x1' : 50, 'x2' : 20},
+    // ];
+
+    lotteries = [
+    	{'p' : .05, 'x1' : 20, 'x2' : 0 },
+    	{'p' : .05, 'x1' : 40, 'x2' : 10},
+    	{'p' : .05, 'x1' : 50, 'x2' : 20},
+    	{'p' : .05, 'x1' : 150, 'x2' : 50},
+    	{'p' : .10, 'x1' : 10, 'x2' : 0},
+    	{'p' : .10, 'x1' : 20, 'x2' : 10},
+    	{'p' : .10, 'x1' : 50, 'x2' : 0},
+    	{'p' : .25, 'x1' : 20, 'x2' : 0},
+    	{'p' : .25, 'x1' : 40, 'x2' : 10},
+    	{'p' : .25, 'x1' : 50, 'x2' : 20},
+    	//attention check
+    	//===
+    	// {'p' : 100, 'x1' : 150, 'x2' : 0},
+    	//====
+    	{'p' : .50, 'x1' : 10, 'x2' : 0},
+    	{'p' : .50, 'x1' : 20, 'x2' : 10},
+    	{'p' : .50, 'x1' : 40, 'x2' : 10},
+    	{'p' : .50, 'x1' : 50, 'x2' : 0},
+    	{'p' : .50, 'x1' : 50, 'x2' : 20},
+    	{'p' : .50, 'x1' : 150, 'x2' : 0},
+    	{'p' : .75, 'x1' : 20, 'x2' : 0},
+    	{'p' : .75, 'x1' : 40, 'x2' : 10},
+    	{'p' : .75, 'x1' : 50, 'x2' : 20},
+    	{'p' : .90, 'x1' : 10, 'x2' : 0},
+    	{'p' : .90, 'x1' : 20, 'x2' : 10},
+    	{'p' : .90, 'x1' : 50, 'x2' : 0},
+    	{'p' : .95, 'x1' : 20, 'x2' : 0},
+    	{'p' : .95, 'x1' : 40, 'x2' : 10},
+    	{'p' : .95, 'x1' : 50, 'x2' : 20}
+    ];
+
+    //$10.70, $2.20
+
+    var sum_ev = 0
+    data.ev = d3.range(lotteries.length).map(function(d){
+    	var _p = lotteries[d].p;
+    	var _x1 = lotteries[d].x1;
+    	var _x2 = lotteries[d].x2;
+
+    	var _ev = (_p * _x1) + ((1-_p)*_x2);
+    	sum_ev += _ev;
+    	return _ev; 
+    });
+
+    experimentr.setBonuses(lotteries.length);
+
+    //create random orderings
+    var promise = new Promise(function(resolve, reject) {
+	  setTimeout(function() {
+	  	shuffle(lotteries); 
+    	shuffle(conditions);
+    	shuffle(estimates)
+    	shuffle(times)
+	    resolve(lotteries);
+	  }, 500);
+	});
+    
+    
+    promise.then(loadLottery)
+    	.then(displayInputs)
+
+
+    d3.select("#clear")
+    	.on("click", function(){
+
+    		d3.selectAll(".estimate_input")
+    			.property("checked", d => false);
+
+	    	//clear verbatim estimate value
+			if(estimate_shuffled == 'verbatim'){
+	    		d3.selectAll(".estimate_input")
+	    			.property("value", d => "")
+	    	}
+    		d3.selectAll(".lotterychoice")
+    			.property("checked", d => false);
+
+    		d3.selectAll("select")
+    			.property("value", d => 0);
+
+    		// _data['prob1'] = null;
+    		// _data['prob2'] = null;
+    		_data['lotterychoice'] = null;
+    		_data['estimateVal'] = null;
+
+    		hold("next-sheet"); //disable button
+    	})
+
+    hold("next-sheet"); //disable button on task load
+    d3.select("#next-sheet")
+    	.on("click", function(){
+
+    		if(currTask < numTasks - 1){
+    			calculate_bonus();
+
+    			//console.log(_data);
+    			data['sheet' + currTask] = _data; 
+    			experimentr.endTimer('sheet' + currTask);
+
+
+    			//prepare for next task
+    			_data = {}
+    			currTask++;
+    			hold("next-sheet");
+    			//===clear estimate buttons====
+    			d3.select("#estimate_question").html("")
+
+    			d3.select("#lottery").html("");
+    			d3.select("#surveyTable").html("")
+    			loadLottery(); //load next
+    			// displayDecisions();
+    			displayInputs();
+
+    			experimentr.startTimer('sheet' + currTask);
+    		}else{
+
+    			//save
+    			data['sheet' + currTask] = _data; 
+    			calculate_bonus();
+    			
+
+    			//stringify task objects and save
+    			d3.range(numTasks).forEach(function(d, i){
+    				data['sheet' + i] = JSON.stringify(data['sheet' + i]); 
+    			})
+    			console.log(data);
+    			
+    			
+    			experimentr.endTimer('sheet' + currTask);
+    			experimentr.endTimer('taskTotal');
+				experimentr.addData(data);
+				experimentr.next();
+
+
+    		}
+    	});
+    	//====estimate question======
+		if(estimate_shuffled == 'verbatim'){
+
+			d3.selectAll(".estimate_input")
+				//.on("change", updateSelection)
+				.on("input", updateEstimate);
+		
+		}
+		if(estimate_shuffled == 'gist'){
+			d3.select("#estimate_question")
+				.html(
+				  "<div><p> How would you describe your chance of winning? <p> " + 
+	              "<input  type='radio' id='gist1' name='estimate_input' class='estimate_input' value=no_chance> Almost No Chance </input> <br>"+
+	              "<input  type='radio' id='gist2' name='estimate_input' class='estimate_input' value=highly_unlikely> Highly Unlikely </input> <br>"+
+	              "<input  type='radio' id='gist3' name='estimate_input' class='estimate_input' value=unlikely> Unlikely </input><br> "+
+	              "<input  type='radio' id='gist4' name='estimate_input' class='estimate_input' value=about_even> About Even </input> <br>"+
+	              "<input  type='radio' id='gist6' name='estimate_input' class='estimate_input' value=likely> Likely </input><br> "+
+	              "<input  type='radio' id='gist7' name='estimate_input' class='estimate_input' value=highly_likely> Highly Likely </input><br> "+
+	              "<input  type='radio' id='gist8' name='estimate_input' class='estimate_input' value=almost_certain> Almost Certain </input></div>"
+				)
+			d3.selectAll(".estimate_input")
+				//.on("change", updateSelection)
+				.on("click", updateEstimate);
+		}
+		if(estimate_shuffled == 'default'){
+			_data["estimateVal"]="none"
+
+		}
+  }
+  
+
+	function loadLottery() {
+		console.log("==in loadLottery==")
+
+
+
+
+		console.log(lotteries[currTask].p)
+		console.log(estimate_shuffled)
+
+		var num_rows = 20;
+
+		if (demo){
+			lotteries[currTask] = {'p' : .50, 'x1' : 1000, 'x2' : 0};
+			condition_shuffled = 'donut';
+			time=time_shuffled
+			// estimate[session]=estimates[session]
+		}
+
+		//save task data
+		_data.p = lotteries[currTask].p;
+		_data.x1 = lotteries[currTask].x1;
+		_data.x2 = lotteries[currTask].x2;
+		// _data.condition = conditions[session];
+		// _data.estimate=estimates[session]
+		// _data.time=times[session]
+		_data.condition = condition_shuffled;
+		_data.estimate=estimate_shuffled
+		_data.time=time_shuffled
+		_data.selections = d3.range(num_rows).map(d => '');
+
+		d3.select('.count')
+	    	.html("<h5> Sheet " + (currTask + 1)  + " of " + (numTasks-1) + "</h5>" );
+	    
+	    console.log(condition_shuffled);
+	    if(condition_shuffled == 'none'){
+	    	//remove svg
+	    	d3.selectAll("svg").remove();
+
+	    	//display lottery info
+	    	d3.selectAll("#lottery")
+	    		.append('div')
+	    		.html(
+	    		"<p>Get <strong>"
+	    		+ lotteries[currTask]['x1'] + " points</strong> with <strong>" 
+	    		+ (lotteries[currTask]['p'] * 100) + "%</strong> chance <br/>"
+	    		+ "Get <strong>"
+	    		+ lotteries[currTask]['x2'] + " points</strong> with <strong>" 
+	    		+ ( Math.round((1-lotteries[currTask]['p']) * 100)) + "%</strong> chance</p>"
+	    	);
+	    }else{
+
+	    	//create a table for lottery information
+	    	var row = d3.selectAll("#lottery")
+	    		.append('table')
+	    		.attr('class', 'w3-table')
+	    		.append('tr')
+	    		.attr('width', 100);
+
+
+	    	//add svg for chart in the first column
+	    	var canvas = row.append('td')
+	    		.append('svg')
+	    		.attr('width', 300)
+	    		.attr('height', 300)
+	    		.attr('id', 'vis')
+	    		.attr('class', 'vis');
+
+	    	d3.selectAll("#vis").append("rect")
+	    						.attr("width",300)
+	    						.attr("height",300)
+	    						.attr("fill","lightgrey")
+
+
+	    	var showButton= d3.selectAll("#vis")
+
+
+	    	showButton.append("rect")
+	    		      .attr("id","showButton")
+					  .attr("height","50px")
+					  .attr("width","100px")
+					  .attr("x",100)
+					  .attr("y",120)
+					  .attr("fill","white")
+					  .attr("stroke","black")
+					  .attr("stroke-width","0.25px")
+					  .on("click",function(d){
+					  	console.log("clicked")
+					  	window['draw_' + condition_shuffled](lotteries[currTask]['p'], 'vis',time_shuffled)
+					  	//draw for [insert seconds]
+					  })
+	    	          // .attr("transform", "translate(" + (150 - 50) + "," + (150 - 25) + ")")
+
+
+	    	showButton.append("text")
+	    		      .attr("id","showButtonText")
+	    			  .attr("x",130)
+					  .attr("y",150)
+					  .attr("fill","grey")
+	    		      .text("Show")
+					  .on("click",function(d){
+					  	console.log("clicked")
+					  	window['draw_' + condition_shuffled](lotteries[currTask]['p'], 'vis',time_shuffled)
+					  	//draw for [insert seconds]
+					  })
+	    	          // .attr("transform", "translate(" + (150 - 50) + "," + (150 - 25) + ")")
+		    console.log("currTask is ",currTask)
+		    //====check for attention check=====
+		    if (currTask==12){
+		    	console.log("====in if statement====")
+		    	console.log(d3.select("showButtonText"))
+		    	d3.select("#showButtonText").text("Select "+ ((lotteries[currTask].x1+lotteries[currTask].x2)/2)+ " points for sure")
+		    	d3.select("#showButtonText").attr("x",70)
+		    	d3.select("#showButton").attr("width",200)
+		    	d3.select("#showButton").attr("x",50)
+		    	d3.select("#estimate_question").style("display","none")
+		    	//on click do nothing
+		    	d3.select("#showButton").on("click","")
+		    	d3.select("#showButtonText").on("click","")
+		    	//give value to estimateVal
+		    	_data["estimateVal"]="attention_check"
+		    	lotteries.push({'p' : lotteries[currTask].p, 'x1' : lotteries[currTask].x1, 'x2' :lotteries[currTask].x2})
+		    	//remove sheet
+		    	d3.select('.count').html("");
+	    
+		    }
+		    if (currTask>12){
+		    	d3.select("#showButtonText").text("Show")
+		    	d3.select("#showButtonText").attr("x",130)
+		    	d3.select("#showButton").attr("width",100)
+		    	d3.select("#showButton").attr("x",100)
+		    	d3.select("#estimate_question").style("display","block")
+		    	//resume sheet count
+		    	d3.select('.count').html("<h5> Sheet " + (currTask)  + " of " + (numTasks-1) + "</h5>" );
+
+		    }
+
+	    	//then draw chart
+
+	    	// window['draw_' + conditions[session]](lotteries[currTask]['p'], 'vis');
+	    	
+
+	    	// add column for lottery text
+	    	// and populate lottery information
+	    	row.append('td')
+	    		.append('div')
+	    		.html(
+	    		"<p> Click on the <b>show</b> button to see the chart showing the lottery probabilities: </p>"
+	    		+ "<p> <span class='w3-tag w3-text-black prob1'  style='background-color:#67a9cf; border:0.1px solid darkgrey'     > <img hspace='5'/> <strong>"
+	    		//+ "<select id='prob1'> </select>"
+	    		+ "</strong> chance to win <strong>"
+	    		+ lotteries[currTask]['x1'] + " points</strong> </span></p>"
+
+	    		+ "<p style='color:black' ; border:'5px solid rgb(200, 200, 200)><span class='w3-tag prob2' style='background-color:#f7f7f7; color:black; border:0.1px solid darkgrey' > <img hspace='5'/> <strong>"
+	    		//+ "<select id='prob2'> </select>" 
+	    		+ "</strong> chance to win <strong>"
+	    		+ lotteries[currTask]['x2'] + " points</strong></span></p>"
+	    		
+	    	);
+
+	    	//====estimate question======
+			if(estimate_shuffled == 'verbatim'){
+				console.log("in verbatim if")
+				d3.select("#estimate_question")
+					.html(
+						"<p> What is your chance of winning? Enter a number (0-100) <p>"+
+						"<input class=estimate_input name=estimate_input id=estimate_input></input>"
+
+						)
+				// d3.selectAll(".estimate_input")
+				// 	//.on("change", updateSelection)
+				// 	.on("change", updateEstimate);
+			
+			}
+			if(estimate_shuffled == 'gist'){
+				d3.select("#estimate_question")
+					.html(
+					  "<div><p> How would you describe your chance of winning? <p> " + 
+		              "<input  type='radio' id='gist1' name='estimate_input' class='estimate_input' value=no_chance> Almost No Chance </input> <br>"+
+		              "<input  type='radio' id='gist2' name='estimate_input' class='estimate_input' value=highly_unlikely> Highly Unlikely </input> <br>"+
+		              "<input  type='radio' id='gist3' name='estimate_input' class='estimate_input' value=unlikely> Unlikely </input><br> "+
+		              "<input  type='radio' id='gist4' name='estimate_input' class='estimate_input' value=about_even> About Even </input> <br>"+
+		              "<input  type='radio' id='gist6' name='estimate_input' class='estimate_input' value=likely> Likely </input><br> "+
+		              "<input  type='radio' id='gist7' name='estimate_input' class='estimate_input' value=highly_likely> Highly Likely </input><br> "+
+		              "<input  type='radio' id='gist8' name='estimate_input' class='estimate_input' value=almost_certain> Almost Certain </input></div>"
+					)
+				// d3.selectAll(".estimate_input")
+				// 	//.on("change", updateSelection)
+				// 	.on("click", updateEstimate);
+			}
+
+    	} //end else
+    	// validateEstimates()
+
+
+	}// end loadLottery
+
+	function displayInputs(){
+    	//====estimate question======
+		if(estimate_shuffled == 'verbatim'){
+			d3.selectAll(".estimate_input")
+				//.on("change", updateSelection)
+				.on("input", updateEstimate);
+		
+		}
+		if(estimate_shuffled == 'gist'){
+			d3.selectAll(".estimate_input")
+				//.on("change", updateSelection)
+				.on("click", updateEstimate);
+		}
+		if(estimate_shuffled == 'default'){
+			_data["estimateVal"]="none"
+
+		}
+    	//====lottery question======
+		var max = lotteries[currTask]['x1'];
+		var min = lotteries[currTask]['x2'];
+
+		var increments = (max-min)/20;
+		var payments = [];
+
+		for (var i = max; i > min; i-= increments){
+			payments.push(i);
+		}
+		_data.payments = payments;
+		//console.log(payments)
+
+		d3.select("#surveyTable")
+			.selectAll("tr").data(payments)
+			.enter().append("tr")
+			.html(function(d, i){ 
+			return "<input  type='radio' id='"+i + "a' name='"+i + "' class='lotterychoice'> Enter the lottery, </input> "
+			 + " or <input  type='radio' id='"+i + "b' name='"+i + "' class='lotterychoice'> Get " 
+			 + d + " points for sure </input> ";
+		});	
+
+		d3.selectAll(".lotterychoice")
+			//.on("change", updateSelection)
+			.on("click", updateSelection);		
+		
+	}
+	//update radio buttons on click
+	function updateSelection(sel){
+
+		var row = +this.id.substring(0, this.id.length - 1)
+		var col = this.id.substring(this.id.length - 1)
+
+		//console.log(this.id)
+		_data.selections[row] = col;
+
+		d3.range(0, 24).forEach(function(d){
+			if(d < row){
+				d3.selectAll(("input[id='" + d + "b']")).property("checked", true);
+				d3.selectAll(("input[id='" + d + "a']")).property("checked", false);
+				_data.selections[d] = 'b';
+			}else if (d > row){
+				d3.selectAll(("input[id='" + d + "a']")).property("checked", true);
+				d3.selectAll(("input[id='" + d + "b']")).property("checked", false);
+				_data.selections[d] = 'a';
+			}
+		})
+
+	    _data["lotterychoice"] = this.id; 
+	    validate();
+	    
+	}
+	function updateEstimate(estimate){
+		console.log("this is ",this)
+
+		console.log("estimate is ",this.value)
+		_data["estimateVal"]=this.value
+		validate()			
+	}
+
+	function validate(){
+		console.log("LOTTERY IS ",_data["lotterychoice"])
+		console.log("ESTIMATE VAL IS ",_data["estimateVal"])
+
+		//can only proceed to next sheet if probability entered AND lottery choice made
+	//if(conditions[session] == 'none'){
+		if (estimate_shuffled=="default"){
+			if(_data["lotterychoice"]){
+				release("next-sheet");
+			}
+		}
+		else{
+			if(_data["lotterychoice"] && _data["estimateVal"]){
+					release("next-sheet");
+			}	
+		}
+
+	}
+
+
+	function hold(id){
+		d3.select("#" + id)
+	    	.attr("disabled", true);
+
+	}
+
+	function release(id){
+		d3.select("#" + id)
+	    	.attr("disabled", null);
+	}
+
+	function calculate_bonus(){
+		//determine bonus
+
+		var rand_row = Math.floor(Math.random()*20);
+		var bonus = 0
+
+
+		if(_data.selections[rand_row] == 'b'){
+			bonus = _data.payments[rand_row];
+		}else{
+			bonus = simulateLottery(lotteries[currTask]);
+		}
+		experimentr.addBonuses(bonus, currTask);
+		experimentr.addBonus(bonus/100);
+	}
+
+
+	//example: simulateLottery({'p' : .50, 'x1' : 10, 'x2' : 0});
+	function simulateLottery(prob_data){
+
+		var arr = d3.range(100).map(d => d < prob_data.p * 100 ? prob_data.x2 : prob_data.x1);
+		
+		//create random orderings
+		var pick = shuffle(arr)[Math.floor(Math.random(arr.length)*100)];
+	  	return pick;
+		
+	}
+	  //
+	  // shuffles the order of a given array
+	  // ref: https://github.com/Daplie/knuth-shuffle/blob/master/index.js
+	  //
+	function shuffle(array) {
+	  var currentIndex = array.length, temporaryValue, randomIndex;
+
+	  // While there remain elements to shuffle...
+	  while (0 !== currentIndex) {
+
+	    // Pick a remaining element...
+	    randomIndex = Math.floor(Math.random() * currentIndex);
+	    currentIndex -= 1;
+
+	    // And swap it with the current element.
+	    temporaryValue = array[currentIndex];
+	    array[currentIndex] = array[randomIndex];
+	    array[randomIndex] = temporaryValue;
+	  }
+
+	  return array;
+	}
+
+
+}());
+</script>
