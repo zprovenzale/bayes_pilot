@@ -328,3 +328,68 @@ Connected to redis.
 44806:M 02 Jun 2021 11:01:30.989 * Ready to accept connections
 Listening on port 8200
 Connected to redis.
+Could not connect to Redis at 127.0.0.1:6379: Connection refused
+[6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> [6nnot connected> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Could not connect to Redis at 127.0.0.1:6379: Connection refused
