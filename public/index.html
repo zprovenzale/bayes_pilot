@@ -115,14 +115,14 @@ function selectStim() {
 
 
     if (condition=="textvis"){
-        task_list = shuffle(shuffle(pages_textvis)[0])
+        task_list = pages_textvis[0]
         task1=task_list[0]
         task2=task_list[1]
         data.stim1=task1
         data.stim2=task2
     }
     if (condition=="vis"){
-        task_list = shuffle(pages_vis)[0]
+        task_list = (pages_vis)[0]
         task1=task_list[0]
         task2=task_list[1]
         data.stim1=task1

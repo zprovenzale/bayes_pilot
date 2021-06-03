@@ -54,6 +54,7 @@ var timestamps=[];
 var pregnancyTimeout;
 var totalWordCount=0;
 var totalFruitCount=0;
+var speed_preg= experimentr.getData().speed_easy
 
 function draw_start() {
     var layout = d3_iconarray.layout().width(icon_width); 
@@ -308,20 +309,33 @@ data.version = "aligned";
 function validate() {
 
         //======COMPUTE D' SCORE=====
-        if (hits=="0"){
-            hits+=0.01
+         var hit_rate= hits/totalFruitCount
+         var fa_rate= false_alarm/(totalWordCount-totalFruitCount)
+
+        if (hit_rate=="0"){
+            hit_rate=0.01
         }
-        if (false_alarm=="0"){
-            false_alarm+=0.01
+        if (fa_rate=="0"){
+            fa_rate=0.01
+        }
+        if (hit_rate=="1"){
+            hit_rate=0.99
+        }
+        if (fa_rate=="1"){
+            fa_rate=0.99
         }
         console.log("HITS: ",hits)
         console.log("FALSE ALARMS: ",false_alarm)
 
-        d_prime= NormsInv(hits/totalFruitCount) - NormsInv(false_alarm/(totalWordCount-totalFruitCount))
-        console.log("hit rate is ",hits/totalFruitCount)
-        console.log("false alarm rate is ",false_alarm/(totalWordCount-totalFruitCount))
+
+        d_prime= NormsInv(hit_rate) - NormsInv(fa_rate)
+        console.log("hit rate is ",hit_rate)
+        console.log("false alarm rate is ",fa_rate)
         console.log("dprime is ",d_prime)
 
+        var perfect_dprime= NormsInv(0.99) - NormsInv(0.01)
+        console.log("total fruit count is ",totalFruitCount)
+        console.log("perfect d' is ", perfect_dprime)
 
         var a1 = document.getElementById("ans1");
         var a2 = document.getElementById("ans2");  
@@ -335,7 +349,8 @@ function validate() {
                 data.fa_preg = false_alarm ;
                 data.dprime_preg = d_prime ;
                 data.fruitWords_preg =totalFruitCount ; 
-                data.totalWords_preg = totalWordCount ; 
+                data.totalWords_preg = totalWordCount ;
+                data.perfect_dprime_preg= perfect_dprime
                 experimentr.endTimer('exp_preg');
                 experimentr.next();
         } 
@@ -734,27 +749,28 @@ function draw_secondary(words_data,data_part2) {
         lineupCount+=3
 
         // pregnancyTimeout = setTimeout(moveWords, 2000)
-        console.log("get speed data: ",experimentr.getData().speed_hard)
-        speed= experimentr.getData().speed_hard
-        pregnancyTimeout = setTimeout(moveWords,  speed)
+        console.log("get speed data: ",speed_preg)
+        pregnancyTimeout = setTimeout(moveWords,  speed_preg,speed_preg)
 
      }
    
-     function moveWords(){
+     function moveWords(speed_preg){
         console.log('MOVING WORDS (pregnancy)');
         //move containers
         d3.selectAll(".words")
           .transition()
-          .duration(0.75*speed)
+          .duration(0.75*speed_preg)
           .attr("x", function(d,i){
                 var currX= +this.getAttribute('x')
                 var wordColor=this.getAttribute('fill')
                 var isFruit=d.fruit
                 if ((currX>svgWidth)){
                     totalWordCount+=1
+                    this.remove()
                 }
                 if ((currX>svgWidth)&& (isFruit==1)){
                     totalFruitCount+=1
+                    this.remove()
                 }
                 if ((currX>svgWidth) && (isFruit==1) && (wordColor=="white")){
                     var yellowScore= parseInt(d3.select("#yellowScore").text())+1
@@ -774,7 +790,7 @@ function draw_secondary(words_data,data_part2) {
         //move borders
         d3.selectAll(".word_border")
           .transition()
-          .duration(0.75*speed)
+          .duration(0.75*speed_preg)
           .attr("x", function(d,i){
                 var currX= +this.getAttribute('x')
                 var wordColor=this.getAttribute('fill')

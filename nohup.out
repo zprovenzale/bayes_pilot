@@ -306,3 +306,25 @@ Connected to redis.
 95471:M 25 May 2021 10:36:04.893 # Could not create server TCP listening socket *:6381: bind: Address already in use
 Listening on port 8200
 Connected to redis.
+44694:C 02 Jun 2021 11:01:23.330 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+44694:C 02 Jun 2021 11:01:23.332 # Redis version=5.0.5, bits=64, commit=92043eed, modified=0, pid=44694, just started
+44694:C 02 Jun 2021 11:01:23.332 # Configuration loaded
+44694:M 02 Jun 2021 11:01:23.333 * Increased maximum number of open files to 10032 (it was originally set to 256).
+44694:M 02 Jun 2021 11:01:23.335 * Running mode=standalone, port=6381.
+44694:M 02 Jun 2021 11:01:23.335 # Server initialized
+44694:M 02 Jun 2021 11:01:23.368 * DB loaded from append only file: 0.033 seconds
+44694:M 02 Jun 2021 11:01:23.368 * Ready to accept connections
+44694:signal-handler (1622656888) Received SIGINT scheduling shutdown...
+44694:M 02 Jun 2021 11:01:28.604 # User requested shutdown...
+44694:M 02 Jun 2021 11:01:28.604 * Calling fsync() on the AOF file.
+44694:M 02 Jun 2021 11:01:28.604 # Redis is now ready to exit, bye bye...
+44806:C 02 Jun 2021 11:01:30.956 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+44806:C 02 Jun 2021 11:01:30.956 # Redis version=5.0.5, bits=64, commit=92043eed, modified=0, pid=44806, just started
+44806:C 02 Jun 2021 11:01:30.956 # Configuration loaded
+44806:M 02 Jun 2021 11:01:30.957 * Increased maximum number of open files to 10032 (it was originally set to 256).
+44806:M 02 Jun 2021 11:01:30.958 * Running mode=standalone, port=6381.
+44806:M 02 Jun 2021 11:01:30.958 # Server initialized
+44806:M 02 Jun 2021 11:01:30.989 * DB loaded from append only file: 0.031 seconds
+44806:M 02 Jun 2021 11:01:30.989 * Ready to accept connections
+Listening on port 8200
+Connected to redis.

@@ -5,6 +5,17 @@ Please fill out the following task load survey. "The task" refers to the previou
 </p>
 
 <hr style="height:5px;border:none;color:#333;background-color:#333; align:"LEFT";" />
+<h3>Tasks</h3>
+
+<p>Can you estimate how many fruit words you missed?</p>
+<input type="text" name ="words_missed"/>
+
+<p>On a scale of 0 to 100, what percentage of your attention was focused on answering the two questions?</p>
+<input type="text" name ="percent_task1"/>
+
+<p>On a scale of 0 to 100, what percentage of your attention was focused on selecting the fruit words in the list?</p>
+<input type="text" name ="percent_task2"/>
+
 
 <h3>Mental Demand</h3>
 <p>How mentally demanding was the task?</p>
@@ -72,6 +83,21 @@ Very Low<input type="range" name ="frustration" min="0" max="20" value="0" step=
   experimentr.onNext(cb); 
 
   d3.select('#next-button').style("display","block")
+
+  d3.selectAll('input')
+  .filter(function(d) { return this.name === 'words_missed' ? this : null; })
+  .on('change', function() { flag = 1; 
+                data.words_missed = this.value; validate(); });
+
+  d3.selectAll('input')
+  .filter(function(d) { return this.name === 'percent_task1' ? this : null; })
+  .on('change', function() { flag = 1; 
+                data.percent_task1 = this.value; validate(); });
+
+  d3.selectAll('input')
+  .filter(function(d) { return this.name === 'percent_task2' ? this : null; })
+  .on('change', function() { flag = 1; 
+                data.percent_task2= this.value; validate(); });
 
   d3.selectAll('input')
   .filter(function(d) { return this.name === 'mental_demand' ? this : null; })

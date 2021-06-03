@@ -6,6 +6,17 @@ Please fill out the following task load survey. "The task" refers to the previou
 
 <hr style="height:5px;border:none;color:#333;background-color:#333; align:"LEFT";" />
 
+<h3>Tasks</h3>
+
+<p>Can you estimate how many fruit words you missed?</p>
+<input type="text" name ="words_missed_preg"/>
+
+<p>On a scale of 0 to 100, what percentage of your attention was focused on answering the two questions?</p>
+<input type="text" name ="percent_task1_preg"/>
+
+<p>On a scale of 0 to 100, what percentage of your attention was focused on selecting the fruit words in the list?</p>
+<input type="text" name ="percent_task2_preg"/>
+
 <h3>Mental Demand</h3>
 <p>How mentally demanding was the task?</p>
 
@@ -74,6 +85,21 @@ Very Low<input type="range" name ="frustration" min="0" max="20" value="0" step=
   d3.select('#next-button').style("display","block")
 
   d3.selectAll('input')
+  .filter(function(d) { return this.name === 'words_missed_preg' ? this : null; })
+  .on('change', function() { flag = 1; 
+                data.words_missed_preg = this.value; validate(); });
+
+  d3.selectAll('input')
+  .filter(function(d) { return this.name === 'percent_task1_preg' ? this : null; })
+  .on('change', function() { flag = 1; 
+                data.percent_task1_preg = this.value; validate(); });
+
+  d3.selectAll('input')
+  .filter(function(d) { return this.name === 'percent_task2_preg' ? this : null; })
+  .on('change', function() { flag = 1; 
+                data.percent_task2_preg = this.value; validate(); });
+
+  d3.selectAll('input')
   .filter(function(d) { return this.name === 'mental_demand' ? this : null; })
   .on('change', function() { flag = 1; 
                 data.mental_demand_preg = this.value; validate(); });
@@ -119,7 +145,6 @@ Very Low<input type="range" name ="frustration" min="0" max="20" value="0" step=
           answer == 'effort' || answer == 'frustration') {
 
             score += data[answer];
-
       }
 
       //If this procedure has been run already we don't want the "grade"

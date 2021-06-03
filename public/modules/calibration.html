@@ -40,6 +40,11 @@ var d_primes=[]
 
 var ans={}
 
+
+var hits=0;
+var false_alarms=0;
+var d_prime=0;
+
 loadData("list_of_words1",speed)
 
 function loadData(listNumber, speed){
@@ -70,6 +75,10 @@ function nextLevel(speed){
   totalWordCount=0
   totalWordsSeen=0
 
+   hits=0;
+   false_alarms=0;
+   d_prime=0;
+
   dateInitial=new Date()
   timeInitial=dateInitial.getTime()
 
@@ -86,9 +95,7 @@ function nextLevel(speed){
     d3.select(this).style("display","none")
     d3.select("svg").remove() //remove svg
     d3.select('#nextLevel').style("display","none")
-    //reset counts
-    hits=0
-    false_alarms=0
+
     // document.getElementById("yellowScore").innerHTML="0 words missed"
     //go to next level
     //redraw with new speed
@@ -106,44 +113,76 @@ function nextLevel(speed){
   //     }
   // }
 }
-function checkPerformance(d_prime){
-          clearTimeout(timeoutCali)
-          if (d_prime >=0.93){ 
-            d_primes.push({speed:speed, d_prime:d_prime})
+function checkPerformance(){
+
+         clearTimeout(timeoutCali)
+
+         var hit_rate= hits/totalFruitCount
+         var fa_rate= false_alarms/(totalWordCount-totalFruitCount)
+        //======COMPUTE SCORE=====
+        if (hit_rate=="0"){
+            hit_rate=0.01
+        }
+        if (fa_rate=="0"){
+            fa_rate=0.01
+        }
+        if (hit_rate=="1"){
+            hit_rate=0.99
+        }
+        if (fa_rate=="1"){
+            fa_rate=0.99
+        }
+        console.log("HITS: ",hits)
+        console.log("FALSE ALARMS: ",false_alarms)
+
+        d_prime= NormsInv(hit_rate) - NormsInv(fa_rate)
+        console.log("hit rate is ",hit_rate)
+        console.log("false alarm rate is ",fa_rate)
+        console.log("dprime is ",d_prime)
+
+        //compute perfect d prime
+          var perfect_dprime= NormsInv(0.99) - NormsInv(0.01)
+          console.log("total fruit count is ",totalFruitCount)
+          console.log("perfect d' is ", perfect_dprime)
+          var currLevel=String(document.getElementById("level_number").innerHTML)
+
+          console.log("level number is ", currLevel)
+          //=======Compare d prime to perfect score==========
+          if ((d_prime > 0.2*perfect_dprime) && (level_number!="Level 8")){ 
+          	console.log("in first if")
+            d_primes.push({speed:speed, d_prime:d_prime, perfect_dprime:perfect_dprime})
             console.log("d_primes is ",d_primes)
-            speed=0.75*speed
+            speed=speed*0.75
             nextLevel(speed)
           }
-          else{
-            d_primes.push({speed:speed, d_prime:d_prime})
-          //   timeout= setTimeout(function(){
-          //       moveWords(totalWordsSeen,speed);
-          //   },speed)
-          // }
-            //speed=speed/0.75
-                      //go to task and save speed
+          else if ((d_prime <=0.2*perfect_dprime) || (level_number=="Level 8")){
+          	console.log("in second if")
+            d_primes.push({speed:speed, d_prime:d_prime, perfect_dprime:perfect_dprime})
+
             document.getElementById("nextLevel").innerHTML="Click on the next button to proceed to the main task"
             d3.select('#nextLevel').style("display","block") 
             d3.select('#next-button2').style("display","block")
             document.getElementById("next-button2").onclick=function(){
               var dprime_easy=999
               var dprime_hard=999
-              var speed_easy;
-              var speed_hard;
+              var speed_easy=4000;
+              var speed_hard=4000;
               console.log("d primes is ",d_primes)
               console.log("d primes[0] is ",d_primes[0])
-              for(var i = 0; i < d_primes.length; i++){
+              for(var i = 0; i < d_primes.length; i++){ //find dprime closest to 80% and 20%
                 console.log("in for loop")
                 element=d_primes[i]
                 console.log("element d prime is ", parseFloat(element.d_prime))
                 console.log("element speed is ", element.speed)
-                if ( Math.abs( (0.8*3.878) - parseFloat(element.d_prime)) < Math.abs((0.8*3.878) - dprime_hard) ){
-                  speed_hard=element.speed
-                  dprime_hard=parseFloat(element.d_prime)
-                }
-                if (Math.abs((0.2*3.878) - parseFloat(element.d_prime)) < Math.abs((0.2*3.878) - dprime_easy)){
+                if ( Math.abs( (0.8*perfect_dprime) - parseFloat(element.d_prime)) < Math.abs( (0.8*perfect_dprime) - parseFloat(dprime_easy))){
+                  console.log("in speed easy")
                   speed_easy=element.speed
                   dprime_easy=parseFloat(element.d_prime)
+                }
+                if (Math.abs((0.2*perfect_dprime) - parseFloat(element.d_prime)) < Math.abs( (0.2*perfect_dprime) - parseFloat(dprime_hard))){
+                  console.log("in speed hard")
+                  speed_hard=element.speed
+                  dprime_hard=parseFloat(element.d_prime)
                 }              
               } 
               ans.speed_easy=speed_easy
@@ -165,10 +204,6 @@ function draw_secondary(data,words_data,data_part2,speed) {
 
     var step=17;
     var lineupCount=1;
-
-    var hits=0;
-    var false_alarms=0;
-    var d_prime=0;
 
     let svgHeight = 400;
     let svgWidth = 820;
@@ -262,7 +297,6 @@ function draw_secondary(data,words_data,data_part2,speed) {
         .on("click",function(d){
             //record speed
             if (d.fruit==1){
-                hits+=1
                //change color of word
                this.setAttribute("stroke","cyan")
                //change border color
@@ -274,6 +308,8 @@ function draw_secondary(data,words_data,data_part2,speed) {
                var cyanScore=setRight.size
                //var cyanScore = parseInt(d3.select("#cyanScore").text())+1
                d3.select("#cyanScore").text(cyanScore + " words right")
+               this.unselectable = "on"; //prevents double clicking
+
             }
             else{
                 false_alarms+=1
@@ -329,7 +365,6 @@ function draw_secondary(data,words_data,data_part2,speed) {
         })
         .on("click",function(d){
             if (d.fruit==1){
-                hits+=1
                //change color of word
                this.setAttribute("fill","cyan")
                //change border color
@@ -342,6 +377,8 @@ function draw_secondary(data,words_data,data_part2,speed) {
                var cyanScore=setRight.size
                //var cyanScore = parseInt(d3.select("#cyanScore").text())+1
                d3.select("#cyanScore").text(cyanScore + " words right")
+               this.unselectable = "on"; //prevent double clicking
+
             }
             else{
                 false_alarms+=1
@@ -376,7 +413,7 @@ function draw_secondary(data,words_data,data_part2,speed) {
          //loop back to start of list
          if (lineup.length==0){
           //====check performance======
-          checkPerformance(d_prime)
+          checkPerformance()
             // data_part2=shuffle(words_data)
             //  var lineup=data_part2.slice(0,3)
             //  data_part2=data_part2.slice(3,)
@@ -549,9 +586,12 @@ function draw_secondary(data,words_data,data_part2,speed) {
             var isFruit=d.fruit
             if ((currX>svgWidth)){
                 totalWordCount+=1
+                this.remove()
             }
             if ((currX>svgWidth)&& (isFruit==1)){
                 totalFruitCount+=1
+                console.log("total fruits is ",totalFruitCount)
+                this.remove()
             }
             if ((currX>svgWidth) && (isFruit==1) && (wordColor=="white")){
                 var yellowScore= parseInt(d3.select("#yellowScore").text())+1
@@ -603,24 +643,31 @@ function draw_secondary(data,words_data,data_part2,speed) {
         console.log("total fruit count is ",totalFruitCount)
         console.log("total word count is ",totalWordCount)
 
-        //======COMPUTE SCORE=====
-        if (hits=="0"){
-            hits+=0.01
-        }
-        if (false_alarms=="0"){
-            false_alarms+=0.01
-        }
-        console.log("HITS: ",hits)
-        console.log("FALSE ALARMS: ",false_alarms)
 
-        d_prime= NormsInv(hits/totalFruitCount) - NormsInv(false_alarms/(totalWordCount-totalFruitCount))
-        console.log("hit rate is ",hits/totalFruitCount)
-        console.log("false alarm rate is ",false_alarms/(totalWordCount-totalFruitCount))
-        console.log("dprime is ",d_prime)
-        //create new lineup
         createLineUp(totalWordsSeen,speed)
      }
-     
+ 
+}
+
+    function shuffle(array) {
+      var currentIndex = array.length, temporaryValue, randomIndex;
+
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+
+      return array;
+    }
+    
     function NormsInv(p) {
         var a1 = -39.6968302866538, a2 = 220.946098424521, a3 = -275.928510446969;
         var a4 = 138.357751867269, a5 = -30.6647980661472, a6 = 2.50662827745924;
@@ -656,25 +703,4 @@ function draw_secondary(data,words_data,data_part2,speed) {
         }
         return retVal;
     }
-}
-
-    function shuffle(array) {
-      var currentIndex = array.length, temporaryValue, randomIndex;
-
-      // While there remain elements to shuffle...
-      while (0 !== currentIndex) {
-
-        // Pick a remaining element...
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-
-        // And swap it with the current element.
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-      }
-
-      return array;
-    }
-
 </script>  
