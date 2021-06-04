@@ -40,3 +40,26 @@ body {
   color: steelblue;
   font-weight: bold;
 }
+.progress-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.progress-holder {
+  background-color: #eee;
+  height: 20px;
+  border-radius: 10px;
+  width: 100%;
+  margin: 20px;
+  max-width: 700px;
+}
+
+.progress-holder .progress {
+  background-color: #44d17e;
+  height: 20px;
+  border-radius: 10px;
+  width:0%;
+  transition: width 4000ms cubic-bezier(0.68, -0.6, 0.32, 1.6);
+}
+
+

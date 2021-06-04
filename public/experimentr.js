@@ -67,8 +67,6 @@ data.bonuses = [];
   };
 
 
-
-
   // Create the divs for the experiment content and controls.
   function init() {
     if(mainDiv) return;

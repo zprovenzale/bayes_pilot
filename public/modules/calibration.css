@@ -1,0 +1,20 @@
+.survey-holder .progress-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.survey-holder .progress-holder {
+  background-color: #eee;
+  height: 20px;
+  border-radius: 10px;
+  width: 100%;
+  margin: 20px;
+  max-width: 700px;
+}
+
+.survey-holder .progress-holder .progress {
+  background-color: #44d17e;
+  height: 20px;
+  border-radius: 10px;
+  transition: width 0.75s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+}

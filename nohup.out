@@ -393,3 +393,10 @@ Could not connect to Redis at 127.0.0.1:6379: Connection refused
 
 
 Could not connect to Redis at 127.0.0.1:6379: Connection refused
+45436:C 03 Jun 2021 09:59:37.004 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+45436:C 03 Jun 2021 09:59:37.013 # Redis version=5.0.5, bits=64, commit=92043eed, modified=0, pid=45436, just started
+45436:C 03 Jun 2021 09:59:37.013 # Configuration loaded
+45436:M 03 Jun 2021 09:59:37.014 * Increased maximum number of open files to 10032 (it was originally set to 256).
+45436:M 03 Jun 2021 09:59:37.015 # Could not create server TCP listening socket *:6381: bind: Address already in use
+Listening on port 8200
+Connected to redis.

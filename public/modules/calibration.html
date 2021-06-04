@@ -1,7 +1,24 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+
+<body>
+
 <div id="defs">
 </div>
 
+<div class="container progress-container">
+  <div class="progress-holder">
+    <div class="progress" id="progress"></div>
+  </div>
+</div>
+
 <h2 class="level_number" id ="level_number">Level 1</h2>
+
+<p>Click only on the words that are fruits.<p>
 
 <div class="second_task" id ="second_task"></div>
 
@@ -10,10 +27,32 @@
 <button type="button" id="next-button2">Next</button>
 
 
+</body>
+</html>
+
 <script type="text/javascript">
 
 d3.select('#next-button2').style("display","none")
 d3.select('#next-button').style("display","none")
+
+// function progressBar(){
+
+// const total = questions.length;
+// const answerCount = Object.keys(answers).filter((x) => x !== 'feedback').length;
+// const percent = Math.round((answerCount / total) * 100) || 0;
+// const hidden = !questionNum || submitSuccess;
+
+// return (
+//   <div className="container progress-container">
+//     <div className="progress-holder" style={{ visibility: hidden ? 'hidden' : 'visible' }}>
+//       <div className="progress" style={{ width: `${percent}%` }}></div>
+//     </div>
+//   </div>
+// );
+
+// }
+
+
 
 //===Global variables====
 
@@ -48,13 +87,14 @@ var d_prime=0;
 loadData("list_of_words1",speed)
 
 function loadData(listNumber, speed){
+
     var words_data
     var data_part2
 
     d3.csv("modules/exp/data/"+listNumber+".csv",function(csv) {
         data=csv
-        words_data=data.slice(0,18)
-        data_part2=data.slice(18,)
+        words_data=data.slice(0,0)
+        data_part2=data.slice(0,)
         // totalWordCount+=data.length
         // console.log(data)
         // console.log("total word count is ",totalWordCount)
@@ -68,6 +108,13 @@ function loadData(listNumber, speed){
     })
 }
 function nextLevel(speed){
+  // document.getElementById("progress").setAttribute("style","width: 0%")
+
+  //set transition pace
+  document.getElementById("progress").setAttribute("style","transition: width"+ speed+"ms cubic-bezier(0.68, -0.6, 0.32, 1.6)")
+  // transition: width 0.75s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+
+
   // console.log("inside nextLevel")
 
       // speed=0.75*speed
@@ -144,59 +191,77 @@ function checkPerformance(){
           var perfect_dprime= NormsInv(0.99) - NormsInv(0.01)
           console.log("total fruit count is ",totalFruitCount)
           console.log("perfect d' is ", perfect_dprime)
-          var currLevel=String(document.getElementById("level_number").innerHTML)
 
-          console.log("level number is ", currLevel)
+          var levelText=String(document.getElementById("level_number").innerHTML)
           //=======Compare d prime to perfect score==========
-          if ((d_prime > 0.2*perfect_dprime) && (level_number!="Level 8")){ 
-          	console.log("in first if")
-            d_primes.push({speed:speed, d_prime:d_prime, perfect_dprime:perfect_dprime})
-            console.log("d_primes is ",d_primes)
-            speed=speed*0.75
-            nextLevel(speed)
-          }
-          else if ((d_prime <=0.2*perfect_dprime) || (level_number=="Level 8")){
-          	console.log("in second if")
-            d_primes.push({speed:speed, d_prime:d_prime, perfect_dprime:perfect_dprime})
-
-            document.getElementById("nextLevel").innerHTML="Click on the next button to proceed to the main task"
-            d3.select('#nextLevel').style("display","block") 
-            d3.select('#next-button2').style("display","block")
-            document.getElementById("next-button2").onclick=function(){
-              var dprime_easy=999
-              var dprime_hard=999
-              var speed_easy=4000;
-              var speed_hard=4000;
-              console.log("d primes is ",d_primes)
-              console.log("d primes[0] is ",d_primes[0])
-              for(var i = 0; i < d_primes.length; i++){ //find dprime closest to 80% and 20%
-                console.log("in for loop")
-                element=d_primes[i]
-                console.log("element d prime is ", parseFloat(element.d_prime))
-                console.log("element speed is ", element.speed)
-                if ( Math.abs( (0.8*perfect_dprime) - parseFloat(element.d_prime)) < Math.abs( (0.8*perfect_dprime) - parseFloat(dprime_easy))){
-                  console.log("in speed easy")
-                  speed_easy=element.speed
-                  dprime_easy=parseFloat(element.d_prime)
-                }
-                if (Math.abs((0.2*perfect_dprime) - parseFloat(element.d_prime)) < Math.abs( (0.2*perfect_dprime) - parseFloat(dprime_hard))){
-                  console.log("in speed hard")
-                  speed_hard=element.speed
-                  dprime_hard=parseFloat(element.d_prime)
-                }              
-              } 
-              ans.speed_easy=speed_easy
-              ans.cali_dprime_easy=dprime_easy
-              ans.speed_hard=speed_hard
-              ans.cali_dprime_hard=dprime_hard
-              console.log("ANS is ",ans)
-              experimentr.addData(ans); 
-              experimentr.next(); 
+          var matches = levelText.match(/(\d+)/); 
+          var currLevel=matches[0]
+          // var currLevel=parseInt(level_number[level_number.length-1])
+          console.log("current level is ",currLevel)
+         // if ((d_prime < 0.2*perfect_dprime) && currLevel<2){
+         //    document.getElementById("nextLevel").innerHTML="Sorry, you did not pass this level and cannot proceed with the study. Thank you for your participation."
+         //    d3.select('#next-button2').style("display","block")
+         //    document.getElementById("next-button2").onclick=function(){
+         //      console.log("next button clicked")
+         //      window.open("debrief.html",'_self');
+         //      // location.href = "modules/debrief.html";
+         //    }
+         // }
+         // else{
+            if ((d_prime > 0.2*perfect_dprime) && (level_number!="Level 8")){ 
+              console.log("in first if")
+              d_primes.push({speed:speed, d_prime:d_prime, perfect_dprime:perfect_dprime})
+              console.log("d_primes is ",d_primes)
+              speed=speed*0.75
+              nextLevel(speed)
             }
-          }
+            else if ((d_prime <=0.2*perfect_dprime) || (level_number=="Level 8")){
+              console.log("in second if")
+              d_primes.push({speed:speed, d_prime:d_prime, perfect_dprime:perfect_dprime})
+
+              document.getElementById("nextLevel").innerHTML="Click on the next button to proceed to the main task"
+              d3.select('#nextLevel').style("display","block") 
+              d3.select('#next-button2').style("display","block")
+              document.getElementById("next-button2").onclick=function(){
+                var dprime_easy=999
+                var dprime_hard=999
+                var speed_easy=4000;
+                var speed_hard=4000;
+                console.log("d primes is ",d_primes)
+                console.log("d primes[0] is ",d_primes[0])
+                for(var i = 0; i < d_primes.length; i++){ //find dprime closest to 80% and 20%
+                  console.log("in for loop")
+                  element=d_primes[i]
+                  console.log("element d prime is ", parseFloat(element.d_prime))
+                  console.log("element speed is ", element.speed)
+                  if ( Math.abs( (0.8*perfect_dprime) - parseFloat(element.d_prime)) < Math.abs( (0.8*perfect_dprime) - parseFloat(dprime_easy))){
+                    console.log("in speed easy")
+                    speed_easy=element.speed
+                    dprime_easy=parseFloat(element.d_prime)
+                  }
+                  if (Math.abs((0.2*perfect_dprime) - parseFloat(element.d_prime)) < Math.abs( (0.2*perfect_dprime) - parseFloat(dprime_hard))){
+                    console.log("in speed hard")
+                    speed_hard=element.speed
+                    dprime_hard=parseFloat(element.d_prime)
+                  }              
+                } 
+                ans.speed_easy=speed_easy
+                ans.cali_dprime_easy=dprime_easy
+                ans.speed_hard=speed_hard
+                ans.cali_dprime_hard=dprime_hard
+                console.log("ANS is ",ans)
+                experimentr.addData(ans); 
+                experimentr.next(); 
+              }
+            }
+
+         // }
+          
 }
 
 function draw_secondary(data,words_data,data_part2,speed) {
+  document.getElementById("progress").setAttribute("style","width: 0%")
+
 
 //=====timestamps for words=====
     var timestamps=[]
@@ -220,6 +285,28 @@ function draw_secondary(data,words_data,data_part2,speed) {
                 .attr("height",190)
                 .attr("width",svgWidth+5)
                 .attr("fill","#FAFAFA")
+
+  var ready_go= svgContainer.append("text")
+                        .attr("id","ready_go")
+                        .attr("fill","#F5F5F5")
+                        .attr("x",svgWidth/2)
+                        .attr("y",svgHeight/4)
+                        .text("Ready")
+                        .attr("fill","darkgrey")
+                        .style("font-size","28px")
+                        .transition()
+                        .duration(speed/2)
+                        .text("Ready")
+                        .transition()
+                        .duration(speed/2)
+                        .text("Set")
+                        .transition()
+                        .duration(speed/2)
+                        .text("Go!")
+                        .transition()
+                        .duration(speed/2)
+                        .text(" ")
+                        .attr("visibility","hidden")
 
     var cyanScore= svgContainer.append("text")
                         .attr("id","cyanScore")
@@ -256,149 +343,149 @@ function draw_secondary(data,words_data,data_part2,speed) {
     .attr("height", svgHeight)
     .attr("id", "second_svg");
 
-    var xCoord=840
+ //    var xCoord=90
 
-    var border=svg.selectAll(".word_border")
-                .data(words_data)
-                .enter()
-                .append("rect")
-                .attr("padding",0.5)
-                .attr('stroke', '#bebebe')
-                .attr('stroke-width', '1.2px')
-                .attr("class", "word_border")
-                .attr("fill","#F5F5F5")
-                .attr("opacity",0.75)
-                .attr("rx", 4)
-                .attr("ry", 4)
+ //    var border=svg.selectAll(".word_border")
+ //                .data(words_data)
+ //                .enter()
+ //                .append("rect")
+ //                .attr("padding",0.5)
+ //                .attr('stroke', '#bebebe')
+ //                .attr('stroke-width', '1.2px')
+ //                .attr("class", "word_border")
+ //                .attr("fill","#F5F5F5")
+ //                .attr("opacity",0.75)
+ //                .attr("rx", 4)
+ //                .attr("ry", 4)
 
-    border.attr("x", function(d,i){
-            // return (i%7)*150-200
-            if (i%3==0){
-                xCoord-=150
-                return xCoord
-            }
-            else{
-                return xCoord
-            }
-        })
-        .attr("y", function(d,i){
-            return 20+(i%3)*50
-        })
-        .attr("id",function(d,i){
-            return "b"+i
-        })
-        .attr("width",function(d,i){
-            return (d.word.length*10)+15
-        })
-        .attr("height",40)
-        .on("mouseover",function(d){
-            d3.select(this).style("cursor", "pointer"); 
-        })
-        .on("click",function(d){
-            //record speed
-            if (d.fruit==1){
-               //change color of word
-               this.setAttribute("stroke","cyan")
-               //change border color
-               var thisId=this.getAttribute("id").substring(1)
-               document.getElementById(thisId).setAttribute("fill","cyan")
-               //add word to set
-               setRight.add(thisId)
-               //update score
-               var cyanScore=setRight.size
-               //var cyanScore = parseInt(d3.select("#cyanScore").text())+1
-               d3.select("#cyanScore").text(cyanScore + " words right")
-               this.unselectable = "on"; //prevents double clicking
+ //    border.attr("x", function(d,i){
+ //            // return (i%7)*150-200
+ //            if (i%3==0){
+ //                xCoord-=150
+ //                return xCoord
+ //            }
+ //            else{
+ //                return xCoord
+ //            }
+ //        })
+ //        .attr("y", function(d,i){
+ //            return 20+(i%3)*50
+ //        })
+ //        .attr("id",function(d,i){
+ //            return "b"+i
+ //        })
+ //        .attr("width",function(d,i){
+ //            return (d.word.length*10)+15
+ //        })
+ //        .attr("height",40)
+ //        .on("mouseover",function(d){
+ //            d3.select(this).style("cursor", "pointer"); 
+ //        })
+ //        .on("click",function(d){
+ //            //record speed
+ //            if (d.fruit==1){
+ //               //change color of word
+ //               this.setAttribute("stroke","cyan")
+ //               //change border color
+ //               var thisId=this.getAttribute("id").substring(1)
+ //               document.getElementById(thisId).setAttribute("fill","cyan")
+ //               //add word to set
+ //               setRight.add(thisId)
+ //               //update score
+ //               var cyanScore=setRight.size
+ //               //var cyanScore = parseInt(d3.select("#cyanScore").text())+1
+ //               d3.select("#cyanScore").text(cyanScore + " words right")
+ //               this.unselectable = "on"; //prevents double clicking
 
-            }
-            else{
-                false_alarms+=1
-               //change color of word
-               this.setAttribute("stroke","magenta")
-               //change border color
-               var thisId=this.getAttribute("id").substring(1)
-               document.getElementById(thisId).setAttribute("fill","magenta")
-               //update score
-               //add word to set
-               setWrong.add(thisId)
-               //update score
-               var magentaScore=setWrong.size
-               //var magentaScore = parseInt(d3.select("#magentaScore").text())+1
-               d3.select("#magentaScore").text(magentaScore + " words right")                
-            }
-        })
-    var xCoord=850
+ //            }
+ //            else{
+ //                false_alarms+=1
+ //               //change color of word
+ //               this.setAttribute("stroke","magenta")
+ //               //change border color
+ //               var thisId=this.getAttribute("id").substring(1)
+ //               document.getElementById(thisId).setAttribute("fill","magenta")
+ //               //update score
+ //               //add word to set
+ //               setWrong.add(thisId)
+ //               //update score
+ //               var magentaScore=setWrong.size
+ //               //var magentaScore = parseInt(d3.select("#magentaScore").text())+1
+ //               d3.select("#magentaScore").text(magentaScore + " words right")                
+ //            }
+ //        })
+ //    var xCoord=100
 
-    var word=svg.selectAll(".words")
-                .data(words_data)
-                .enter()
-                .append("text")
-                .attr("class", "words")
-                .attr("padding",0.5)
-                .attr("fill","#6a6a6a")
- // Update (set the dynamic properties of the elements)
+ //    var word=svg.selectAll(".words")
+ //                .data(words_data)
+ //                .enter()
+ //                .append("text")
+ //                .attr("class", "words")
+ //                .attr("padding",0.5)
+ //                .attr("fill","#6a6a6a")
+ // // Update (set the dynamic properties of the elements)
 
-     word.attr("x", function(d,i){
-            // return (i%7)*150-200
-            if (i%3==0){
-                xCoord-=150
-                return xCoord
-            }
-            else{
-                return xCoord
-            }
-        })
-        .attr("y", function(d,i){
-            return 40+(i%3)*50
-        })
-        .attr("dy", ".35em")
-        .attr("id",function(d,i){
-            // return d
-            return i
-        })
-        .text(function(d) { 
-            return d.word;
-        })
-        .style("font-size","14px")
-        .on("mouseover",function(d){
-            d3.select(this).style("cursor", "pointer"); 
-        })
-        .on("click",function(d){
-            if (d.fruit==1){
-               //change color of word
-               this.setAttribute("fill","cyan")
-               //change border color
-               var thisId=this.getAttribute("id")
-               document.getElementById("b"+thisId).setAttribute("stroke","cyan")
-               //update score
-                //add word to set
-               setRight.add(thisId)
-               //update score
-               var cyanScore=setRight.size
-               //var cyanScore = parseInt(d3.select("#cyanScore").text())+1
-               d3.select("#cyanScore").text(cyanScore + " words right")
-               this.unselectable = "on"; //prevent double clicking
+ //     word.attr("x", function(d,i){
+ //            // return (i%7)*150-200
+ //            if (i%3==0){
+ //                xCoord-=150
+ //                return xCoord
+ //            }
+ //            else{
+ //                return xCoord
+ //            }
+ //        })
+ //        .attr("y", function(d,i){
+ //            return 40+(i%3)*50
+ //        })
+ //        .attr("dy", ".35em")
+ //        .attr("id",function(d,i){
+ //            // return d
+ //            return i
+ //        })
+ //        .text(function(d) { 
+ //            return d.word;
+ //        })
+ //        .style("font-size","14px")
+ //        .on("mouseover",function(d){
+ //            d3.select(this).style("cursor", "pointer"); 
+ //        })
+ //        .on("click",function(d){
+ //            if (d.fruit==1){
+ //               //change color of word
+ //               this.setAttribute("fill","cyan")
+ //               //change border color
+ //               var thisId=this.getAttribute("id")
+ //               document.getElementById("b"+thisId).setAttribute("stroke","cyan")
+ //               //update score
+ //                //add word to set
+ //               setRight.add(thisId)
+ //               //update score
+ //               var cyanScore=setRight.size
+ //               //var cyanScore = parseInt(d3.select("#cyanScore").text())+1
+ //               d3.select("#cyanScore").text(cyanScore + " words right")
+ //               this.unselectable = "on"; //prevent double clicking
 
-            }
-            else{
-                false_alarms+=1
-                this.setAttribute("fill","magenta")
-                //change border color
-               var thisId=this.getAttribute("id")
-               document.getElementById("b"+thisId).setAttribute("stroke","magenta")
-                //update score
-                               //add word to set
-               setWrong.add(thisId)
-               //update score
-               var magentaScore=setWrong.size
-               //var magentaScore = parseInt(d3.select("#magentaScore").text())+1
-               d3.select("#magentaScore").text(magentaScore + " words wrong" )
-            }
-            this.disabled=true
+ //            }
+ //            else{
+ //                false_alarms+=1
+ //                this.setAttribute("fill","magenta")
+ //                //change border color
+ //               var thisId=this.getAttribute("id")
+ //               document.getElementById("b"+thisId).setAttribute("stroke","magenta")
+ //                //update score
+ //                               //add word to set
+ //               setWrong.add(thisId)
+ //               //update score
+ //               var magentaScore=setWrong.size
+ //               //var magentaScore = parseInt(d3.select("#magentaScore").text())+1
+ //               d3.select("#magentaScore").text(magentaScore + " words wrong" )
+ //            }
+ //            this.disabled=true
 
-        })
+ //        })
 
-     word.exit().remove()
+ //     word.exit().remove()
 
      createLineUp(0,speed)
 
@@ -419,7 +506,7 @@ function draw_secondary(data,words_data,data_part2,speed) {
             //  data_part2=data_part2.slice(3,)
          }
          else{
-            var xCoord=-60
+            var xCoord=5
 
             // var borderSelect = 
 
@@ -458,40 +545,50 @@ function draw_secondary(data,words_data,data_part2,speed) {
                 })
                 .attr("height",40)
                  .on("click",function(d){
-                    if (d.fruit==1){
-                       //change color of word
-                       this.setAttribute("stroke","cyan")
-                       //change border color
-                       var thisId=this.getAttribute("id").substring(1)
-                       document.getElementById(thisId).setAttribute("fill","cyan")
-                       //update score
-                               //add word to set
-                       setRight.add(thisId)
-                       //update score
-                       var cyanScore=setRight.size
-                        //var cyanScore = parseInt(d3.select("#cyanScore").text())+1
-                       d3.select("#cyanScore").text(cyanScore + " words right")
+                    if (this.getAttribute("stroke")!='#bebebe'){
+                            console.log("in if")
+                            this.setAttribute("stroke","#bebebe")
+                            var thisId=this.getAttribute("id").slice(1)
+                            document.getElementById(thisId).setAttribute("fill","#6a6a6a")
                     }
                     else{
-                        false_alarms+=1
-                       //change color of word
-                       this.setAttribute("stroke","magenta")
-                       //change border color
-                       var thisId=this.getAttribute("id").substring(1)
-                       document.getElementById(thisId).setAttribute("fill","magenta")
-                       //update score
-                       //add word to set
-                       setWrong.add(thisId)
-                       //update score
-                       var magentaScore=setWrong.size
+                        if (d.fruit==1){
+                            console.log("in border clicked")
+                            console.log("stroke color is ",this.getAttribute("stroke") )
+                               //change color of word
+                               this.setAttribute("stroke","cyan")
+                               //change border color
+                               var thisId=this.getAttribute("id").substring(1)
+                               document.getElementById(thisId).setAttribute("fill","cyan")
+                               //update score
+                                       //add word to set
+                               setRight.add(thisId)
+                               //update score
+                               var cyanScore=setRight.size
+                                //var cyanScore = parseInt(d3.select("#cyanScore").text())+1
+                               d3.select("#cyanScore").text(cyanScore + " words right")
+                        }
+                        if (d.fruit==0){
+                             //change color of word
+                             this.setAttribute("stroke","magenta")
+                             //change border color
+                             var thisId=this.getAttribute("id").substring(1)
+                             document.getElementById(thisId).setAttribute("fill","magenta")
+                             //update score
+                             //add word to set
+                             setWrong.add(thisId)
+                             //update score
+                             var magentaScore=setWrong.size
 
-                       //var magentaScore = parseInt(d3.select("#magentaScore").text())+1
-                       d3.select("#magentaScore").text(magentaScore + " words right")                
+                             //var magentaScore = parseInt(d3.select("#magentaScore").text())+1
+                             d3.select("#magentaScore").text(magentaScore + " words right")  
+            
+                        }
                     }
                 })           
             // border.exit().remove()
 
-            var xCoord=-50
+            var xCoord=15
 
             var word=svg.selectAll("#lineup")
                         .data(lineup)
@@ -529,33 +626,42 @@ function draw_secondary(data,words_data,data_part2,speed) {
                     d3.select(this).style("cursor", "pointer"); 
                 })
                 .on("click",function(d){
-                    if (d.fruit==1){
-                       this.setAttribute("fill","cyan")
-                          //change border color
-                       var thisId=this.getAttribute("id")
-                       document.getElementById("b"+thisId).setAttribute("stroke","cyan")
-                       //add element to set
-                       //update score
-                       //add word to set
-                       setRight.add(thisId)
-                       //update score
-                       var cyanScore=setRight.size
-                       //var cyanScore = parseInt(d3.select("#cyanScore").text())+1
-                       d3.select("#cyanScore").text(cyanScore + " words right")
+                    if (this.getAttribute("fill")!='#6a6a6a'){
+                            console.log("in if")
+                            this.setAttribute("fill","#6a6a6a")
+                            var thisId=this.getAttribute("id")
+                            document.getElementById("b"+thisId).setAttribute("stroke","#bebebe")
                     }
                     else{
-                        this.setAttribute("fill","magenta")
-                                          //change border color
-                       var thisId=this.getAttribute("id")
-                       document.getElementById("b"+thisId).setAttribute("stroke","magenta")
-                        //update score
-                       //add word to set
-                       setWrong.add(thisId)
-                       //update score
-                       var magentaScore=setWrong.size
-                       //var magentaScore = parseInt(d3.select("#magentaScore").text())+1
-                       d3.select("#magentaScore").text(magentaScore + " words wrong")
+                        if (d.fruit==1){
+                           this.setAttribute("fill","cyan")
+                              //change border color
+                           var thisId=this.getAttribute("id")
+                           document.getElementById("b"+thisId).setAttribute("stroke","cyan")
+                           //add element to set
+                           //update score
+                           //add word to set
+                           setRight.add(thisId)
+                           //update score
+                           var cyanScore=setRight.size
+                           //var cyanScore = parseInt(d3.select("#cyanScore").text())+1
+                           d3.select("#cyanScore").text(cyanScore + " words right")
+                        }
+                        else{
+                            this.setAttribute("fill","magenta")
+                                              //change border color
+                           var thisId=this.getAttribute("id")
+                           document.getElementById("b"+thisId).setAttribute("stroke","magenta")
+                            //update score
+                           //add word to set
+                           setWrong.add(thisId)
+                           //update score
+                           var magentaScore=setWrong.size
+                           //var magentaScore = parseInt(d3.select("#magentaScore").text())+1
+                           d3.select("#magentaScore").text(magentaScore + " words wrong")
+                        }
                     }
+                    
                     this.disabled=true
 
                 })
@@ -574,6 +680,8 @@ function draw_secondary(data,words_data,data_part2,speed) {
     }
    
     function moveWords(totalWordsSeen,speed){
+
+
         var numberMissed=parseInt(d3.select("#yellowScore").text())
 
         //move containers
@@ -643,6 +751,13 @@ function draw_secondary(data,words_data,data_part2,speed) {
         console.log("total fruit count is ",totalFruitCount)
         console.log("total word count is ",totalWordCount)
 
+
+        //increment progress bar
+        var width= String(document.getElementById("progress").style.width).slice(0,-1)
+        console.log("width is ",width)
+        var newWidth=String((parseInt(width)+5.181))+"%"
+        console.log("newWidth is ",newWidth)
+        document.getElementById("progress").setAttribute("style",`width:${newWidth}`)
 
         createLineUp(totalWordsSeen,speed)
      }

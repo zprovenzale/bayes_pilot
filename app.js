@@ -7,8 +7,8 @@ var express     = require('express')
   , http        = require('http')
   , redis       = require('redis')
   , redisClient
-  , port        = process.argv[2] || 8200
-  , rport       = process.argv[3] || 6381
+  , port        = process.argv[2] || 8001
+  , rport       = process.argv[3] || 6383
   , debug       = process.argv[4] || null
 
 // Database setup
