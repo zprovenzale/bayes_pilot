@@ -1,7 +1,7 @@
 word,fruit
 peach,1
 frame,0
-sausage,1
+sausage,0
 dog,0
 shirt,0
 car,0
@@ -9,7 +9,7 @@ peach,1
 rice,0
 door,0
 toast,0
-rasberry,1
+raspberry,1
 grape,1
 cherry,1
 table,0
@@ -20,7 +20,7 @@ lemon,1
 church,0
 chicken,0
 frame,0
-avocado,1
+peach,1
 woman,0
 hair,0
 couch,0
@@ -30,7 +30,7 @@ bicycle,0
 pineapple,1
 raspberry,1
 circle,0
-avocado,1
+dragonfruit,1
 foot,0
 nectarine,1
 fig,1
