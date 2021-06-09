@@ -232,10 +232,12 @@ function checks() {
     var test_positive_cb = document.getElementById('test_positive_cb');
     var test_negative_cb = document.getElementById('test_negative_cb');
 
-    var state = {'have_disease_cb':have_disease_cb.checked,
+    var state = {
+        'have_disease_cb':have_disease_cb.checked,
                  'do_not_have_disease_cb':do_not_have_disease_cb.checked,
                  'test_positive_cb':test_positive_cb.checked,
-                 'test_negative_cb':test_negative_cb.checked};
+                 'test_negative_cb':test_negative_cb.checked
+                };
     moves.push(state);
 
     d3.selectAll('svg').remove();

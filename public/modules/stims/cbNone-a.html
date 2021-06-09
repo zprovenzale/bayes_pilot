@@ -30,7 +30,7 @@
 
 <script type="text/javascript">
 
-    var margin = { top: 0, bottom: 0, left: 0, right: 0 };
+    var margin = {top:0, bottom:0, left:0, right:0};
     var icon_scale = '0.05';  //this makes icons 13.44 X 35.84
 
     var width = 700;
@@ -64,12 +64,12 @@
             .data(grid)
             .enter()
             .append('rect')
-            .attr('transform', function (d) {
+            .attr('transform', function(d) {
                 return 'translate(' + (arrayScale(d.position.x)) + ',' + (arrayScale(d.position.y)) + ')';
             })
             .attr('width', 35)
             .attr('height', 40)
-            .attr('class', function (d) {
+            .attr('class', function(d) {
                 if (data_num_have_disease_test_positive.includes(d.data)) {
                     return 'have_disease_rect test_positive_rect have_disease_test_positive_rect';
                 } else if (data_num_have_disease_test_negative.includes(d.data)) {
@@ -85,12 +85,12 @@
             .data(grid)
             .enter()
             .append('g')
-            .attr('transform', function (d) {
+            .attr('transform', function(d) {
                 return 'translate(' + (arrayScale(d.position.x) + 11) + ',' + (arrayScale(d.position.y) + 4) + ')';
             })
-            .call(function (parent) {
+            .call(function(parent) {
                 parent.append('use')
-                    .attr('class', function (d) {
+                    .attr('class', function(d) {
                         if (data_num_have_disease_test_positive.includes(d.data)) {
                             return 'have_disease_ghost test_positive_ghost have_disease_test_positive_ghost';
                         } else if (data_num_have_disease_test_negative.includes(d.data)) {
@@ -101,20 +101,20 @@
                             return 'do_not_have_disease_ghost test_negative_ghost do_not_have_disease_test_negative_ghost';
                         }
                     })
-                    .attr('xlink:href', '#icon')
-                    .attr('transform', 'scale(' + icon_scale + ')');
+                    .attr('xlink:href','#icon')
+                    .attr('transform','scale(' + icon_scale + ')');
             });
 
         full_svg.selectAll('g#big_g')
             .data(grid)
             .enter()
             .append('g')
-            .attr('transform', function (d) {
+            .attr('transform', function(d) {
                 return 'translate(' + (arrayScale(d.position.x) + 11) + ',' + (arrayScale(d.position.y) + 4) + ')';
             })
-            .call(function (parent) {
+            .call(function(parent) {
                 parent.append('use')
-                    .attr('class', function (d) {
+                    .attr('class', function(d) {
                         if (data_num_have_disease_test_positive.includes(d.data)) {
                             return 'have_disease test_positive have_disease_test_positive';
                         } else if (data_num_have_disease_test_negative.includes(d.data)) {
@@ -125,8 +125,8 @@
                             return 'do_not_have_disease test_negative do_not_have_disease_test_negative';
                         }
                     })
-                    .attr('xlink:href', '#icon')
-                    .attr('transform', 'scale(' + icon_scale + ')');
+                    .attr('xlink:href','#icon')
+                    .attr('transform','scale(' + icon_scale + ')');
             });
 
         d3.select(self.frameElement).style("height", height + "px");
@@ -233,10 +233,10 @@
         var test_negative_cb = document.getElementById('test_negative_cb');
 
         var state = {
-            'have_disease_cb': have_disease_cb.checked,
-            'do_not_have_disease_cb': do_not_have_disease_cb.checked,
-            'test_positive_cb': test_positive_cb.checked,
-            'test_negative_cb': test_negative_cb.checked
+            'have_disease_cb':have_disease_cb.checked,
+            'do_not_have_disease_cb':do_not_have_disease_cb.checked,
+            'test_positive_cb':test_positive_cb.checked,
+            'test_negative_cb':test_negative_cb.checked
         };
         moves.push(state);
 
@@ -361,7 +361,7 @@
         }
     }
 
-    (function () {
+    (function() {
         checks();
     })();
 
