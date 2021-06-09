@@ -1,0 +1,606 @@
+<div id="defs">
+</div>
+
+<div id="intro" align="left">
+    There is a newly discovered disease, Disease X, which is transmitted by a bacterial infection found in the population. There is a test to detect whether or not a person has the disease, but it is not perfect. Here is some information about the current research on Disease X and efforts to test for the infection that causes it. 
+</div>
+<div id="controlTxt" align="left">
+    There is a total of 100 people in the population. Out of the 100 people in the population, 6 people actually have the disease. Out of these 6 people, 4 will receive a positive test result and 2 will receive a negative test result. On the other hand, 94 people do not have the disease (i.e., they are perfectly healthy). Out of these 94 people, 16 will receive a positive test result and 78 will receive a negative test result. 
+</div> 
+
+<div class="shelf" id="drag_shelf" ondrop="shelf_drop(event)" ondragover="allowDrop(event)">
+</div>
+
+<div class="container" id="simple-example" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <div class="sub_shelf" id="container_shelf" ondrop="drop(event)" ondragover="allowDrop(event)">
+    </div>
+</div>
+
+<div id="answers"><input type="submit" value="I'm ready to see the question." onClick=showQ()></div>
+
+<script type="text/javascript">
+
+var margin = {top:10, bottom:0, left:0, right:0}; 
+var icon_scale = '0.05';  //this makes icons 13.44 X 35.84
+
+var width = 100; 
+var width2 = 600; 
+var height = 125;
+var height2 = 250;   
+
+var icon_width = 2; 
+var icon_width2 = 17; 
+
+var data_num_have_disease_test_positive = [1, 2, 3, 4];
+var data_num_have_disease_test_negative = [5, 6];
+var data_num_do_not_have_disease_test_positive = [7, 8, 9, 10, 11, 12, 13, 14, 24, 25, 26, 27, 28, 29, 30, 31]; 
+
+function draw_start() {
+    var layout = d3_iconarray.layout().width(icon_width);
+    var layout2 = d3_iconarray.layout().width(icon_width2);
+
+    var data = d3.range(1, 7, 1); 
+    var data2 = d3.range(7, 101, 1); 
+
+    var grid = layout(data);
+    var grid2 = layout2(data2); 
+
+    var arrayScale = d3_iconarray.scale()
+                                .domain([0, layout.maxDimension(data.length)])
+                                .range([0, width + 6])
+                                .gapSize(0);
+    var arrayScale2 = d3_iconarray.scale()
+                            .domain([0, layout2.maxDimension(data2.length)])
+                            .range([0, width2])
+                            .gapSize(0); 
+
+    var full_svg = d3.select('#test')
+                    .append('svg')
+                        .attr('width', width)
+                        .attr('height', height)
+                        .attr('id', 'full_svg')
+                    .append('g')
+                        .attr('id', 'big_g');
+    var full_svg2 = d3.select('#test')
+                .append('svg')
+                    .attr('width', width2 + width)
+                    .attr('height', height2)
+                    .attr('id', 'full_svg2')
+                .append('g')
+                    .attr('id', 'big_g2');
+
+    full_svg.selectAll('g')
+            .data(grid)
+                .enter()
+            .append('rect')
+                .attr('transform', function(d) {
+                    return 'translate(' + (arrayScale(d.position.x)) + ',' + (arrayScale(d.position.y)) + ')'; 
+                })
+                .attr('class', function(d) {
+                    if (data_num_have_disease_test_positive.includes(d.data)) {
+                        return 'have_disease_rect test_positive_rect have_disease_test_positive_rect';
+                    } else if (data_num_have_disease_test_negative.includes(d.data)) {
+                        return 'have_disease_rect test_negative_rect have_disease_test_negative_rect';
+                    } else if (data_num_do_not_have_disease_test_positive.includes(d.data)) {
+                        return 'do_not_have_disease_rect test_positive_rect do_not_have_disease_test_positive_rect'; 
+                    } else {
+                        return 'do_not_have_disease_rect test_negative_rect do_not_have_disease_test_negative_rect'; 
+                    }
+                }); 
+
+        full_svg.selectAll('g#big_g')
+            .data(grid)
+                .enter()
+            .append('g')
+                .attr('transform', function(d) {
+                    return 'translate(' + (arrayScale(d.position.x) + 11) + ',' + (arrayScale(d.position.y) + 4) + ')'; 
+                })
+            .call(function(parent) {
+                parent.append('use')
+                    .attr('class', function(d) {
+                        if (data_num_have_disease_test_positive.includes(d.data)) {
+                            return 'have_disease_ghost test_positive_ghost have_disease_test_positive_ghost';
+                        } else if (data_num_have_disease_test_negative.includes(d.data)) {
+                            return 'have_disease_ghost test_negative_ghost have_disease_test_negative_ghost';
+                        } else if (data_num_do_not_have_disease_test_positive.includes(d.data)) {
+                            return 'do_not_have_disease_ghost test_positive_ghost do_not_have_disease_test_positive_ghost'; 
+                        } else {
+                            return 'do_not_have_disease_ghost test_negative_ghost do_not_have_disease_test_negative_ghost'; 
+                        }
+                    })
+                    .attr('xlink:href','#icon')
+                    .attr('transform','scale(' + icon_scale + ')');
+            });
+
+    full_svg.selectAll('g#big_g')
+            .data(grid)
+                .enter()
+            .append('g')
+                .attr('transform', function(d) {
+                    return 'translate(' + (arrayScale(d.position.x) + 11) + ',' + (arrayScale(d.position.y) + 4) + ')'; 
+                })
+            .call(function(parent) {
+                parent.append('use')
+                    .attr('class', function(d) {
+                        if (data_num_have_disease_test_positive.includes(d.data)) {
+                            return 'have_disease test_positive have_disease_test_positive';
+                        } else if (data_num_have_disease_test_negative.includes(d.data)) {
+                            return 'have_disease test_negative have_disease_test_negative';
+                        } else if (data_num_do_not_have_disease_test_positive.includes(d.data)) {
+                            return 'do_not_have_disease test_positive do_not_have_disease_test_positive'; 
+                        } else {
+                            return 'do_not_have_disease test_negative do_not_have_disease_test_negative'; 
+                        }
+                    })
+                    .attr('xlink:href','#icon')
+                    .attr('transform','scale(' + icon_scale + ')');
+            });
+
+    full_svg2.selectAll('g#big_g2')
+            .data(grid2)
+                .enter()
+            .append('rect')
+                .attr('transform', function(d) {
+                    return 'translate(' + (arrayScale2(d.position.x) + 80)*0.99 + ',' + (arrayScale2(d.position.y))*0.99 + ')'; 
+                })
+                .attr('class', function(d) {
+                    if (data_num_have_disease_test_positive.includes(d.data)) {
+                        return 'have_disease_rect test_positive_rect have_disease_test_positive_rect';
+                    } else if (data_num_have_disease_test_negative.includes(d.data)) {
+                        return 'have_disease_rect test_negative_rect have_disease_test_negative_rect';
+                    } else if (data_num_do_not_have_disease_test_positive.includes(d.data)) {
+                        return 'do_not_have_disease_rect test_positive_rect do_not_have_disease_test_positive_rect'; 
+                    } else {
+                        return 'do_not_have_disease_rect test_negative_rect do_not_have_disease_test_negative_rect'; 
+                    }
+                }); 
+    full_svg2.selectAll('g#big_g2')
+            .data(grid2)
+                .enter()
+            .append('g')
+                .attr('transform', function(d) {
+                    return 'translate(' + (arrayScale2(d.position.x) + 91) + ',' + (arrayScale2(d.position.y) + 4) + ')'; 
+                })
+            .call(function(parent) {
+                parent.append('use')
+                    .attr('class', function(d) {
+                        if (data_num_have_disease_test_positive.includes(d.data)) {
+                            return 'have_disease_ghost test_positive_ghost have_disease_test_positive_ghost';
+                        } else if (data_num_have_disease_test_negative.includes(d.data)) {
+                            return 'have_disease_ghost test_negative_ghost have_disease_test_negative_ghost';
+                        } else if (data_num_do_not_have_disease_test_positive.includes(d.data)) {
+                            return 'do_not_have_disease_ghost test_positive_ghost do_not_have_disease_test_positive_ghost'; 
+                        } else {
+                            return 'do_not_have_disease_ghost test_negative_ghost do_not_have_disease_test_negative_ghost'; 
+                        }
+                    })
+                    .attr('xlink:href','#icon')
+                    .attr('transform','scale(' + icon_scale + ')');
+            });
+
+    full_svg2.selectAll('g#big_g2')
+            .data(grid2)
+                .enter()
+            .append('g')
+                .attr('transform', function(d) {
+                    return 'translate(' + (arrayScale2(d.position.x) + 91) + ',' + (arrayScale2(d.position.y) + 4) + ')'; 
+                })
+            .call(function(parent) {
+                parent.append('use')
+                    .attr('class', function(d) {
+                        if (data_num_have_disease_test_positive.includes(d.data)) {
+                            return 'have_disease test_positive have_disease_test_positive';
+                        } else if (data_num_have_disease_test_negative.includes(d.data)) {
+                            return 'have_disease test_negative have_disease_test_negative';
+                        } else if (data_num_do_not_have_disease_test_positive.includes(d.data)) {
+                            return 'do_not_have_disease test_positive do_not_have_disease_test_positive'; 
+                        } else {
+                            return 'do_not_have_disease test_negative do_not_have_disease_test_negative'; 
+                        }
+                    })
+                    .attr('xlink:href','#icon')
+                    .attr('transform','scale(' + icon_scale + ')');
+            });
+
+    d3.select(self.frameElement).style("height", height + "px");
+}
+
+function draw_have_disease(background_y_n, peeps_y_n) {
+    if (background_y_n === 'skip') {
+        //do nothing 
+    } else if (background_y_n === 'no') {
+        d3.selectAll('.have_disease_rect')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.have_disease_rect')
+            .attr('opacity', 1);
+    }
+
+    if (peeps_y_n === 'skip') {
+        //do nothing 
+    } else if (peeps_y_n === 'no') {
+        d3.selectAll('.have_disease')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.have_disease')
+            .attr('opacity', 1);
+    }
+}
+
+function draw_do_not_have_disease(background_y_n, peeps_y_n) {
+    if (background_y_n === 'skip') {
+        //do nothing 
+    } else if (background_y_n === 'no') {
+        d3.selectAll('.do_not_have_disease_rect')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.do_not_have_disease_rect')
+            .attr('opacity', 1);
+    }
+
+    if (peeps_y_n === 'skip') {
+        //do nothing
+    } else if (peeps_y_n === 'no') {
+        d3.selectAll('.do_not_have_disease')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.do_not_have_disease')
+            .attr('opacity', 1);
+    }
+}
+
+function draw_test_positive(background_y_n, peeps_y_n) {
+    if (background_y_n === 'skip') {
+        //do nothing 
+    } else if (background_y_n === 'no') {
+        d3.selectAll('.test_positive_rect')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.test_positive_rect')
+            .attr('opacity', 1);
+    }
+
+    if (peeps_y_n === 'skip') {
+        //do nothing 
+    } else if (peeps_y_n === 'no') {
+        d3.selectAll('.test_positive')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.test_positive')
+            .attr('opacity', 1);
+    }
+}
+
+function draw_test_negative(background_y_n, peeps_y_n) {
+    if (background_y_n === 'skip') {
+        //do nothing 
+    } else if (background_y_n === 'no') {
+        d3.selectAll('.test_negative_rect')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.test_negative_rect')
+            .attr('opacity', 1);
+    }
+
+    if (peeps_y_n === 'skip') {
+        //do nothing 
+    } else if (peeps_y_n === 'no') {
+        d3.selectAll('.test_negative')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.test_negative')
+            .attr('opacity', 1);
+    }
+}
+
+var moves = [];
+
+function draw_shelf_text(id_txt) {
+    document.getElementById('drag_shelf').innerHTML += '<span id="' + id_txt + '" class="txtToDrag ' + id_txt + '_d" style="margin:5px; padding-top:25px" draggable="true" ondragstart="shelf_drag(event)"> ' + id_to_text(id_txt) + '<svg height=50px width=40px><use xlink:href="#icon" class="draggable_icon ' + id_txt + '_i" transform="scale(0.07) translate(170 200)"/></svg></span>'; 
+}
+
+function draw_container_text(id_txt) {
+    document.getElementById('container_shelf').innerHTML += '<span id="' + id_txt + '" class="txtToDrag ' + id_txt + '_d" style="margin:5px; padding-top:25px" draggable="true" ondragstart="shelf_drag(event)"> ' + id_to_text(id_txt) + '<svg height=50px width=40px><use xlink:href="#icon" class="draggable_icon ' + id_txt + '_i" transform="scale(0.07) translate(170 200)"/></svg></span>'; 
+}
+
+var on_shelf = {have_disease:1,
+                do_not_have_disease:1,
+                test_positive:1,
+                test_negative:1}; 
+
+function checks() {
+
+    var state = {'have_disease': on_shelf.have_disease,
+                'do_not_have_disease':on_shelf.do_not_have_disease,
+                'test_positive':on_shelf.test_positive,
+                'test_negative':on_shelf.test_negative};
+    moves.push(state); 
+
+    d3.selectAll('svg').remove();
+    d3.select('#simple-example')
+        .append('svg')
+            .attr('id', 'test')
+            .attr('width', width + width2)
+            .attr('height', height2)
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+    //append svg defs 
+    d3.select('#defs')
+        .append('svg')
+            .attr('height', 0)
+        .append('defs')
+        //.append('g')
+         //   .attr('id', 'icon')
+        .append("path")
+            .attr('id', 'icon')
+            .attr('d', 'M96 0c35.346 0 64 28.654 64 64s-28.654 64-64 64-64-28.654-64-64S60.654 0 96 0m48 144h-11.36c-22.711 10.443-49.59 10.894-73.28 0H48c-26.51 0-48 21.49-48 48v136c0 13.255 10.745 24 24 24h16v136c0 13.255 10.745 24 24 24h64c13.255 0 24-10.745 24-24V352h16c13.255 0 24-10.745 24-24V192c0-26.51-21.49-48-48-48z')
+            .attr('style', 'fill: var(--primary-color)');
+
+    document.getElementById('drag_shelf').innerHTML = "<div class='drag_div'><span class='bld'>Drag the representative members of the population shown here onto the visualization below to see similar members of the population. Drag representative members of the population off the visualization to remove similar members.</span><br></div>"; 
+    document.getElementById('container_shelf').innerHTML = "<div><span class='bld'>Visualization shows: </span><br></div>";
+ 
+    draw_start();
+    /////////ALL THREE OFF 
+    if (on_shelf.have_disease && 
+        !(on_shelf.do_not_have_disease) && !(on_shelf.test_positive) && !(on_shelf.test_negative)) {
+        // draw all but have disease 
+        draw_shelf_text('have_disease_cb_text_d');
+        draw_container_text('do_not_have_disease_cb_text_d');
+        draw_container_text('test_positive_cb_text_d');
+        draw_container_text('test_negative_cb_text_d');
+
+        draw_have_disease('no', 'skip'); 
+
+    } else if (on_shelf.do_not_have_disease && 
+        !(on_shelf.have_disease) && !(on_shelf.test_positive) && !(on_shelf.test_negative)) { 
+        //draw all but do not have 
+        draw_container_text('have_disease_cb_text_d');
+        draw_shelf_text('do_not_have_disease_cb_text_d');
+        draw_container_text('test_positive_cb_text_d');
+        draw_container_text('test_negative_cb_text_d');
+
+        draw_do_not_have_disease('no', 'skip');
+
+    } else if (on_shelf.test_positive && 
+        !(on_shelf.have_disease) && !(on_shelf.do_not_have_disease) && !(on_shelf.test_negative)) { 
+        //draw all but test pos 
+        draw_container_text('have_disease_cb_text_d');
+        draw_container_text('do_not_have_disease_cb_text_d');
+        draw_shelf_text('test_positive_cb_text_d');
+        draw_container_text('test_negative_cb_text_d');
+
+        draw_test_positive('skip', 'no');
+
+    } else if (on_shelf.test_negative && 
+        !(on_shelf.have_disease) && !(on_shelf.do_not_have_disease) && !(on_shelf.test_positive)) { 
+        //draw all but test neg 
+        draw_container_text('have_disease_cb_text_d');
+        draw_container_text('do_not_have_disease_cb_text_d');
+        draw_container_text('test_positive_cb_text_d');
+        draw_shelf_text('test_negative_cb_text_d');
+
+        draw_test_negative('skip', 'no'); 
+        
+///////// ALL 2 ON 2 OFF 
+    } else if (on_shelf.have_disease && on_shelf.do_not_have_disease && 
+        !(on_shelf.test_positive) && !(on_shelf.test_negative)) { 
+        //draw pos and neg
+        draw_shelf_text('have_disease_cb_text_d');
+        draw_shelf_text('do_not_have_disease_cb_text_d');
+        draw_container_text('test_positive_cb_text_d');
+        draw_container_text('test_negative_cb_text_d');  
+
+        draw_have_disease('no', 'skip');
+        draw_do_not_have_disease('no', 'skip');  
+        
+    } else if (on_shelf.have_disease && on_shelf.test_positive && 
+        !(on_shelf.do_not_have_disease) && !(on_shelf.test_negative)) { 
+        //draw do not have and neg 
+        draw_shelf_text('have_disease_cb_text_d');
+        draw_container_text('do_not_have_disease_cb_text_d');
+        draw_shelf_text('test_positive_cb_text_d');
+        draw_container_text('test_negative_cb_text_d'); 
+
+        draw_have_disease('no', 'skip');
+        draw_test_positive('skip', 'no');   
+        
+    } else if (on_shelf.have_disease && on_shelf.test_negative && 
+        !(on_shelf.do_not_have_disease) && !(on_shelf.test_positive)) { 
+        //draw do not have and pos  
+        draw_shelf_text('have_disease_cb_text_d');
+        draw_container_text('do_not_have_disease_cb_text_d');
+        draw_container_text('test_positive_cb_text_d');
+        draw_shelf_text('test_negative_cb_text_d');
+
+        draw_have_disease('no', 'skip');
+        draw_test_negative('skip', 'no'); 
+  
+    } else if (on_shelf.do_not_have_disease && on_shelf.test_positive && 
+        !(on_shelf.have_disease) && !(on_shelf.test_negative)) { 
+        //draw have and neg 
+        draw_container_text('have_disease_cb_text_d');
+        draw_shelf_text('do_not_have_disease_cb_text_d');
+        draw_shelf_text('test_positive_cb_text_d');
+        draw_container_text('test_negative_cb_text_d');
+
+        draw_do_not_have_disease('no', 'skip');
+        draw_test_positive('skip', 'no'); 
+        
+    } else if (on_shelf.do_not_have_disease && on_shelf.test_negative && 
+        !(on_shelf.have_disease) && !(on_shelf.test_positive)) { 
+        //draw have and pos 
+        draw_container_text('have_disease_cb_text_d');
+        draw_shelf_text('do_not_have_disease_cb_text_d');
+        draw_container_text('test_positive_cb_text_d');
+        draw_shelf_text('test_negative_cb_text_d');
+
+        draw_do_not_have_disease('no', 'skip');
+        draw_test_negative('skip', 'no'); 
+       
+    } else if (on_shelf.test_positive && on_shelf.test_negative && 
+        !(on_shelf.have_disease) && !(on_shelf.do_not_have_disease)) { 
+        //draw have and do not have 
+        draw_container_text('have_disease_cb_text_d');
+        draw_container_text('do_not_have_disease_cb_text_d');
+        draw_shelf_text('test_positive_cb_text_d');
+        draw_shelf_text('test_negative_cb_text_d');  
+
+        draw_test_positive('skip', 'no');
+        draw_test_negative('skip', 'no'); 
+     
+////////// ALL ONE OFF  
+    } else if (on_shelf.have_disease && on_shelf.do_not_have_disease && on_shelf.test_positive && 
+        !(on_shelf.test_negative)) { 
+        //draw test neg only 
+        draw_shelf_text('have_disease_cb_text_d');
+        draw_shelf_text('do_not_have_disease_cb_text_d');
+        draw_shelf_text('test_positive_cb_text_d');
+        draw_container_text('test_negative_cb_text_d');
+
+        draw_have_disease('no', 'skip');
+        draw_do_not_have_disease('no', 'skip');
+        draw_test_positive('skip', 'no');
+        
+    } else if (on_shelf.have_disease && on_shelf.do_not_have_disease && on_shelf.test_negative && 
+        !(on_shelf.test_positive)) { 
+        //draw test pos only 
+        draw_shelf_text('have_disease_cb_text_d');
+        draw_shelf_text('do_not_have_disease_cb_text_d');
+        draw_container_text('test_positive_cb_text_d');
+        draw_shelf_text('test_negative_cb_text_d'); 
+
+        draw_have_disease('no', 'skip');
+        draw_do_not_have_disease('no', 'skip');
+        draw_test_negative('skip', 'no');
+        
+    } else if (on_shelf.have_disease && on_shelf.test_positive && on_shelf.test_negative && 
+        !(on_shelf.do_not_have_disease)) { 
+        //draw do not have only 
+        draw_shelf_text('have_disease_cb_text_d');
+        draw_container_text('do_not_have_disease_cb_text_d');
+        draw_shelf_text('test_positive_cb_text_d');
+        draw_shelf_text('test_negative_cb_text_d');
+
+        draw_have_disease('no', 'skip');
+        draw_test_positive('skip', 'no');
+        draw_test_negative('skip', 'no'); 
+
+    } else if (on_shelf.do_not_have_disease && on_shelf.test_positive && on_shelf.test_negative && 
+        !(on_shelf.have_disease)) { 
+        //draw have only
+        draw_container_text('have_disease_cb_text_d');
+        draw_shelf_text('do_not_have_disease_cb_text_d');
+        draw_shelf_text('test_positive_cb_text_d');
+        draw_shelf_text('test_negative_cb_text_d'); 
+
+        draw_do_not_have_disease('no', 'skip');
+        draw_test_positive('skip', 'no');
+        draw_test_negative('skip', 'no'); 
+
+///////// ALL ON       
+    } else if (on_shelf.have_disease && on_shelf.test_positive && on_shelf.test_negative && on_shelf.do_not_have_disease) { 
+        //draw none  
+        draw_shelf_text('have_disease_cb_text_d');
+        draw_shelf_text('do_not_have_disease_cb_text_d');
+        draw_shelf_text('test_positive_cb_text_d');
+        draw_shelf_text('test_negative_cb_text_d');
+
+        draw_have_disease('no', 'skip');
+        draw_do_not_have_disease('no', 'skip');
+        draw_test_positive('skip', 'no');
+        draw_test_negative('skip', 'no'); 
+
+///////// ALL OFF 
+    } else if (!(on_shelf.have_disease) && !(on_shelf.test_positive) && !(on_shelf.test_negative) && !(on_shelf.do_not_have_disease)) { 
+        //draw ALL
+        draw_container_text('have_disease_cb_text_d');
+        draw_container_text('do_not_have_disease_cb_text_d');
+        draw_container_text('test_positive_cb_text_d');
+        draw_container_text('test_negative_cb_text_d'); 
+    }
+}
+
+(function() {
+  checks(); 
+})(); 
+ 
+var ans = {};
+
+function validate() {
+        var a1 = document.getElementById("ans1");
+        var a2 = document.getElementById("ans2");  
+        if (a1.value == "" || a2.value == "") {
+                alert("Please fill in both blanks then submit your answer.");
+        } else {
+                ans.ans1 = a1.value;
+                ans.ans2 = a2.value;
+                ans.views = moves; 
+                experimentr.endTimer('exp');
+                experimentr.addData(ans); 
+                experimentr.next(); 
+        } 
+ }
+
+function showQ() {
+        experimentr.startTimer('exp'); 
+        document.getElementById('answers').innerHTML = '<p>(a) How many people will test positive? <input type="number" id="ans1"><br>(b) Of those who test positive, how many will actually have the disease? <input type="number" id="ans2">.</p><input type="submit" value="Submit" onClick=validate()>';       
+}
+
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+function shelf_drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+
+
+function drop(ev) {
+      ev.preventDefault();
+      var data = ev.dataTransfer.getData("text");
+      if (data === "have_disease_cb_text_d") {
+        on_shelf.have_disease = 0; 
+        checks();
+      } else if (data === "do_not_have_disease_cb_text_d") {
+        on_shelf.do_not_have_disease = 0;
+        checks();
+      } else if (data === "test_positive_cb_text_d") {
+        on_shelf.test_positive = 0;
+        checks();
+      } else if (data === "test_negative_cb_text_d") {
+        on_shelf.test_negative = 0;
+        checks();
+      } 
+}
+
+function shelf_drop(ev) {
+      ev.preventDefault();
+      var data = ev.dataTransfer.getData("text");
+      if (data === "have_disease_cb_text_d") {
+        on_shelf.have_disease = 1; 
+        checks();
+      } else if (data === "do_not_have_disease_cb_text_d") {
+        on_shelf.do_not_have_disease = 1;
+        checks();
+      } else if (data === "test_positive_cb_text_d") {
+        on_shelf.test_positive = 1;
+        checks();
+      } else if (data === "test_negative_cb_text_d") {
+        on_shelf.test_negative = 1;
+        checks(); 
+      } 
+}
+
+function id_to_text(txt_obj) {
+    if (txt_obj === "have_disease_cb_text_d") {
+        return "Has Disease";      
+    } else if (txt_obj === "do_not_have_disease_cb_text_d") {
+         return "Does Not Have Disease";
+    } else if (txt_obj === "test_positive_cb_text_d") {
+        return "Tests Positive";   
+    } else if (txt_obj === "test_negative_cb_text_d") {
+        return "Tests Negative";  
+    }
+}
+
+</script>  
