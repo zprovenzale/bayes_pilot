@@ -35,13 +35,20 @@ if (layout == "grouped")
 
 var icon_scale = '0.05';  //this makes icons 13.44 X 35.84
 
-var width = 100;
-var width2 = 600;
-var height = 125;
-var height2 = 250;
+if (layout == "grouped") {  
+    var width = 100;
+    var width2 = 600;
+    var height = 125;
+    var height2 = 250;
 
-var icon_width = 2;
-var icon_width2 = 17;
+    var icon_width = 2;
+    var icon_width2 = 17;
+} else if (layout == "aligned" || layout == "random") {
+    var width = 700;
+    var height = 250;
+
+    var icon_width = 20;
+}
 
 if (layout == "grouped") {
     var data_num_have_disease_test_positive = [1, 2, 3, 4];
