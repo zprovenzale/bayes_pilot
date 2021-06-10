@@ -102,6 +102,57 @@ function draw_start() {
         d3.select('#tooltip').remove();
     }
 
+    if (base_viz == "grouped") {
+        var layout = d3_iconarray.layout().width(icon_width);
+        var layout2 = d3_iconarray.layout().width(icon_width2);
+
+        var data = d3.range(1, 7, 1);
+        var data2 = d3.range(7, 101, 1);
+
+        var grid = layout(data);
+        var grid2 = layout2(data2);
+
+        var arrayScale = d3_iconarray.scale()
+                                    .domain([0, layout.maxDimension(data.length)])
+                                    .range([0, width + 6])
+                                    .gapSize(0);
+        var arrayScale2 = d3_iconarray.scale()
+                                .domain([0, layout2.maxDimension(data2.length)])
+                                .range([0, width2])
+                                .gapSize(0);
+
+        var full_svg = d3.select('#test')
+                        .append('svg')
+                            .attr('width', width)
+                            .attr('height', height)
+                            .attr('id', 'full_svg')
+                        .append('g');
+        var full_svg2 = d3.select('#test')
+                    .append('svg')
+                        .attr('width', width2 + width)
+                        .attr('height', height2)
+                        .attr('id', 'full_svg2')
+                    .append('g');
+
+        full_svg.selectAll('g')
+                .data(grid)
+                    .enter()
+                .append('rect')
+                    .attr('transform', function(d) {
+                        return 'translate(' + (arrayScale(d.position.x)) + ',' + (arrayScale(d.position.y)) + ')';
+                    })
+                    .attr('class', function(d) {
+                        if (data_num_have_disease_test_positive.includes(d.data)) {
+                            return 'have_disease_rect test_positive_rect have_disease_test_positive_rect';
+                        } else if (data_num_have_disease_test_negative.includes(d.data)) {
+                            return 'have_disease_rect test_negative_rect have_disease_test_negative_rect';
+                        } else if (data_num_do_not_have_disease_test_positive.includes(d.data)) {
+                            return 'do_not_have_disease_rect test_positive_rect do_not_have_disease_test_positive_rect';
+                        } else {
+                            return 'do_not_have_disease_rect test_negative_rect do_not_have_disease_test_negative_rect';
+                        }
+                    });
+                } else if (base_viz == "aligned" || base_viz == "random") {
     var layout = d3_iconarray.layout().width(icon_width);
     var data = d3.range(1, 101, 1);
     var grid = layout(data);
@@ -138,6 +189,7 @@ function draw_start() {
                         return 'do_not_have_disease_rect test_negative_rect do_not_have_disease_test_negative_rect';
                     }
                 });
+    }
 
     full_svg.selectAll('g')
             .data(grid)
